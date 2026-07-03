@@ -1,0 +1,240 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-brand-red: #E11D2E;        /* primary red */
+  --color-brand-red-dark: #B3121F;   /* hover states */
+  --color-brand-red-light: #FEE2E2;  /* soft red tint backgrounds */
+  --color-ink: #0A0A0A;              /* near-black text */
+  --color-muted: #52525B;            /* secondary text */
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #FAFAFA;      /* alternating section background */
+}
+
+body {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+  font-family: var(--font-sans);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #0A0A0A, #3F3F46);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-red {
+  background: linear-gradient(to right, #E11D2E, #B3121F);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom white card look */
+.agency-card {
+  background: #FFFFFF;
+  border: 1px solid #E4E4E7; /* border-zinc-200 */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.agency-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+  border-color: rgba(225, 29, 46, 0.3);
+}
+
+/* Scanner Section Styles (Adapted for White/Red) */
+.scanner-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  background: #FFFFFF;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scanner-section .container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scanner-section .card-stream {
+  position: absolute;
+  width: 100%;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+}
+
+.scanner-section .card-line {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  white-space: nowrap;
+  cursor: grab;
+  user-select: none;
+  will-change: transform;
+}
+
+.scanner-section .card-line:active {
+  cursor: grabbing;
+}
+
+.scanner-section .card-wrapper {
+  position: relative;
+  width: 400px;
+  height: 250px;
+  flex-shrink: 0;
+}
+
+.scanner-section .card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 250px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.scanner-section .card-normal {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+  color: #0A0A0A;
+  z-index: 2;
+  position: relative;
+  overflow: hidden;
+  clip-path: inset(0 0 0 var(--clip-right, 0%));
+}
+
+.scanner-section .card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+  transition: all 0.3s ease;
+  border: 1px solid #E4E4E7;
+}
+
+.scanner-section .card-ascii {
+  background: #FAFAFA;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 250px;
+  border-radius: 24px;
+  border: 1px solid #FCA5A5; /* red-300 */
+  overflow: hidden;
+  clip-path: inset(0 calc(100% - var(--clip-left, 0%)) 0 0);
+}
+
+.scanner-section .ascii-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #E11D2E; /* red-600 */
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 12px;
+  overflow: hidden;
+  white-space: pre;
+  opacity: 0.8;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.scanner-section .scanner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 350px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    #E11D2E,
+    #B3121F,
+    #E11D2E,
+    transparent
+  );
+  box-shadow: 0 0 20px rgba(225, 29, 46, 0.8);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.scanner-section .scan-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(225, 29, 46, 0.1),
+    transparent
+  );
+  animation: scanEffect 0.6s ease-out;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes scanEffect {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+.scanner-section #particleCanvas {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 300px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scanner-section #scannerCanvas {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 400px;
+  z-index: 15;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .scanner-section {
+    height: 70vh;
+  }
+  .scanner-section .card-wrapper,
+  .scanner-section .card {
+    width: 280px;
+    height: 175px;
+  }
+  .scanner-section .card-stream {
+    height: 175px;
+  }
+}
