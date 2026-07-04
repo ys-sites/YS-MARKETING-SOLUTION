@@ -1,17 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const categories = [
-  'All',
-  'Restaurants',
-  'E-commerce',
-  'Travel',
-  'Home Services',
-  'Luxury Services',
-  'Sports & Recreation',
-  'Automotive'
-];
+  { id: 'All', key: 'all' },
+  { id: 'Restaurants', key: 'restaurants' },
+  { id: 'E-commerce', key: 'ecommerce' },
+  { id: 'Travel', key: 'travel' },
+  { id: 'Home Services', key: 'homeServices' },
+  { id: 'Luxury Services', key: 'luxuryServices' },
+  { id: 'Sports & Recreation', key: 'sportsRecreation' },
+  { id: 'Automotive', key: 'automotive' },
+] as const;
+
+const categoryKeyMap: Record<string, typeof categories[number]['key']> = Object.fromEntries(
+  categories.map((c) => [c.id, c.key])
+);
 
 const projects = [
   { id: 1, slug: "allball",      name: "Centre AllBall",           category: "Sports & Recreation", url: "https://www.centreallball.com" },
@@ -31,8 +36,10 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project, index }: ProjectCardProps) {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: false, amount: 0.1 });
+  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+  const imgRef = useRef<HTMLImageElement>(null);
   const [imgHeight, setImgHeight] = useState(0);
   const [containerHeight, setContainerHeight] = useState(300);
   const [isHovered, setIsHovered] = useState(false);
@@ -53,14 +60,23 @@ function ProjectCard({ project, index }: ProjectCardProps) {
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    setImgHeight(e.currentTarget.naturalHeight || e.currentTarget.offsetHeight);
-  };
+  useEffect(() => {
+    if (!imgRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.contentRect.height > 0) {
+          setImgHeight(entry.contentRect.height);
+        }
+      }
+    });
+    observer.observe(imgRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const scrollDistance = imgHeight > containerHeight ? imgHeight - containerHeight : 0;
-  
-  // Dynamic duration: 25px scrolled per second, bound between 15s and 35s for an extra slow and readable scroll down
-  const duration = scrollDistance > 0 ? Math.max(15, Math.min(35, scrollDistance / 25)) : 16;
+
+  // Dynamic duration: 18px scrolled per second, bound between 18s and 40s for an extra slow and readable scroll down
+  const duration = scrollDistance > 0 ? Math.max(18, Math.min(40, scrollDistance / 18)) : 18;
 
   return (
     <motion.div
@@ -93,32 +109,35 @@ function ProjectCard({ project, index }: ProjectCardProps) {
           /* Graceful Fallback Placeholder */
           <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-zinc-50 text-zinc-400">
             <span className="text-sm font-semibold mb-1 text-zinc-700">{project.name}</span>
-            <span className="text-xs text-zinc-400 mb-4">{project.category}</span>
+            <span className="text-xs text-zinc-400 mb-4">{t.portfolio.categories[categoryKeyMap[project.category]]}</span>
             <span className="text-[10px] text-brand-red font-medium tracking-wide uppercase px-2 py-0.5 rounded-full bg-brand-red-light/80">
               Preview Offline
             </span>
           </div>
         ) : (
           <motion.img
+            ref={imgRef}
             src={`/portfolio/${project.slug}.jpg`}
             alt={project.name}
-            onLoad={handleImageLoad}
             onError={() => setImageError(true)}
-            className="w-full h-auto block select-none pointer-events-none origin-top will-change-transform"
-            style={{ y: 0 }}
+            className="w-full h-auto block select-none pointer-events-none origin-top"
+            style={{ willChange: 'transform' }}
             animate={
               isInView && !isHovered && !prefersReducedMotion && scrollDistance > 0
                 ? {
+                    // Scroll down smoothly, then fade out at bottom, jump back, fade in
+                    // — the reset happens while opacity=0 so it's invisible (no flash)
                     y: [0, -scrollDistance, -scrollDistance, 0, 0],
+                    opacity: [1, 1, 0, 0, 1],
                   }
-                : { y: 0 }
+                : { y: 0, opacity: 1 }
             }
             transition={{
               duration: duration,
-              times: [0, 0.90, 0.95, 0.96, 1], // 90% time scrolling down, 5% pause at bottom, 1% fast reset to top, 4% pause at top
-              ease: "easeInOut",
+              times: [0, 0.82, 0.84, 0.86, 1],
+              ease: 'linear',
               repeat: Infinity,
-              repeatType: "loop"
+              repeatType: 'loop',
             }}
             loading="lazy"
           />
@@ -128,13 +147,13 @@ function ProjectCard({ project, index }: ProjectCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 z-10 pointer-events-none">
           <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 space-y-2">
             <span className="px-3 py-1 rounded-full bg-brand-red text-[10px] font-bold uppercase tracking-wider text-white w-fit inline-block">
-              {project.category}
+              {t.portfolio.categories[categoryKeyMap[project.category]]}
             </span>
             <h3 className="text-lg md:text-xl font-bold tracking-tight text-white">
               {project.name}
             </h3>
             <div className="flex items-center gap-1.5 text-brand-red-light font-bold text-sm">
-              <span>Visit Site</span>
+              <span>{t.portfolio.visit}</span>
               <ArrowUpRight className="w-4 h-4 text-brand-red" />
             </div>
           </div>
@@ -145,6 +164,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
 }
 
 export default function Portfolio() {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const filteredProjects = selectedCategory === 'All'
@@ -161,7 +181,7 @@ export default function Portfolio() {
             viewport={{ once: true }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
-            Portfolio
+            {t.portfolio.badge}
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -169,7 +189,8 @@ export default function Portfolio() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink mb-6"
           >
-            Websites That <span className="text-brand-red">Convert</span>
+            {t.portfolio.title.split(' ').slice(0, -1).join(' ')}{' '}
+            <span className="text-brand-red">{t.portfolio.title.split(' ').slice(-1)}</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -178,7 +199,7 @@ export default function Portfolio() {
             transition={{ delay: 0.1 }}
             className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light"
           >
-            We don't build generic brochure sites. We design high-converting, blazing-fast sales channels tailored to capture leads.
+            {t.portfolio.subtitle}
           </motion.p>
         </div>
 
@@ -186,22 +207,22 @@ export default function Portfolio() {
         <div className="flex overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory gap-2 md:gap-3 mb-12 max-w-full pb-4 px-4 -mx-4 justify-start md:justify-center">
           {categories.map((category) => (
             <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium tracking-tight transition-all duration-300 relative cursor-pointer snap-start shrink-0 ${
-                selectedCategory === category
+                selectedCategory === category.id
                   ? 'text-white'
                   : 'text-muted hover:text-ink hover:bg-zinc-100'
               }`}
             >
-              {selectedCategory === category && (
+              {selectedCategory === category.id && (
                 <motion.div
                   layoutId="activeCategory"
                   className="absolute inset-0 bg-brand-red rounded-full -z-10"
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               )}
-              {category}
+              {t.portfolio.categories[category.key]}
             </button>
           ))}
         </div>

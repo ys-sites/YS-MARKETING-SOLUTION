@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ScannerSection() {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const cardLineRef = useRef<HTMLDivElement>(null);
   const cardStreamRef = useRef<HTMLDivElement>(null);
@@ -14,6 +16,8 @@ export default function ScannerSection() {
     particleSystem?: any;
     particleScanner?: any;
   }>({});
+
+  const isVisibleRef = useRef(false);
 
   useEffect(() => {
     if (!containerRef.current || !cardLineRef.current || !cardStreamRef.current || !particleCanvasRef.current || !scannerCanvasRef.current) return;
@@ -33,6 +37,7 @@ export default function ScannerSection() {
       containerWidth: number;
       cardLineWidth: number;
       rafId: number | null = null;
+      resizeHandler: ((() => void) | null) = null;
 
       constructor(container: HTMLDivElement, cardLine: HTMLDivElement) {
         this.container = container;
@@ -81,7 +86,8 @@ export default function ScannerSection() {
         window.addEventListener('touchmove', onMove, { passive: false });
         window.addEventListener('touchend', onEnd);
 
-        window.addEventListener('resize', () => this.calculateDimensions());
+        this.resizeHandler = () => this.calculateDimensions();
+        window.addEventListener('resize', this.resizeHandler);
       }
 
       startDrag(e: any) {
@@ -120,8 +126,12 @@ export default function ScannerSection() {
       }
 
       animate() {
+        if (!isVisibleRef.current) {
+          this.rafId = requestAnimationFrame(() => this.animate());
+          return;
+        }
         const currentTime = performance.now();
-        const deltaTime = (currentTime - this.lastTime) / 1000;
+        const deltaTime = Math.min((currentTime - this.lastTime) / 1000, 0.05); // cap delta to avoid jumps
         this.lastTime = currentTime;
 
         if (!this.isDragging) {
@@ -270,6 +280,7 @@ export default function ScannerSection() {
 
       destroy() {
         if (this.rafId) cancelAnimationFrame(this.rafId);
+        if (this.resizeHandler) window.removeEventListener('resize', this.resizeHandler);
       }
     }
 
@@ -283,12 +294,15 @@ export default function ScannerSection() {
       rafId: number | null = null;
       velocities: Float32Array = new Float32Array(0);
 
+      lastFrameTime = 0;
+
       constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         this.scene = new THREE.Scene();
         this.camera = new THREE.OrthographicCamera(-window.innerWidth / 2, window.innerWidth / 2, 150, -150, 1, 1000);
         this.camera.position.z = 100;
-        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, alpha: true, antialias: true });
+        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, alpha: true, antialias: false });
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
         this.renderer.setSize(window.innerWidth, 300);
         this.createParticles();
         this.animate();
@@ -340,6 +354,12 @@ export default function ScannerSection() {
       }
 
       animate() {
+        this.rafId = requestAnimationFrame(() => this.animate());
+        if (!isVisibleRef.current) return;
+        // Throttle WebGL to ~30fps to reduce GPU pressure
+        const now = performance.now();
+        if (now - this.lastFrameTime < 33) return;
+        this.lastFrameTime = now;
         if (this.particles) {
           const positions = this.particles.geometry.attributes.position.array as Float32Array;
           for (let i = 0; i < this.particleCount; i++) {
@@ -349,7 +369,6 @@ export default function ScannerSection() {
           this.particles.geometry.attributes.position.needsUpdate = true;
         }
         this.renderer.render(this.scene, this.camera);
-        this.rafId = requestAnimationFrame(() => this.animate());
       }
 
       destroy() {
@@ -365,6 +384,8 @@ export default function ScannerSection() {
       scanningActive = false;
       rafId: number | null = null;
 
+      lastFrameTime = 0;
+
       constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d')!;
@@ -378,9 +399,16 @@ export default function ScannerSection() {
       }
 
       animate() {
+        this.rafId = requestAnimationFrame(() => this.animate());
+        if (!isVisibleRef.current) return;
+        // Throttle canvas scanner to ~30fps
+        const now = performance.now();
+        if (now - this.lastFrameTime < 33) return;
+        this.lastFrameTime = now;
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (this.scanningActive) {
-          for (let i = 0; i < 5; i++) {
+          for (let i = 0; i < 3; i++) {
             this.particles.push({
               x: this.canvas.width / 2,
               y: Math.random() * this.canvas.height,
@@ -396,14 +424,12 @@ export default function ScannerSection() {
         this.particles.forEach(p => {
           p.x += p.vx;
           p.y += p.vy;
-          p.life -= 0.02;
-          this.ctx.fillStyle = `rgba(225, 29, 46, ${p.life * 0.5})`; // Red scanner particles
+          p.life -= 0.025;
+          this.ctx.fillStyle = `rgba(225, 29, 46, ${p.life * 0.45})`;
           this.ctx.beginPath();
           this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
           this.ctx.fill();
         });
-
-        this.rafId = requestAnimationFrame(() => this.animate());
       }
 
       destroy() {
@@ -415,7 +441,17 @@ export default function ScannerSection() {
     controllers.current.particleSystem = new ParticleSystem(particleCanvasRef.current);
     controllers.current.particleScanner = new ParticleScanner(scannerCanvasRef.current);
 
+    // Pause all loops when section is off-screen — eliminates off-screen rendering cost
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isVisibleRef.current = entries[0]?.isIntersecting ?? false;
+      },
+      { rootMargin: '100px 0px' }
+    );
+    if (containerRef.current) observer.observe(containerRef.current);
+
     return () => {
+      observer.disconnect();
       controllers.current.cardStream?.destroy();
       controllers.current.particleSystem?.destroy();
       controllers.current.particleScanner?.destroy();
@@ -426,15 +462,15 @@ export default function ScannerSection() {
     <section className="scanner-section" ref={containerRef}>
       <motion.div 
         className="w-full h-full flex flex-col items-center justify-center"
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
       >
         <div className="absolute top-16 left-1/2 -translate-x-1/2 text-center z-50 w-full px-4">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-ink mb-4 tracking-tight leading-tight">
-            Stop Burning Cash on <br />
-            <span className="text-zinc-900">Bad <span className="bg-gradient-to-r from-brand-red to-brand-red-dark text-white px-3 py-1 rounded-xl inline-block transform -rotate-2 shadow-lg shadow-brand-red/20">Web</span><span className="text-brand-red font-black">sites</span></span>
+            {t.scanner.titlePart1} <br />
+            <span className="text-zinc-900">{t.scanner.titlePart2} <span className="bg-gradient-to-r from-brand-red to-brand-red-dark text-white px-3 py-1 rounded-xl inline-block transform -rotate-2 shadow-lg shadow-brand-red/20">{t.scanner.titlePart3}</span><span className="text-brand-red font-black">{t.scanner.titlePart4}</span></span>
           </h2>
         </div>
 

@@ -1,11 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { Heart, ShoppingCart, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const WEBHOOK_URL = 'https://hook.us2.make.com/9z1ldu1b99eooozbpe3a4u99p5b19ji2';
 const REQUEST_TIMEOUT_MS = 10000;
 
 export default function ContactSection() {
+  const { t } = useLanguage();
   const formRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -120,14 +122,13 @@ export default function ContactSection() {
           className="flex flex-col justify-center"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-6 w-fit">
-            Get Proposal
+            {t.contact.badge}
           </div>
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6 leading-tight">
-            Ready to Scale Your <br />
-            <span className="text-brand-red">Conversions?</span>
+            {t.contact.title}
           </h2>
           <p className="text-muted text-lg leading-relaxed mb-10 max-w-md font-light">
-            Fill out the form for a free conversion-performance proposal. We'll find exactly where your website is leaking leads and deliver a custom blueprint to fix it.
+            {t.contact.subtitle}
           </p>
 
           <div className="space-y-4">
@@ -141,8 +142,8 @@ export default function ContactSection() {
                 <Heart className="w-6 h-6 text-brand-red" />
               </div>
               <div>
-                <h4 className="font-bold text-ink text-lg mb-0.5">High Abandonment</h4>
-                <p className="text-muted text-sm">Stop letting visitors slip away due to slow speeds and friction.</p>
+                <h4 className="font-bold text-ink text-lg mb-0.5">{t.contact.trust.abandonmentTitle}</h4>
+                <p className="text-muted text-sm">{t.contact.trust.abandonmentDesc}</p>
               </div>
             </motion.div>
             <motion.div 
@@ -155,8 +156,8 @@ export default function ContactSection() {
                 <ShoppingCart className="w-6 h-6 text-brand-red" />
               </div>
               <div>
-                <h4 className="font-bold text-ink text-lg mb-0.5">Missed Revenues</h4>
-                <p className="text-muted text-sm">Turn cold search queries and ads traffic into immediate booked calls.</p>
+                <h4 className="font-bold text-ink text-lg mb-0.5">{t.contact.trust.missedRevenueTitle}</h4>
+                <p className="text-muted text-sm">{t.contact.trust.missedRevenueDesc}</p>
               </div>
             </motion.div>
           </div>
@@ -184,7 +185,7 @@ export default function ContactSection() {
 
           <form className="relative z-10 space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-1.5">
-              <label htmlFor="fullName" className="text-xs font-bold uppercase tracking-wider text-muted">Full Name</label>
+              <label htmlFor="fullName" className="text-xs font-bold uppercase tracking-wider text-muted">{t.contact.form.nameLabel}</label>
               <input 
                 type="text" 
                 id="fullName"
@@ -192,12 +193,12 @@ export default function ContactSection() {
                 value={formData.fullName}
                 onChange={handleChange}
                 required
-                placeholder="John Doe" 
+                placeholder={t.contact.form.namePlaceholder} 
                 className="w-full bg-zinc-50 border border-zinc-200 text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:border-brand-red focus:bg-white focus:shadow-[0_0_20px_rgba(225,29,46,0.1)] transition-all duration-200 text-sm"
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted">Business Email</label>
+              <label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted">{t.contact.form.emailLabel}</label>
               <input 
                 type="email" 
                 id="email"
@@ -205,12 +206,12 @@ export default function ContactSection() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                placeholder="john@company.com" 
+                placeholder={t.contact.form.emailPlaceholder} 
                 className="w-full bg-zinc-50 border border-zinc-200 text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:border-brand-red focus:bg-white focus:shadow-[0_0_20px_rgba(225,29,46,0.1)] transition-all duration-200 text-sm"
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="businessName" className="text-xs font-bold uppercase tracking-wider text-muted">Business Name</label>
+              <label htmlFor="businessName" className="text-xs font-bold uppercase tracking-wider text-muted">{t.contact.form.businessNameLabel}</label>
               <input 
                 type="text" 
                 id="businessName"
@@ -218,24 +219,24 @@ export default function ContactSection() {
                 value={formData.businessName}
                 onChange={handleChange}
                 required
-                placeholder="Acme Corp" 
+                placeholder={t.contact.form.businessNamePlaceholder} 
                 className="w-full bg-zinc-50 border border-zinc-200 text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:border-brand-red focus:bg-white focus:shadow-[0_0_20px_rgba(225,29,46,0.1)] transition-all duration-200 text-sm"
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="website" className="text-xs font-bold uppercase tracking-wider text-muted">Website <span className="text-zinc-400 lowercase font-normal tracking-normal">(optional)</span></label>
+              <label htmlFor="website" className="text-xs font-bold uppercase tracking-wider text-muted">{t.contact.form.websiteLabel} <span className="text-zinc-400 lowercase font-normal tracking-normal">{t.contact.form.websiteOptional}</span></label>
               <input 
                 type="url" 
                 id="website"
                 name="website"
                 value={formData.website}
                 onChange={handleChange}
-                placeholder="https://example.com" 
+                placeholder={t.contact.form.websitePlaceholder} 
                 className="w-full bg-zinc-50 border border-zinc-200 text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:border-brand-red focus:bg-white focus:shadow-[0_0_20px_rgba(225,29,46,0.1)] transition-all duration-200 text-sm"
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="phone" className="text-xs font-bold uppercase tracking-wider text-muted">Phone Number</label>
+              <label htmlFor="phone" className="text-xs font-bold uppercase tracking-wider text-muted">{t.contact.form.phoneLabel}</label>
               <input 
                 type="tel" 
                 id="phone"
@@ -243,13 +244,13 @@ export default function ContactSection() {
                 value={formData.phone}
                 onChange={handleChange}
                 required
-                placeholder="+1 (555) 000-0000" 
+                placeholder={t.contact.form.phonePlaceholder} 
                 className="w-full bg-zinc-50 border border-zinc-200 text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:border-brand-red focus:bg-white focus:shadow-[0_0_20px_rgba(225,29,46,0.1)] transition-all duration-200 text-sm"
               />
             </div>
             <div className="space-y-1.5">
               <label htmlFor="service" className="text-xs font-bold uppercase tracking-wider text-muted">
-                Select Service
+                {t.contact.form.serviceLabel}
               </label>
               <div className="relative">
                 <select 
@@ -260,13 +261,13 @@ export default function ContactSection() {
                   required
                   className="w-full bg-zinc-50 border border-zinc-200 text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:border-brand-red focus:bg-white focus:shadow-[0_0_20px_rgba(225,29,46,0.1)] transition-all duration-200 appearance-none cursor-pointer text-sm"
                 >
-                  <option value="" disabled className="text-zinc-400">Select a service...</option>
-                  <option value="Website-Development">Website Development</option>
-                  <option value="SEO">Google Ranking (SEO)</option>
-                  <option value="Meta-Ads">Meta Ads</option>
-                  <option value="Social-Media">Social Media</option>
-                  <option value="Content-Creation">Content Creation</option>
-                  <option value="Digital-Strategy">Digital Strategy</option>
+                  <option value="" disabled className="text-zinc-400">{t.contact.form.servicePlaceholder}</option>
+                  <option value="Website-Development">{t.contact.options.websiteDev}</option>
+                  <option value="SEO">{t.contact.options.seo}</option>
+                  <option value="Meta-Ads">{t.contact.options.metaAds}</option>
+                  <option value="Social-Media">{t.contact.options.socialMedia}</option>
+                  <option value="Content-Creation">{t.contact.options.contentCreation}</option>
+                  <option value="Digital-Strategy">{t.contact.options.digitalStrategy}</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-5 pointer-events-none">
                   <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -286,19 +287,19 @@ export default function ContactSection() {
               } disabled:opacity-70 disabled:cursor-not-allowed`}
             >
               {status === 'submitting' ? (
-                'Sending Request...'
+                t.contact.form.submitting
               ) : status === 'success' ? (
                 <>
                   <CheckCircle2 className="w-5 h-5" />
-                  Proposal Requested Successfully!
+                  {t.contact.form.successMsg}
                 </>
               ) : status === 'error' ? (
                 <>
                   <AlertCircle className="w-5 h-5" />
-                  Submission Failed
+                  {t.contact.form.errorMsg}
                 </>
               ) : (
-                'Request Free Website Proposal'
+                t.contact.form.submitBtn
               )}
             </button>
             {status === 'error' && errorMessage ? (

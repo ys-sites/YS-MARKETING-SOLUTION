@@ -1,56 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Quote, Star } from 'lucide-react';
-
-const testimonials = [
-  {
-    name: "Marc-Antoine B.",
-    role: "Owner, Centre AllBall",
-    content: "Our sports complex needed a website that makes booking courts effortless. YS Marketing Solutions delivered a blazing-fast, premium platform. Court bookings have increased by 40%!",
-  },
-  {
-    name: "Elena D.",
-    role: "Founder, ME Voyages",
-    content: "Absolutely outstanding work on our luxury travel website. YS captured our premium brand experience perfectly. The custom layouts and smooth animations have blown our clients away.",
-  },
-  {
-    name: "Farid K.",
-    role: "Owner, 1001 Nuits",
-    content: "YS built a beautiful, high-converting digital presence for our restaurant. Table reservations and online orders went up immediately after launch. Highly professional and easy to work with!",
-  },
-  {
-    name: "Alexandre S.",
-    role: "Founder, IronFuel Lab",
-    content: "Our e-commerce store load speed is critical. YS redesigned our shop from the ground up, cutting load times in half. Conversion rates spiked by 2.8% in the first month.",
-  },
-  {
-    name: "Jannette W.",
-    role: "Founder, Jannette Caribbean",
-    content: "The team at YS Marketing Solutions really understands customer service. They took the time to understand our catering and restaurant needs, creating a beautiful website. 5 stars!",
-  },
-  {
-    name: "Manny P.",
-    role: "Founder, Manny Painter",
-    content: "Stunning website! We went from getting zero online inquiries to receiving daily high-quality painting leads straight to our inbox. YS is the best in the business.",
-  },
-  {
-    name: "Jayden L.",
-    role: "Co-Founder, A-Tier Exotics",
-    content: "Our luxury car rental brand demands visual perfection. The website YS crafted is state-of-the-art—modern, fluid, and extremely fast. It matches our luxury standards completely.",
-  },
-  {
-    name: "Sylvain R.",
-    role: "Owner, Pro Elite Wash",
-    content: "YS built our lead generation system and it has been a game-changer. We've booked more exterior cleaning jobs in the past two months than all of last year combined!",
-  },
-  {
-    name: "Robert G.",
-    role: "Manager, Auto Ruby",
-    content: "We needed a clean, fast inventory showcase website. YS Marketing Solutions built a high-performance system that loads instantly. Our customer inquiries have never been higher.",
-  },
-];
+import { useLanguage } from '../context/LanguageContext';
 
 export default function SocialProof() {
+  const { t } = useLanguage();
+  const testimonials = t.testimonials.items;
+
   return (
     <section id="testimonials" className="py-28 bg-surface-alt relative overflow-hidden border-b border-zinc-200">
       {/* Background radial accent */}
@@ -61,13 +17,14 @@ export default function SocialProof() {
         {/* Section Header */}
         <div className="text-center mb-20 flex flex-col items-center">
           <span className="px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4">
-            Testimonials
+            {t.testimonials.badge}
           </span>
           <h2 className="text-4xl md:text-6xl font-black text-ink tracking-tight mb-6">
-            What Our <span className="text-brand-red">Clients</span> Say
+            {t.testimonials.title.split(' ').slice(0, -1).join(' ')}{' '}
+            <span className="text-brand-red">{t.testimonials.title.split(' ').slice(-1)}</span>
           </h2>
           <p className="text-muted text-lg md:text-xl max-w-2xl font-light leading-relaxed">
-            Don't just take our word for it. Hear directly from the business owners who turned their websites into high-performance sales engines.
+            {t.testimonials.subtitle}
           </p>
         </div>
 
@@ -76,7 +33,8 @@ export default function SocialProof() {
            className="relative h-[600px] md:h-[750px] overflow-hidden" 
            style={{ 
              WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)', 
-             maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)' 
+             maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
+             contain: 'content'
            }}
         >
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 h-full">
@@ -91,7 +49,7 @@ export default function SocialProof() {
                   ...testimonials.slice(0, col.offset)
                 ];
                 // Duplicate column array to make vertical scroll seamless
-                const repeatedReviews = [...colReviews, ...colReviews, ...colReviews];
+                const repeatedReviews = [...colReviews, ...colReviews];
                 
                 return (
                   <div 

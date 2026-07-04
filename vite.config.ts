@@ -25,6 +25,7 @@ export default defineConfig(({mode}) => {
             'vendor-react': ['react', 'react-dom'],
             'vendor-motion': ['framer-motion'],
             'vendor-lucide': ['lucide-react'],
+            'vendor-three': ['three'],
           },
         },
       },

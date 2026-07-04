@@ -1,11 +1,13 @@
 import React from 'react';
 import { Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
+  const { t } = useLanguage();
   const quickLinks = [
-    { name: 'Services', href: '#services' },
-    { name: 'Portfolio', href: '#portfolio' },
-    { name: 'Testimonials', href: '#testimonials' },
+    { name: t.nav.services, href: '#services' },
+    { name: t.nav.portfolio, href: '#portfolio' },
+    { name: t.nav.testimonials, href: '#testimonials' },
   ];
 
   return (
@@ -26,7 +28,7 @@ export default function Footer() {
               <span className="text-sm md:text-base font-black tracking-wider text-white uppercase whitespace-nowrap">YS Marketing Solutions</span>
             </button>
             <p className="text-zinc-400 text-sm leading-relaxed">
-              We design and build high-performance websites and strategic digital systems that help your business scale conversions and dominate its local market.
+              {t.footer.desc}
             </p>
             <div className="flex items-center gap-3">
               <a
@@ -43,7 +45,7 @@ export default function Footer() {
 
           {/* Col 3: Quick Links */}
           <div className="flex flex-col gap-4">
-            <h4 className="text-white font-bold text-base uppercase tracking-wider">Quick Links</h4>
+            <h4 className="text-white font-bold text-base uppercase tracking-wider">{t.footer.quickLinksTitle}</h4>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
@@ -60,7 +62,7 @@ export default function Footer() {
 
           {/* Col 4: Contact */}
           <div className="flex flex-col gap-4">
-            <h4 className="text-white font-bold text-base uppercase tracking-wider">Contact</h4>
+            <h4 className="text-white font-bold text-base uppercase tracking-wider">{t.footer.contactTitle}</h4>
             <ul className="space-y-4">
               <li>
                 <a
@@ -89,7 +91,7 @@ export default function Footer() {
                   <div className="w-8 h-8 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400">
                     <MapPin className="w-4 h-4 shrink-0" />
                   </div>
-                  Montreal, Quebec
+                  {t.footer.location}
                 </span>
               </li>
             </ul>
@@ -100,10 +102,10 @@ export default function Footer() {
         {/* Copyright */}
         <div className="pt-8 border-t border-zinc-900 text-center flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-zinc-500 text-xs tracking-wide">
-            © {new Date().getFullYear()} YS Marketing Solutions. All rights reserved.
+            © {new Date().getFullYear()} YS Marketing Solutions. {t.footer.rights}
           </p>
           <p className="text-zinc-600 text-[10px] tracking-wide">
-            Montreal Premium Web Design & Strategic Development
+            {t.footer.tagline}
           </p>
         </div>
       </div>
