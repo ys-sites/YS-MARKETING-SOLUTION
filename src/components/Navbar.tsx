@@ -24,10 +24,7 @@ export default function Navbar() {
   return (
     <nav
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled
-          ? 'liquid-glass py-4 text-white shadow-xl'
-          : 'bg-transparent py-6 text-white'
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 liquid-glass py-4 text-white shadow-xl'
       )}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -35,10 +32,8 @@ export default function Navbar() {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
           className="flex items-center gap-3 cursor-pointer hover:opacity-90 transition-opacity"
         >
-          {/* Logo asset in a padded circle */}
-          <div className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center p-2.5 backdrop-blur-sm">
-            <img src="/YS.png" alt="YS Marketing Solutions" className="h-full w-auto object-contain" />
-          </div>
+          {/* Logo asset kept exactly as-is without circle padding */}
+          <img src="/YS.png" alt="YS Marketing Solutions" className="h-12 w-auto" />
           <span className="text-lg font-black tracking-wider text-white uppercase">
             YS Marketing Solutions
           </span>
