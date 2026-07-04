@@ -38,6 +38,9 @@ export default function Navbar() {
         >
           {/* Logo asset kept exactly as-is */}
           <img src="/YS.png" alt="YS Marketing Solutions" className="h-12 w-auto" />
+          <span className="text-xl font-extrabold tracking-tight text-white">
+            YS Marketing Solutions
+          </span>
         </button>
  
         {/* Desktop Nav */}

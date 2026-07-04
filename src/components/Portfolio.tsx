@@ -16,7 +16,7 @@ const categories = [
 const projects = [
   { id: 1, slug: "allball",      name: "Centre AllBall",           category: "Sports & Recreation", url: "https://www.centreallball.com" },
   { id: 2, slug: "mevoyages",    name: "Majestic Experiences Voyages", category: "Travel",          url: "https://www.mevoyages.com" },
-  { id: 3, slug: "1001nuits",    name: "1001 Nuits",               category: "Restaurants",         url: "https://www.1001nuits.com" },
+  { id: 3, slug: "1001nuits",    name: "1001 Nuits",               category: "Restaurants",         url: "https://www.1001nuit.com" },
   { id: 4, slug: "ironfuellab",  name: "IronFuel Lab",             category: "E-commerce",          url: "https://www.ironfuellab.com" },
   { id: 5, slug: "jannette",     name: "Jannette Caribbean",       category: "Restaurants",         url: "https://www.jannettecaribbean.ca" },
   { id: 6, slug: "mannypainter", name: "Manny Painter",            category: "Home Services",       url: "https://www.mannypainter.ca" },
@@ -88,7 +88,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
       </div>
 
       {/* Website Preview Area */}
-      <div className="relative flex-1 overflow-hidden bg-zinc-50">
+      <div className="relative w-full h-[314px] overflow-hidden bg-zinc-50">
         {imageError ? (
           /* Graceful Fallback Placeholder */
           <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-zinc-50 text-zinc-400">
@@ -104,7 +104,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
             alt={project.name}
             onLoad={handleImageLoad}
             onError={() => setImageError(true)}
-            className="w-full h-auto object-cover origin-top will-change-transform"
+            className="w-full h-auto block select-none pointer-events-none origin-top will-change-transform"
             style={{ y: 0 }}
             animate={
               isInView && !isHovered && !prefersReducedMotion && scrollDistance > 0

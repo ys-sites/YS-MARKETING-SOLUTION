@@ -63,7 +63,7 @@ export default function Hero() {
             variants={itemVariants}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-zinc-300 uppercase tracking-widest backdrop-blur-sm"
           >
-            <span>Stop The Leak</span>
+            <span>High-Performance Websites</span>
             <div className="w-1.5 h-1.5 rounded-full bg-brand-red animate-pulse" />
           </motion.div>
 
@@ -77,7 +77,7 @@ export default function Hero() {
             </motion.span>
             <motion.span 
               variants={itemVariants} 
-              className="block text-brand-red relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand-red/35"
+              className="block text-brand-red"
             >
               Services
             </motion.span>
