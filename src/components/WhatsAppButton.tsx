@@ -1,9 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { cn } from '../lib/utils';
 
 const WHATSAPP_LINK = 'https://wa.me/message/O4RDTWJDWFEDG1';
 
 export default function WhatsAppButton() {
+  const [autoOpen, setAutoOpen] = useState(false);
+
+  useEffect(() => {
+    if (!window.matchMedia('(max-width: 767px)').matches) return;
+
+    let closeTimeout: ReturnType<typeof setTimeout>;
+    let interval: ReturnType<typeof setInterval>;
+
+    const openThenClose = () => {
+      setAutoOpen(true);
+      closeTimeout = setTimeout(() => setAutoOpen(false), 10000);
+    };
+
+    const openTimeout = setTimeout(() => {
+      openThenClose();
+      interval = setInterval(openThenClose, 45000);
+    }, 15000);
+
+    return () => {
+      clearTimeout(openTimeout);
+      clearTimeout(closeTimeout);
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <motion.a
       href={WHATSAPP_LINK}
@@ -14,11 +40,11 @@ export default function WhatsAppButton() {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ delay: 1, type: 'spring', stiffness: 260, damping: 20 }}
       whileTap={{ scale: 0.95 }}
-      className="group fixed bottom-3 right-5 md:bottom-8 md:right-8 z-[60] flex items-center h-14 w-16 md:h-16 md:w-[72px] md:hover:w-[196px] rounded-full bg-[#25D366] shadow-[0_8px_24px_rgba(37,211,102,0.45)] cursor-pointer overflow-hidden transition-[width] duration-300 ease-out"
+      className={cn(
+        'group fixed bottom-3 right-5 md:bottom-8 md:right-8 z-[60] flex items-center h-14 md:h-16 md:w-[72px] md:hover:w-[196px] rounded-full bg-[#25D366] shadow-lg cursor-pointer overflow-hidden transition-[width] duration-300 ease-out',
+        autoOpen ? 'w-[210px]' : 'w-16'
+      )}
     >
-      {/* Subtle pulse ring — using pulse instead of ping to avoid the sharp opacity flash */}
-      <span className="absolute inset-0 rounded-full bg-[#25D366] animate-pulse opacity-30 md:group-hover:opacity-0 transition-opacity duration-300" />
-
       {/* Icon — fixed-width slot so it never shifts as the pill expands */}
       <span className="relative flex items-center justify-center w-14 h-14 md:w-16 md:h-16 shrink-0">
         <svg
@@ -30,8 +56,13 @@ export default function WhatsAppButton() {
         </svg>
       </span>
 
-      {/* Label — revealed as the pill expands on hover (desktop only) */}
-      <span className="relative hidden md:block whitespace-nowrap pr-6 text-white font-semibold text-base opacity-0 group-hover:opacity-100 transition-opacity duration-200 group-hover:delay-150">
+      {/* Label — revealed as the pill expands on hover (desktop), or on the timed mobile auto-open cycle */}
+      <span
+        className={cn(
+          'relative whitespace-nowrap pr-6 text-white font-semibold text-base opacity-0 transition-opacity duration-200 md:group-hover:opacity-100 md:group-hover:delay-150',
+          autoOpen ? 'block opacity-100 delay-150' : 'hidden md:block'
+        )}
+      >
         Message us
       </span>
     </motion.a>

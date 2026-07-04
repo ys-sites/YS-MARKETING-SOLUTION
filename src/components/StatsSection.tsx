@@ -6,19 +6,21 @@ interface CounterProps {
   suffix?: string;
   prefix?: string;
   decimals?: number;
+  compact?: boolean;
 }
 
-function Counter({ value, suffix = '', prefix = '', decimals = 0 }: CounterProps) {
+function Counter({ value, suffix = '', prefix = '', decimals = 0, compact = false }: CounterProps) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  
+
   const motionValue = useMotionValue(0);
 
+  const formatter = compact
+    ? new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 })
+    : new Intl.NumberFormat(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+
   const displayValue = useTransform(motionValue, (latest) => {
-    return prefix + latest.toLocaleString(undefined, {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-    }) + suffix;
+    return prefix + formatter.format(latest) + suffix;
   });
   
   useEffect(() => {
@@ -36,10 +38,10 @@ function Counter({ value, suffix = '', prefix = '', decimals = 0 }: CounterProps
 
 export default function StatsSection() {
   const stats = [
-    { label: 'SITES LAUNCHED', value: 10, suffix: '+', prefix: '', decimals: 0 },
-    { label: 'AD SPEND MANAGED', value: 25, suffix: 'K+', prefix: '$', decimals: 0 },
-    { label: 'AVG. CONVERSION LIFT', value: 35, suffix: '%', prefix: '', decimals: 0 },
-    { label: 'CLIENT REVENUE GENERATED', value: 150, suffix: 'K+', prefix: '$', decimals: 0 },
+    { label: 'SITES LAUNCHED', value: 10, suffix: '+', prefix: '', decimals: 0, compact: false },
+    { label: 'SOCIAL VIEWS GENERATED', value: 1000000, suffix: '+', prefix: '', decimals: 0, compact: true },
+    { label: 'AVG. CONVERSION LIFT', value: 35, suffix: '%', prefix: '', decimals: 0, compact: false },
+    { label: 'CLIENT REVENUE GENERATED', value: 150, suffix: 'K+', prefix: '$', decimals: 0, compact: false },
   ];
 
   return (
@@ -61,6 +63,7 @@ export default function StatsSection() {
                   suffix={stat.suffix}
                   prefix={stat.prefix}
                   decimals={stat.decimals}
+                  compact={stat.compact}
                 />
               </div>
               <div className="text-xs font-bold text-muted tracking-wider uppercase">

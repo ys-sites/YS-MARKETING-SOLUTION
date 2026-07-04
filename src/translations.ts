@@ -5,11 +5,12 @@ export const translations = {
       portfolio: "Portfolio",
       results: "Results",
       testimonials: "Testimonials",
+      faq: "FAQ",
       contact: "Contact",
       proposalBtn: "Free Proposal"
     },
     hero: {
-      badge: "High-Performance Websites",
+      badge: "High-Performance Marketing",
       title1: "Digital",
       title2: "Marketing",
       title3: "Services",
@@ -178,11 +179,12 @@ export const translations = {
       portfolio: "Réalisations",
       results: "Résultats",
       testimonials: "Témoignages",
+      faq: "FAQ",
       contact: "Contact",
       proposalBtn: "Proposition Gratuite"
     },
     hero: {
-      badge: "Sites Web Haute Performance",
+      badge: "Marketing Haute Performance",
       title1: "Services de",
       title2: "Marketing",
       title3: "Numérique",

@@ -76,14 +76,14 @@ export default function Hero() {
 
           {/* Headline */}
           <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight leading-[1.1] text-left">
-            <motion.span variants={itemVariants} className="block text-white">
-              {t.hero.title1}
-            </motion.span>
-            <motion.span variants={itemVariants} className="block text-white">
-              {t.hero.title2}
+            <motion.span variants={itemVariants} className="block">
+              <ShinyText text={t.hero.title1} color="#ffffff" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />
             </motion.span>
             <motion.span variants={itemVariants} className="block">
-              <ShinyText text={t.hero.title3} color="#E11D2E" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />
+              <ShinyText text={t.hero.title2} color="#ffffff" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />
+            </motion.span>
+            <motion.span variants={itemVariants} className="block">
+              <ShinyText text={t.hero.title3} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
             </motion.span>
           </h1>
 

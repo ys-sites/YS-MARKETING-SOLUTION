@@ -80,7 +80,14 @@ function ProjectCard({ project, index }: ProjectCardProps) {
   const scrollDistance = imgHeight > containerHeight ? imgHeight - containerHeight : 0;
 
   // Dynamic duration: 18px scrolled per second, bound between 18s and 40s for an extra slow and readable scroll down
-  const duration = scrollDistance > 0 ? Math.max(18, Math.min(40, scrollDistance / 18)) : 18;
+  const baseDuration = scrollDistance > 0 ? Math.max(18, Math.min(40, scrollDistance / 18)) : 18;
+
+  // Per-card speed variance + phase offset so the grid doesn't scroll in lockstep —
+  // some cards run noticeably slower/faster and start mid-cycle, giving the grid texture
+  // instead of every card moving in parallel.
+  const speedFactor = 0.6 + ((index * 47) % 100) / 100 * 1.3;
+  const duration = baseDuration * speedFactor;
+  const phaseOffset = -(((index * 53) % 100) / 100) * duration;
 
   return (
     <motion.div
@@ -138,6 +145,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
             }
             transition={{
               duration: duration,
+              delay: phaseOffset,
               times: [0, 0.82, 0.84, 0.86, 1],
               ease: 'linear',
               repeat: Infinity,
@@ -206,10 +214,10 @@ export default function Portfolio() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6"
             >
-              {t.portfolio.title.split(' ').slice(0, -1).join(' ')}{' '}
-              <ShinyText text={t.portfolio.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />
+              <ShinyText text={t.portfolio.title.split(' ').slice(0, -1).join(' ')} color="#0A0A0A" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />{' '}
+              <ShinyText text={t.portfolio.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
             </motion.h2>
             <BlurText
               text={t.portfolio.subtitle}

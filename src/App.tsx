@@ -33,8 +33,8 @@ export default function App() {
             <ImpactSection />
             <SocialProof />
             <ScannerSection />
-            <FaqSection />
             <ContactSection />
+            <FaqSection />
           </div>
         </main>
         <Footer />

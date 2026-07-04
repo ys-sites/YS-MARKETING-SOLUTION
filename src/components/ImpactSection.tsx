@@ -327,11 +327,11 @@ function InstagramPostCard({ src, href, caption }: { src: string; href: string; 
     >
       <div className="flex items-center gap-2.5 px-3.5 py-3 border-b border-zinc-100">
         <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-400 via-brand-red to-purple-600 p-[2px] shrink-0">
-          <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
-            <img src="/insta.png" alt="" className="w-full h-full object-cover" />
+          <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden p-1">
+            <img src="/YS.png" alt="" className="w-full h-full object-contain" />
           </div>
         </div>
-        <span className="text-xs font-bold text-ink">1001nu1t</span>
+        <span className="text-xs font-bold text-ink">ys.sites</span>
         <Instagram className="w-3.5 h-3.5 text-zinc-400 ml-auto shrink-0" />
       </div>
       <div className="relative aspect-square bg-zinc-100 overflow-hidden">

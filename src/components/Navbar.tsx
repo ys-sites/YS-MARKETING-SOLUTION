@@ -28,13 +28,14 @@ export default function Navbar() {
     { name: t.nav.portfolio, href: '#portfolio' },
     { name: t.nav.results, href: '#results' },
     { name: t.nav.testimonials, href: '#testimonials' },
+    { name: t.nav.faq, href: '#faq' },
   ];
 
   return (
     <div className="fixed top-3 sm:top-4 left-0 right-0 z-50 px-3 sm:px-4 flex justify-center">
       <nav
         className={cn(
-          'liquid-glass liquid-glass-pill w-full max-w-6xl rounded-full py-2 sm:py-2.5 px-3.5 sm:px-5 text-white shadow-xl transition-all duration-300'
+          'liquid-glass liquid-glass-pill w-full max-w-5xl rounded-full py-2 sm:py-2.5 md:py-2 px-3.5 sm:px-5 md:px-4 text-white shadow-xl transition-all duration-300'
         )}
       >
         <div className="flex items-center justify-between gap-3">

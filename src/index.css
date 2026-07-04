@@ -99,13 +99,25 @@ body {
   box-shadow:
     0 8px 32px -8px rgba(0, 0, 0, 0.45),
     inset 0 1px 0px rgba(255, 255, 255, 0.12);
-  /* Promote to its own layer once, avoid constant repaints */
-  will-change: auto;
+  /* Promote to its own compositor layer so the blur isn't recomputed against
+     scrolling content underneath — the actual fix; `will-change: auto` is a no-op */
+  will-change: backdrop-filter, transform;
+  transform: translateZ(0);
 }
 
 /* Full-border variant for the floating pill navbar (overrides the border-bottom-only default) */
 .liquid-glass-pill {
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile Safari/Chrome flicker the backdrop-filter blur against fast scroll —
+   drop the live blur on touch-sized viewports and fall back to a solid tint */
+@media (max-width: 767px) {
+  .liquid-glass {
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 /* =====================================================================
