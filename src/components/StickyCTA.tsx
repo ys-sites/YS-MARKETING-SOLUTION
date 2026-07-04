@@ -6,10 +6,18 @@ export default function StickyCTA() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsVisible(window.scrollY > 600);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        // Hysteresis gap (600 / 500) so momentum-scroll jitter near the threshold
+        // can't flicker the CTA in and out of view.
+        setIsVisible((prev) => (window.scrollY > 600 ? true : window.scrollY < 500 ? false : prev));
+        ticking = false;
+      });
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

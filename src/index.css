@@ -154,10 +154,11 @@ body {
    ===================================================================== */
 
 .scanner-section {
+  --scanner-group-y: 60%;
   position: relative;
   width: 100%;
-  height: 75vh;
-  min-height: 600px;
+  height: 68vh;
+  min-height: 560px;
   background: #FFFFFF;
   overflow: hidden;
   display: flex;
@@ -180,6 +181,9 @@ body {
 
 .scanner-section .card-stream {
   position: absolute;
+  top: var(--scanner-group-y, 50%);
+  left: 0;
+  transform: translateY(-50%);
   width: 100%;
   height: 250px;
   display: flex;
@@ -278,7 +282,7 @@ body {
 .scanner-section .scanner {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: var(--scanner-group-y, 50%);
   transform: translate(-50%, -50%);
   width: 2px;
   height: 350px;
@@ -323,7 +327,7 @@ body {
 
 .scanner-section #particleCanvas {
   position: absolute;
-  top: 50%;
+  top: var(--scanner-group-y, 50%);
   left: 0;
   transform: translateY(-50%);
   width: 100%;
@@ -334,7 +338,7 @@ body {
 
 .scanner-section #scannerCanvas {
   position: absolute;
-  top: 50%;
+  top: var(--scanner-group-y, 50%);
   left: 0;
   transform: translateY(-50%);
   width: 100%;
@@ -473,7 +477,7 @@ body {
 
 @media (max-width: 768px) {
   .scanner-section {
-    height: 70vh;
+    height: 62vh;
   }
   .scanner-section .card-wrapper,
   .scanner-section .card {

@@ -467,7 +467,7 @@ export default function ScannerSection() {
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 text-center z-50 w-full px-4">
+        <div className="absolute top-8 md:top-10 left-1/2 -translate-x-1/2 text-center z-50 w-full px-4">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-ink mb-4 tracking-tight leading-tight">
             {t.scanner.titlePart1} <br />
             <span className="text-zinc-900">{t.scanner.titlePart2} <span className="bg-gradient-to-r from-brand-red to-brand-red-dark text-white px-3 py-1 rounded-xl inline-block transform -rotate-2 shadow-lg shadow-brand-red/20">{t.scanner.titlePart3}</span><span className="text-brand-red font-black">{t.scanner.titlePart4}</span></span>

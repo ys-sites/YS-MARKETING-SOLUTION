@@ -16,6 +16,7 @@ import {
   ArrowUpRight,
   Play,
 } from 'lucide-react';
+import GlowDot from './GlowDot';
 
 function useReducedMotionPref() {
   const [reduced, setReduced] = useState(false);
@@ -86,7 +87,8 @@ function ClientTag({ name, role, tag }: { name: string; role: string; tag: strin
       transition={{ duration: 0.5 }}
       className="flex flex-wrap items-center gap-3"
     >
-      <span className="inline-flex items-center px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-[11px] font-bold uppercase tracking-wider">
+      <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-[11px] font-bold uppercase tracking-wider">
+        <GlowDot />
         {tag}
       </span>
       <span className="text-sm font-semibold text-muted">
@@ -357,14 +359,14 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.6 }}
-      className="w-full max-w-xs mx-auto bg-white rounded-2xl border border-zinc-200 shadow-xl overflow-hidden"
+      className="w-full max-w-xs md:max-w-none mx-auto md:mx-0 bg-white rounded-2xl md:rounded-3xl border border-zinc-200 shadow-xl overflow-hidden"
     >
-      <div className="flex items-center gap-2.5 px-3.5 py-3 border-b border-zinc-100">
-        <div className="w-7 h-7 rounded-full bg-brand-red-light flex items-center justify-center shrink-0">
-          <Play className="w-3 h-3 text-brand-red fill-brand-red ml-0.5" />
+      <div className="flex items-center gap-2.5 px-3.5 md:px-5 py-3 md:py-4 border-b border-zinc-100">
+        <div className="w-7 h-7 md:w-9 md:h-9 rounded-full bg-brand-red-light flex items-center justify-center shrink-0">
+          <Play className="w-3 h-3 md:w-4 md:h-4 text-brand-red fill-brand-red ml-0.5" />
         </div>
-        <span className="text-xs font-bold text-ink">Client Feedback</span>
-        <Instagram className="w-3.5 h-3.5 text-zinc-400 ml-auto shrink-0" />
+        <span className="text-xs md:text-sm font-bold text-ink">Client Feedback</span>
+        <Instagram className="w-3.5 h-3.5 md:w-4 md:h-4 text-zinc-400 ml-auto shrink-0" />
       </div>
       <div className="relative aspect-square bg-zinc-900 overflow-hidden">
         <video
@@ -384,20 +386,20 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
             aria-label="Play client feedback video with sound"
             className="absolute inset-0 flex items-center justify-center bg-black/20 cursor-pointer"
           >
-            <span className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-              <Play className="w-6 h-6 text-brand-red fill-brand-red ml-1" />
+            <span className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+              <Play className="w-6 h-6 md:w-8 md:h-8 text-brand-red fill-brand-red ml-1" />
             </span>
           </button>
         )}
       </div>
-      <div className="px-3.5 py-3 flex items-center justify-between gap-3">
-        <p className="text-xs text-zinc-600 leading-relaxed">{caption}</p>
+      <div className="px-3.5 md:px-5 py-3 md:py-4 flex items-center justify-between gap-3">
+        <p className="text-xs md:text-sm text-zinc-600 leading-relaxed">{caption}</p>
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="shrink-0 text-[10px] font-bold text-brand-red hover:underline whitespace-nowrap"
+          className="shrink-0 text-[10px] md:text-xs font-bold text-brand-red hover:underline whitespace-nowrap"
         >
           View
         </a>
@@ -544,8 +546,9 @@ export default function ImpactSection() {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
+            <GlowDot />
             Client Impact
           </motion.span>
           <motion.h2
@@ -601,6 +604,25 @@ export default function ImpactSection() {
           </div>
         </div>
 
+        {/* Progress Recap: 1001 Nuits Growth */}
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center mb-28 md:mb-36">
+          <div className="order-1">
+            <h4 className="text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
+              The progress, <span className="text-brand-red">so far.</span>
+            </h4>
+            <p className="text-zinc-600 leading-relaxed max-w-lg">
+              A snapshot of where these campaigns stand today — and it's still climbing.
+            </p>
+          </div>
+          <div className="order-2">
+            <InstagramPostCard
+              src="/growth.png"
+              href={IG_GROWTH_POST_URL}
+              caption="Professional dashboard — 615.6K views in the last 30 days."
+            />
+          </div>
+        </div>
+
         {/* Case Study 2: Manny Painter */}
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="order-1 md:order-2">
@@ -615,13 +637,13 @@ export default function ImpactSection() {
             <p className="text-zinc-600 leading-relaxed max-w-lg mb-2">
               Google Business Profile built from scratch, plus a proper review &amp; ranking system.
             </p>
-            <p className="text-zinc-600 leading-relaxed max-w-lg">
+            <p className="text-zinc-600 leading-relaxed max-w-lg mb-8">
               A real system — profile optimization, categories, reviews, posts — turned an invisible business into
               one customers actually find.
             </p>
-          </div>
-          <div className="order-2 md:order-1 space-y-8 md:space-y-10">
             <GoogleSearchMockup />
+          </div>
+          <div className="order-2 md:order-1">
             <InstagramVideoPostCard
               src="/feedback.mp4"
               href={FEEDBACK_REEL_URL}

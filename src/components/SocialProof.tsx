@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Quote, Star } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import GlowDot from './GlowDot';
 
 export default function SocialProof() {
   const { t } = useLanguage();
@@ -16,16 +17,34 @@ export default function SocialProof() {
         
         {/* Section Header */}
         <div className="text-center mb-20 flex flex-col items-center">
-          <span className="px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4">
+          <motion.span
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
+          >
+            <GlowDot />
             {t.testimonials.badge}
-          </span>
-          <h2 className="text-4xl md:text-6xl font-black text-ink tracking-tight mb-6">
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.05 }}
+            className="text-4xl md:text-6xl font-black text-ink tracking-tight mb-6"
+          >
             {t.testimonials.title.split(' ').slice(0, -1).join(' ')}{' '}
             <span className="text-brand-red">{t.testimonials.title.split(' ').slice(-1)}</span>
-          </h2>
-          <p className="text-muted text-lg md:text-xl max-w-2xl font-light leading-relaxed">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-muted text-lg md:text-xl max-w-2xl font-light leading-relaxed"
+          >
             {t.testimonials.subtitle}
-          </p>
+          </motion.p>
         </div>
 
         {/* Marquee Vertical Grid Grid */}
@@ -75,14 +94,10 @@ export default function SocialProof() {
                             <p className="text-zinc-700 mb-8 font-medium text-base relative z-10 leading-relaxed min-h-[90px] tracking-tight italic">
                               "{review.content}"
                             </p>
-                            <div className="flex items-center gap-4 pt-6 border-t border-zinc-100">
-                              <div className="w-12 h-12 bg-gradient-to-br from-brand-red-light/30 to-brand-red-light/80 rounded-2xl flex items-center justify-center text-brand-red font-black text-lg shadow-inner group-hover:scale-105 transition-transform duration-500 capitalize">
-                                {review.name.charAt(0)}
-                              </div>
-                              <div>
-                                <p className="font-extrabold text-zinc-900 tracking-tight text-sm">{review.name}</p>
-                                <p className="text-[9px] text-brand-red font-black uppercase tracking-widest opacity-80">{review.role}</p>
-                              </div>
+                            <div className="pt-6 border-t border-zinc-100">
+                              <p className="font-extrabold text-zinc-900 tracking-tight text-sm">
+                                {review.role.split(',').slice(1).join(',').trim()}
+                              </p>
                             </div>
                           </div>
                       ))}

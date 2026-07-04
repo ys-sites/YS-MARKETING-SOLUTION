@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { Heart, ShoppingCart, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import GlowDot from './GlowDot';
 
 const WEBHOOK_URL = 'https://hook.us2.make.com/9z1ldu1b99eooozbpe3a4u99p5b19ji2';
 const REQUEST_TIMEOUT_MS = 10000;
@@ -107,7 +108,7 @@ export default function ContactSection() {
   const secondaryBackground = useMotionTemplate`radial-gradient(400px circle at ${springX}px ${springY}px, rgba(225, 29, 46, 0.04), transparent 80%)`;
 
   return (
-    <section id="contact" className="py-24 bg-surface relative overflow-hidden border-b border-zinc-200">
+    <section id="contact" className="pt-10 md:pt-14 pb-24 bg-surface relative overflow-hidden border-b border-zinc-200">
       {/* Background Soft Red Glows */}
       <div className="absolute top-1/4 -left-20 w-96 h-96 bg-brand-red-light/30 blur-[120px] rounded-full -z-10" />
       <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-brand-red-light/20 blur-[120px] rounded-full -z-10" />
@@ -122,6 +123,7 @@ export default function ContactSection() {
           className="flex flex-col justify-center"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-6 w-fit">
+            <GlowDot />
             {t.contact.badge}
           </div>
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6 leading-tight">

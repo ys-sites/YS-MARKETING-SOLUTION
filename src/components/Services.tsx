@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Search, Megaphone, Users, PenTool, BarChart3, Globe, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import GlowDot from './GlowDot';
 
 const serviceIcons = [Globe, Search, Megaphone, Users, PenTool, BarChart3];
 
@@ -19,6 +20,7 @@ export default function Services() {
             viewport={{ once: true }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
+            <GlowDot />
             {t.services.badge}
           </motion.div>
           <motion.h2

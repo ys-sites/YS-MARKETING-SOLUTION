@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import GlowDot from './GlowDot';
 
 const categories = [
   { id: 'All', key: 'all' },
@@ -181,6 +182,7 @@ export default function Portfolio() {
             viewport={{ once: true }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
+            <GlowDot />
             {t.portfolio.badge}
           </motion.div>
           <motion.h2

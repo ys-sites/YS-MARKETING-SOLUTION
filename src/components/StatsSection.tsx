@@ -47,19 +47,26 @@ export default function StatsSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
           {stats.map((stat, index) => (
-            <div key={index} className="space-y-1.5">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="space-y-1.5"
+            >
               <div className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-brand-red">
-                <Counter 
-                  value={stat.value} 
-                  suffix={stat.suffix} 
-                  prefix={stat.prefix} 
+                <Counter
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  prefix={stat.prefix}
                   decimals={stat.decimals}
                 />
               </div>
               <div className="text-xs font-bold text-muted tracking-wider uppercase">
                 {stat.label}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
