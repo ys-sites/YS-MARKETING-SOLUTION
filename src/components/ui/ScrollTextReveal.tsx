@@ -23,8 +23,7 @@ interface Particle {
   rotation?: number;
   rotationSpeed?: number;
   flutterSpeed?: number;
-  sizeX?: number;
-  sizeY?: number;
+  spriteIndex?: number;
 }
 
 type AnimState = "dispersed" | "rising" | "stable" | "dispersing";
@@ -85,7 +84,12 @@ function ensureManager() {
 
 // ─── Pixel sampler ─────────────────────────────────────────────────────────
 
-function samplePixels(el: HTMLElement, fallback: string, isMobile: boolean): Particle[] {
+function samplePixels(
+  el: HTMLElement, 
+  fallback: string, 
+  isMobile: boolean, 
+  variant: "pixel" | "blossom"
+): Particle[] {
   const rect = el.getBoundingClientRect();
   if (!rect.width || !rect.height) return [];
 
@@ -142,7 +146,8 @@ function samplePixels(el: HTMLElement, fallback: string, isMobile: boolean): Par
     if (data[i] >= 100) filledCount++;
   }
 
-  const cap = isMobile ? 300 : 600;
+  // Hard caps: 400 desktop, 220 mobile for blossom.
+  const cap = variant === "blossom" ? (isMobile ? 220 : 400) : (isMobile ? 300 : 600);
   let STEP = 4;
   if (filledCount > 0) {
     const idealStep = Math.sqrt(filledCount / cap);
@@ -251,7 +256,6 @@ export default function ScrollTextReveal({
       if (state.current !== "stable") return;
       
       if (prefersReducedMotion) {
-        // Reduced motion: simple fade transition, no particle animations
         state.current = "dispersing";
         text.style.transition = "opacity 0.3s ease";
         text.style.opacity = "0";
@@ -265,18 +269,17 @@ export default function ScrollTextReveal({
       state.current = "dispersing";
       const r = text.getBoundingClientRect();
       
-      // Calculate canvas bounds based on animation variant
+      // Calculate canvas bounds: Cap expanded bounds at viewport width and 1.5x text height
       let canvasW = Math.ceil(r.width);
       let canvasH = Math.ceil(r.height);
       let offsetX = 0;
       let offsetY = 0;
 
       if (variant === "blossom") {
-        // Expand cherry blossom bounds: 2.5x width and +300px height to support horizontal wind drift
-        offsetX = r.width * 0.2;
-        offsetY = 100;
-        canvasW = Math.ceil(r.width * 2.5);
-        canvasH = Math.ceil(r.height + 300);
+        offsetX = r.width * 0.15;
+        offsetY = Math.min(100, Math.ceil(r.height * 0.25));
+        canvasW = Math.min(window.innerWidth, Math.ceil(r.width * 1.6));
+        canvasH = Math.ceil(r.height * 1.5);
         
         cv.style.left = -offsetX + "px";
         cv.style.top = -offsetY + "px";
@@ -291,40 +294,62 @@ export default function ScrollTextReveal({
       cv.style.height = canvasH + "px";
       cv.style.display = "block";
 
-      const sampled = samplePixels(text, textColor, isMobile);
-      const pinks = [
-        { r: 255, g: 196, b: 214 }, // #FFC4D6
-        { r: 255, g: 179, b: 198 }, // #FFB3C6
-        { r: 255, g: 143, b: 171 }, // #FF8FAB
-        { r: 253, g: 226, b: 228 }, // #FDE2E4
-      ];
+      const sampled = samplePixels(text, textColor, isMobile, variant);
 
-      // Initialize particles based on variant
+      // Pre-render 6 cherry blossom sprites offscreen
+      const spriteCanvases: HTMLCanvasElement[] = [];
+      if (variant === "blossom") {
+        const basePinks = [
+          { r: 255, g: 77,  b: 128 }, // Dark pink
+          { r: 255, g: 110, b: 145 }, // Deep rose
+          { r: 255, g: 143, b: 171 }, // Medium pink
+          { r: 255, g: 165, b: 188 }, // Light-medium pink
+        ];
+
+        for (let i = 0; i < 6; i++) {
+          const base = basePinks[i % basePinks.length];
+          const shade = 0.8 + Math.random() * 0.2;
+          const r = Math.round(base.r * shade);
+          const g = Math.round(base.g * shade);
+          const b = Math.round(base.b * shade);
+
+          const sizeX = 3 + Math.random() * 2.5;
+          const sizeY = 5 + Math.random() * 3.5;
+
+          const sc = document.createElement("canvas");
+          const pad = 4;
+          const w = Math.ceil(sizeX * 2 + pad * 2);
+          const h = Math.ceil(sizeY * 2 + pad * 2);
+          sc.width = w;
+          sc.height = h;
+          const sCtx = sc.getContext("2d");
+          if (sCtx) {
+            // High speed offscreen draw
+            const grad = sCtx.createLinearGradient(w / 2, h / 2 + sizeY, w / 2, h / 2 - sizeY);
+            grad.addColorStop(0, `rgb(${r},${g},${b})`); // base
+            grad.addColorStop(1, `rgb(255, 238, 243)`); // tip (light tip)
+            
+            sCtx.beginPath();
+            sCtx.ellipse(w / 2, h / 2, sizeX, sizeY, 0, 0, Math.PI * 2);
+            sCtx.fillStyle = grad;
+            sCtx.fill();
+          }
+          spriteCanvases.push(sc);
+        }
+      }
+
+      // Initialize particles
       psRef.current = sampled.map((p) => {
         const pX = p.startX + offsetX;
         const pY = p.startY + offsetY;
 
         if (variant === "blossom") {
-          // Vibrant cherry blossom base pinks (independent of text color to avoid grey/muddy outcomes)
-          const basePinks = [
-            { r: 255, g: 77,  b: 128 }, // Dark pink
-            { r: 255, g: 110, b: 145 }, // Deep rose
-            { r: 255, g: 143, b: 171 }, // Medium pink
-            { r: 255, g: 165, b: 188 }, // Light-medium pink
-          ];
-          const base = basePinks[Math.floor(Math.random() * basePinks.length)];
-          
-          // Apply shading variance (some leaves are darker than others)
-          const shade = 0.8 + Math.random() * 0.2; // 0.8 to 1.0 brightness
-          const r = Math.round(base.r * shade);
-          const g = Math.round(base.g * shade);
-          const b = Math.round(base.b * shade);
-
+          const spriteIndex = Math.floor(Math.random() * 6);
           return {
             ...p,
             x: pX,
             y: pY,
-            r, g, b,
+            spriteIndex,
             // Sweeps right and slightly upwards mimicking diagonal wind tunnel in images
             vx: 0.5 + Math.random() * 2.0,
             vy: -0.5 - Math.random() * 1.5,
@@ -335,11 +360,9 @@ export default function ScrollTextReveal({
             rotation: Math.random() * Math.PI * 2,
             rotationSpeed: -0.04 + Math.random() * 0.08,
             flutterSpeed: 0.04 + Math.random() * 0.06,
-            sizeX: 3 + Math.random() * 2.5,
-            sizeY: 5 + Math.random() * 3.5,
           };
         } else {
-          // Pixel variant setup
+          // Pixel variant setup (without shadowBlur)
           const angle = Math.random() * Math.PI * 2;
           const speed = 0.5 + Math.random() * 2.5;
           return {
@@ -366,11 +389,35 @@ export default function ScrollTextReveal({
       }
 
       let frameCount = 0;
+      let lastFrameTime: number | null = null;
+      let jankCount = 0;
 
       const animParticles = () => {
         ctx2d.clearRect(0, 0, cv.width, cv.height);
         let alive = 0;
         frameCount++;
+
+        // --- Frame Budget Guard ---
+        const now = performance.now();
+        if (lastFrameTime !== null) {
+          const dt = now - lastFrameTime;
+          if (dt > 22) { // Frame took longer than 22ms (~45fps drop)
+            jankCount++;
+            if (jankCount >= 3) {
+              // Dynamic Culling: Cull 30% of active particles with the lowest alpha
+              const active = psRef.current.filter(p => p.alpha > 0);
+              active.sort((a, b) => a.alpha - b.alpha);
+              const cullCount = Math.floor(active.length * 0.30);
+              for (let i = 0; i < cullCount; i++) {
+                active[i].alpha = 0;
+              }
+              jankCount = 0;
+            }
+          } else {
+            jankCount = Math.max(0, jankCount - 1);
+          }
+        }
+        lastFrameTime = now;
 
         if (variant === "blossom") {
           // Wind sweep forces
@@ -400,25 +447,19 @@ export default function ScrollTextReveal({
             // 3D flutter scale
             const scaleY = 0.3 + Math.abs(Math.sin(frameCount * (p.flutterSpeed || 0.05))) * 0.7;
 
-            ctx2d.save();
-            ctx2d.translate(p.x, p.y);
-            ctx2d.rotate(p.rotation);
-            ctx2d.scale(1, scaleY);
-            
-            const sizeX = p.sizeX || 4;
-            const sizeY = p.sizeY || 6;
-            const grad = ctx2d.createLinearGradient(0, sizeY, 0, -sizeY);
-            grad.addColorStop(0, `rgba(${p.r},${p.g},${p.b},${Math.max(0, p.alpha)})`); // base
-            grad.addColorStop(1, `rgba(255, 238, 243, ${Math.max(0, p.alpha)})`); // tip (light tip)
-            
-            ctx2d.beginPath();
-            ctx2d.ellipse(0, 0, sizeX, sizeY, 0, 0, Math.PI * 2);
-            ctx2d.fillStyle = grad;
-            ctx2d.fill();
-            ctx2d.restore();
+            const sprite = spriteCanvases[p.spriteIndex ?? 0];
+            if (sprite) {
+              ctx2d.save();
+              ctx2d.translate(p.x, p.y);
+              ctx2d.rotate(p.rotation);
+              ctx2d.scale(1, scaleY);
+              ctx2d.globalAlpha = Math.max(0, Math.min(1, p.alpha));
+              ctx2d.drawImage(sprite, -sprite.width / 2, -sprite.height / 2);
+              ctx2d.restore();
+            }
           }
         } else {
-          // Pixel variant particle loop
+          // Pixel variant particle loop (Optimized: Removed shadowBlur entirely)
           for (const p of psRef.current) {
             if (p.alpha <= 0) continue;
             alive++;
@@ -429,23 +470,14 @@ export default function ScrollTextReveal({
             p.vy *= 0.985;
             p.alpha -= p.decay;
 
-            // Scale radius down with alpha
             const currentRadius = p.radius * (0.3 + p.alpha * 0.7);
 
             ctx2d.beginPath();
-            if (!isMobile) {
-              ctx2d.shadowBlur = 3;
-              ctx2d.shadowColor = `rgba(${p.r},${p.g},${p.b},${p.alpha * 0.5})`;
-            }
             ctx2d.arc(p.x, p.y, currentRadius, 0, Math.PI * 2);
             ctx2d.fillStyle = `rgba(${p.r},${p.g},${p.b},${Math.max(0, p.alpha)})`;
             ctx2d.fill();
           }
-          if (!isMobile) {
-            ctx2d.shadowBlur = 0; // Reset
-          }
         }
-
 
         if (alive > 0) {
           rafRef.current = requestAnimationFrame(animParticles);

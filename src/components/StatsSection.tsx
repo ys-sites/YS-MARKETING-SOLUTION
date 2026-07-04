@@ -62,13 +62,15 @@ export default function StatsSection() {
               className="space-y-1.5"
             >
               <div className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-brand-red">
-                <Counter
-                  value={stat.value}
-                  suffix={stat.suffix}
-                  prefix={stat.prefix}
-                  decimals={stat.decimals}
-                  compact={stat.compact}
-                />
+                <ScrollTextReveal delay={index * 0.05} textColor="#E11D2E" wrapperClassName="block">
+                  <Counter
+                    value={stat.value}
+                    suffix={stat.suffix}
+                    prefix={stat.prefix}
+                    decimals={stat.decimals}
+                    compact={stat.compact}
+                  />
+                </ScrollTextReveal>
               </div>
               <div className="text-xs font-bold text-muted tracking-wider uppercase">
                 <ScrollTextReveal delay={index * 0.05} textColor="#71717A">

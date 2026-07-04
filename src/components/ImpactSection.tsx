@@ -647,7 +647,9 @@ export default function ImpactSection() {
             <ProgressRule />
             <div className="mb-6">
               <div className="text-6xl sm:text-7xl font-extrabold tracking-tight text-brand-red">
-                <CountUp value={1000000} suffix="+" compact />
+                <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="block">
+                  <CountUp value={1000000} suffix="+" compact />
+                </ScrollTextReveal>
               </div>
               <div className="text-xs sm:text-sm font-semibold text-muted mt-3 leading-snug uppercase tracking-wide">
                 <ScrollTextReveal delay={0} textColor="#71717A">
@@ -683,7 +685,9 @@ export default function ImpactSection() {
             </h4>
             <div className="mb-6">
               <div className="text-5xl sm:text-6xl font-extrabold tracking-tight text-brand-red">
-                <CountUp value={615600} suffix="+" compact />
+                <ScrollTextReveal delay={0.05} textColor="#E11D2E" wrapperClassName="block">
+                  <CountUp value={615600} suffix="+" compact />
+                </ScrollTextReveal>
               </div>
               <div className="text-xs sm:text-sm font-semibold text-muted mt-2 uppercase tracking-wide">
                 <ScrollTextReveal delay={0.05} textColor="#71717A">
