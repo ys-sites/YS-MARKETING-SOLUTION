@@ -332,6 +332,80 @@ function InstagramPostCard({ src, href, caption }: { src: string; href: string; 
   );
 }
 
+const FEEDBACK_REEL_URL = 'https://www.instagram.com/reel/DZQMOA0x60C/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==';
+
+function InstagramVideoPostCard({ src, href, caption }: { src: string; href: string; caption: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.muted = false;
+      video.play();
+      setIsPlaying(true);
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.6 }}
+      className="w-full max-w-xs mx-auto bg-white rounded-2xl border border-zinc-200 shadow-xl overflow-hidden"
+    >
+      <div className="flex items-center gap-2.5 px-3.5 py-3 border-b border-zinc-100">
+        <div className="w-7 h-7 rounded-full bg-brand-red-light flex items-center justify-center shrink-0">
+          <Play className="w-3 h-3 text-brand-red fill-brand-red ml-0.5" />
+        </div>
+        <span className="text-xs font-bold text-ink">Client Feedback</span>
+        <Instagram className="w-3.5 h-3.5 text-zinc-400 ml-auto shrink-0" />
+      </div>
+      <div className="relative aspect-square bg-zinc-900 overflow-hidden">
+        <video
+          ref={videoRef}
+          src={src}
+          playsInline
+          loop
+          muted
+          preload="metadata"
+          className="w-full h-full object-cover cursor-pointer"
+          onClick={togglePlay}
+          onPause={() => setIsPlaying(false)}
+        />
+        {!isPlaying && (
+          <button
+            onClick={togglePlay}
+            aria-label="Play client feedback video with sound"
+            className="absolute inset-0 flex items-center justify-center bg-black/20 cursor-pointer"
+          >
+            <span className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+              <Play className="w-6 h-6 text-brand-red fill-brand-red ml-1" />
+            </span>
+          </button>
+        )}
+      </div>
+      <div className="px-3.5 py-3 flex items-center justify-between gap-3">
+        <p className="text-xs text-zinc-600 leading-relaxed">{caption}</p>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="shrink-0 text-[10px] font-bold text-brand-red hover:underline whitespace-nowrap"
+        >
+          View
+        </a>
+      </div>
+    </motion.div>
+  );
+}
+
 function RankFlip() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
@@ -515,13 +589,8 @@ export default function ImpactSection() {
               and 1001 Nuits is now a local brand people actively search for and recognize on the street.
             </p>
           </div>
-          <div className="order-2 space-y-8 md:space-y-10">
+          <div className="order-2">
             <TwoPhoneVisual />
-            <InstagramPostCard
-              src="/growth.png"
-              href={IG_GROWTH_POST_URL}
-              caption="Professional dashboard — 615.6K views in the last 30 days."
-            />
           </div>
         </div>
 
@@ -544,9 +613,29 @@ export default function ImpactSection() {
               one customers actually find.
             </p>
           </div>
-          <div className="order-2 md:order-1">
+          <div className="order-2 md:order-1 space-y-8 md:space-y-10">
             <GoogleSearchMockup />
+            <InstagramVideoPostCard
+              src="/feedback.mp4"
+              href={FEEDBACK_REEL_URL}
+              caption="Straight from the client: real feedback on the leads and results."
+            />
           </div>
+        </div>
+
+        {/* Progress Recap */}
+        <div className="mt-20 md:mt-28 pt-16 border-t border-zinc-100 text-center">
+          <h4 className="text-2xl md:text-3xl font-extrabold tracking-tight text-ink mb-2">
+            The progress, <span className="text-brand-red">so far.</span>
+          </h4>
+          <p className="text-muted max-w-xl mx-auto mb-10">
+            A snapshot of where these campaigns stand today — and it's still climbing.
+          </p>
+          <InstagramPostCard
+            src="/growth.png"
+            href={IG_GROWTH_POST_URL}
+            caption="Professional dashboard — 615.6K views in the last 30 days."
+          />
         </div>
 
         {/* Closing CTA Strip */}

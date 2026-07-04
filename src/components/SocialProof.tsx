@@ -1,69 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, Star, Play, Instagram } from 'lucide-react';
+import { Quote, Star } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-
-const FEEDBACK_REEL_URL = 'https://www.instagram.com/reel/DZQMOA0x60C/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==';
-
-function FeedbackVideoCard() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const togglePlay = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      video.muted = false;
-      video.play();
-      setIsPlaying(true);
-    } else {
-      video.pause();
-      setIsPlaying(false);
-    }
-  };
-
-  return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-      <div className="absolute w-56 h-56 md:w-64 md:h-64 bg-white/80 rounded-full blur-2xl" />
-      <div className="relative w-40 sm:w-48 md:w-56 aspect-[9/19] rounded-[2rem] border-[6px] border-zinc-900 bg-zinc-900 shadow-2xl overflow-hidden pointer-events-auto">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-4 bg-zinc-900 rounded-b-xl z-20" />
-        <video
-          ref={videoRef}
-          src="/feedback.mp4"
-          playsInline
-          loop
-          muted
-          preload="metadata"
-          className="w-full h-full object-cover cursor-pointer"
-          onClick={togglePlay}
-          onPause={() => setIsPlaying(false)}
-        />
-        {!isPlaying && (
-          <button
-            onClick={togglePlay}
-            aria-label="Play client feedback video with sound"
-            className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer"
-          >
-            <span className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-              <Play className="w-6 h-6 text-brand-red fill-brand-red ml-1" />
-            </span>
-          </button>
-        )}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
-          <a
-            href={FEEDBACK_REEL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold whitespace-nowrap hover:bg-black/80 transition-colors"
-          >
-            <Instagram className="w-2.5 h-2.5" /> View Reel
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function SocialProof() {
   const { t } = useLanguage();
@@ -153,8 +91,6 @@ export default function SocialProof() {
                 );
               })}
            </div>
-
-           <FeedbackVideoCard />
         </div>
 
       </div>
