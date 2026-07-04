@@ -508,3 +508,10 @@ body {
     height: 175px;
   }
 }
+
+/* GPU Acceleration class to force layer promotion and prevent flickers */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+

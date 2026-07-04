@@ -4,12 +4,14 @@ import { Heart, ShoppingCart, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
 import BlurText from './BlurText';
+import { useAnimationConfig } from '../hooks/useAnimationConfig';
 
 const WEBHOOK_URL = 'https://hook.us2.make.com/9z1ldu1b99eooozbpe3a4u99p5b19ji2';
 const REQUEST_TIMEOUT_MS = 10000;
 
 export default function ContactSection() {
   const { t } = useLanguage();
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   const formRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -109,7 +111,7 @@ export default function ContactSection() {
   const secondaryBackground = useMotionTemplate`radial-gradient(400px circle at ${springX}px ${springY}px, rgba(225, 29, 46, 0.04), transparent 80%)`;
 
   return (
-    <section id="contact" className="pt-10 md:pt-14 pb-24 bg-surface relative overflow-hidden border-b border-zinc-200">
+    <section id="contact" className="pt-10 md:pt-14 pb-24 bg-surface relative overflow-hidden border-b border-zinc-200 gpu-accelerated">
       {/* Background Soft Red Glows */}
       <div className="absolute top-1/4 -left-20 w-96 h-96 bg-brand-red-light/30 blur-[120px] rounded-full -z-10" />
       <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-brand-red-light/20 blur-[120px] rounded-full -z-10" />
@@ -117,10 +119,10 @@ export default function ContactSection() {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16">
         {/* Left Content */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: getDistance(30) }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={viewportConfig}
+          transition={{ duration: getDuration(0.6), ease: getEase() }}
           className="flex flex-col justify-center"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-6 w-fit">
@@ -140,9 +142,9 @@ export default function ContactSection() {
 
           <div className="space-y-4">
             <motion.div 
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: getDistance(15) }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={viewportConfig}
               className="bg-surface-alt p-6 rounded-[24px] flex items-center gap-6 border border-zinc-200 hover:border-brand-red/30 transition-all duration-300 shadow-sm"
             >
               <div className="w-12 h-12 rounded-xl bg-brand-red-light flex items-center justify-center flex-shrink-0">
@@ -154,9 +156,9 @@ export default function ContactSection() {
               </div>
             </motion.div>
             <motion.div 
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: getDistance(15) }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={viewportConfig}
               className="bg-surface-alt p-6 rounded-[24px] flex items-center gap-6 border border-zinc-200 hover:border-brand-red/30 transition-all duration-300 shadow-sm"
             >
               <div className="w-12 h-12 rounded-xl bg-brand-red-light flex items-center justify-center flex-shrink-0">
@@ -174,10 +176,10 @@ export default function ContactSection() {
         <motion.div
           ref={formRef}
           onMouseMove={handleMouseMove}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: getDistance(30) }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={viewportConfig}
+          transition={{ duration: getDuration(0.6), ease: getEase() }}
           className="relative bg-white border border-zinc-200 p-8 md:p-10 rounded-[40px] group overflow-hidden shadow-lg"
         >
           {/* Animated Gradient Background */}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ShieldAlert, ZapOff, UserX } from 'lucide-react';
+import { useAnimationConfig } from '../hooks/useAnimationConfig';
 
 const painPoints = [
   {
@@ -21,54 +22,60 @@ const painPoints = [
 ];
 
 export default function ProblemAgitate() {
+  const { isMobile, getDistance, getDuration, getEase, getStagger, viewportConfig } = useAnimationConfig();
+
   const containerVariants = {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.15
+        staggerChildren: getStagger(0.15, painPoints.length)
       }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 30, scale: 0.98 },
+    hidden: { opacity: 0, y: getDistance(30), scale: 0.98 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: {
-        type: 'spring',
-        damping: 18,
-        stiffness: 90
-      }
+      transition: isMobile
+        ? { duration: getDuration(0.45), ease: getEase() }
+        : {
+            type: 'spring',
+            damping: 18,
+            stiffness: 90
+          }
     }
   };
 
   return (
-    <section className="py-24 bg-surface relative overflow-hidden border-b border-zinc-100">
+    <section className="py-24 bg-surface relative overflow-hidden border-b border-zinc-100 gpu-accelerated">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: getDistance(15) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
             The Harsh Reality
           </motion.div>
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: getDistance(20) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink mb-6"
           >
             Why Your Current Site is <span className="text-brand-red">Burning Cash</span>
           </motion.h2>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: getDistance(20) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), delay: getDuration(0.1), ease: getEase() }}
             className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light"
           >
             A website shouldn't just be an expensive business card. If it isn't proactively capturing leads and driving calls, it's a liability.
@@ -79,7 +86,7 @@ export default function ProblemAgitate() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={viewportConfig}
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
           {painPoints.map((point, index) => (
@@ -107,3 +114,4 @@ export default function ProblemAgitate() {
     </section>
   );
 }
+

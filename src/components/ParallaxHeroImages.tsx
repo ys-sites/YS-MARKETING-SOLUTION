@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, memo } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from 'framer-motion';
 import { cn } from '../lib/utils';
+import { useAnimationConfig } from '../hooks/useAnimationConfig';
 
 type ImagePosition = {
   src: string;
@@ -48,6 +49,7 @@ export interface ParallaxHeroImagesProps {
 }
 
 export const ParallaxHeroImages = ({ images, className, imageClassName, variant = 'default' }: ParallaxHeroImagesProps) => {
+  const { isMobile } = useAnimationConfig();
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -61,9 +63,9 @@ export const ParallaxHeroImages = ({ images, className, imageClassName, variant 
       src,
       position: positionOrder[index],
       depth: depthValues[index],
-      delay: index * 0.12,
+      delay: index * (isMobile ? 0.04 : 0.12),
     }));
-  }, [images, variant]);
+  }, [images, variant, isMobile]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -110,6 +112,7 @@ const ParallaxImage = memo(function ParallaxImage({
   smoothMouseX,
   smoothMouseY,
 }: ParallaxImageProps) {
+  const { isMobile, getDuration, getEase, viewportConfig } = useAnimationConfig();
   const maxOffset = 40;
 
   const translateX = useTransform(smoothMouseX, [-1, 1], [-maxOffset * depth, maxOffset * depth]);
@@ -128,10 +131,10 @@ const ParallaxImage = memo(function ParallaxImage({
         y: translateY,
         zIndex: Math.round(depth * 10),
       }}
-      initial={{ opacity: 0, filter: 'blur(20px)', scale: 0.9 }}
-      whileInView={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      initial={{ opacity: 0, filter: isMobile ? 'none' : 'blur(20px)', scale: 0.9 }}
+      whileInView={{ opacity: 1, filter: isMobile ? 'none' : 'blur(0px)', scale: 1 }}
+      viewport={viewportConfig}
+      transition={{ duration: getDuration(0.8), delay, ease: getEase([0.25, 0.1, 0.25, 1]) }}
     >
       <img
         src={src}

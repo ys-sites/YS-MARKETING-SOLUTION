@@ -3,9 +3,10 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
-import ShinyText from './ShinyText';
+import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
 import { ParallaxHeroImages } from './ParallaxHeroImages';
+import { useAnimationConfig } from '../hooks/useAnimationConfig';
 
 const categories = [
   { id: 'All', key: 'all' },
@@ -41,8 +42,9 @@ interface ProjectCardProps {
 
 function ProjectCard({ project, index }: ProjectCardProps) {
   const { t } = useLanguage();
+  const { getDistance, getDuration, getEase, getStagger, viewportConfig } = useAnimationConfig();
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+  const isInView = useInView(containerRef, { once: true, margin: "-10% 0px" });
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgHeight, setImgHeight] = useState(0);
   const [containerHeight, setContainerHeight] = useState(300);
@@ -92,10 +94,10 @@ function ProjectCard({ project, index }: ProjectCardProps) {
   return (
     <motion.div
       ref={containerRef}
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: getDistance(40) }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
+      viewport={viewportConfig}
+      transition={{ duration: getDuration(0.5), delay: index * getStagger(0.05, 9), ease: getEase() }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => window.open(project.url, '_blank', 'noopener,noreferrer')}
@@ -132,7 +134,6 @@ function ProjectCard({ project, index }: ProjectCardProps) {
             alt={project.name}
             onError={() => setImageError(true)}
             className="w-full h-auto block select-none pointer-events-none origin-top"
-            style={{ willChange: 'transform' }}
             animate={
               isInView && !isHovered && !prefersReducedMotion && scrollDistance > 0
                 ? {
@@ -177,6 +178,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
 
 export default function Portfolio() {
   const { t } = useLanguage();
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const filteredProjects = selectedCategory === 'All'
@@ -184,7 +186,7 @@ export default function Portfolio() {
     : projects.filter(p => p.category === selectedCategory);
 
   return (
-    <section id="portfolio" className="py-24 bg-surface-alt relative overflow-hidden border-y border-zinc-100">
+    <section id="portfolio" className="py-24 bg-surface-alt relative overflow-hidden border-y border-zinc-100 gpu-accelerated">
       <div className="max-w-7xl mx-auto px-6">
         <div className="relative text-center mb-16 min-h-[420px] md:min-h-[480px] flex flex-col items-center justify-center">
           <ParallaxHeroImages
@@ -202,22 +204,26 @@ export default function Portfolio() {
           />
           <div className="relative z-10">
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: getDistance(15) }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={viewportConfig}
+              transition={{ duration: getDuration(0.5), ease: getEase() }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
             >
               <GlowDot />
               {t.portfolio.badge}
             </motion.div>
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: getDistance(20) }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={viewportConfig}
+              transition={{ duration: getDuration(0.5), ease: getEase() }}
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6"
             >
-              <ShinyText text={t.portfolio.title.split(' ').slice(0, -1).join(' ')} color="#0A0A0A" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />{' '}
-              <ShinyText text={t.portfolio.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
+              <ShinyTitle
+                blackText={t.portfolio.title.split(' ').slice(0, -1).join(' ') + ' '}
+                redText={t.portfolio.title.split(' ').slice(-1).join(' ')}
+              />
             </motion.h2>
             <BlurText
               text={t.portfolio.subtitle}

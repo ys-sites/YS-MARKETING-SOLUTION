@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { motion, type Transition } from 'framer-motion';
+import { useAnimationConfig } from '../hooks/useAnimationConfig';
 
 type BlurKeyframes = Record<string, (string | number)[]>;
 
@@ -38,13 +39,14 @@ export default function BlurText({
   animateBy = 'words',
   direction = 'top',
   threshold = 0.1,
-  rootMargin = '0px',
+  rootMargin = '0px 0px -10% 0px',
   animationFrom,
   animationTo,
   easing = (t: number) => t,
   onAnimationComplete,
   stepDuration = 0.35,
 }: BlurTextProps) {
+  const { isMobile } = useAnimationConfig();
   const elements = animateBy === 'words' ? text.split(' ') : text.split('');
   const [inView, setInView] = useState(false);
   const ref = useRef<HTMLParagraphElement>(null);
@@ -67,25 +69,45 @@ export default function BlurText({
   const defaultFrom = useMemo(
     () =>
       direction === 'top'
-        ? { filter: 'blur(10px)', opacity: 0, y: -50 }
-        : { filter: 'blur(10px)', opacity: 0, y: 50 },
-    [direction]
+        ? { filter: isMobile ? 'none' : 'blur(10px)', opacity: 0, y: isMobile ? -24 : -50 }
+        : { filter: isMobile ? 'none' : 'blur(10px)', opacity: 0, y: isMobile ? 24 : 50 },
+    [direction, isMobile]
   );
 
   const defaultTo = useMemo(
     () => [
-      { filter: 'blur(5px)', opacity: 0.5, y: direction === 'top' ? 5 : -5 },
-      { filter: 'blur(0px)', opacity: 1, y: 0 },
+      { filter: isMobile ? 'none' : 'blur(5px)', opacity: 0.5, y: direction === 'top' ? (isMobile ? 2 : 5) : (isMobile ? -2 : -5) },
+      { filter: isMobile ? 'none' : 'blur(0px)', opacity: 1, y: 0 },
     ],
-    [direction]
+    [direction, isMobile]
   );
 
-  const fromSnapshot = animationFrom ?? defaultFrom;
-  const toSnapshots = animationTo ?? defaultTo;
+  const fromSnapshot = useMemo(() => {
+    const base = animationFrom ?? defaultFrom;
+    if (isMobile) {
+      const { filter, y, ...rest } = base;
+      const yVal = typeof y === 'number' ? (Math.abs(y) > 24 ? Math.sign(y) * 24 : y) : y;
+      return { ...rest, filter: 'none', y: yVal };
+    }
+    return base;
+  }, [animationFrom, defaultFrom, isMobile]);
+
+  const toSnapshots = useMemo(() => {
+    const base = animationTo ?? defaultTo;
+    if (isMobile) {
+      return base.map((step) => {
+        const { filter, y, ...rest } = step;
+        const yVal = typeof y === 'number' ? (Math.abs(y) > 24 ? Math.sign(y) * 24 : y) : y;
+        return { ...rest, filter: 'none', y: yVal };
+      });
+    }
+    return base;
+  }, [animationTo, defaultTo, isMobile]);
 
   const stepCount = toSnapshots.length + 1;
   const totalDuration = stepDuration * (stepCount - 1);
   const times = Array.from({ length: stepCount }, (_, i) => (stepCount === 1 ? 0 : i / (stepCount - 1)));
+
 
   return (
     <p ref={ref} className={className} style={{ display: 'flex', flexWrap: 'wrap' }}>

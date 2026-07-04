@@ -35,7 +35,7 @@ export default function Navbar() {
     <div className="fixed top-3 sm:top-4 left-0 right-0 z-50 px-3 sm:px-4 flex justify-center">
       <nav
         className={cn(
-          'liquid-glass liquid-glass-pill w-full max-w-5xl rounded-full py-2 sm:py-2.5 md:py-2 px-3.5 sm:px-5 md:px-4 text-white shadow-xl transition-all duration-300'
+          'liquid-glass liquid-glass-pill w-full max-w-6xl rounded-full py-2 sm:py-2.5 md:py-2 px-3.5 sm:px-5 md:px-4 text-white shadow-xl transition-all duration-300'
         )}
       >
         <div className="flex items-center justify-between gap-3">
@@ -51,7 +51,7 @@ export default function Navbar() {
           </button>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-8 shrink-0">
+          <div className="hidden md:flex items-center gap-4 lg:gap-6 shrink-0">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -79,7 +79,7 @@ export default function Navbar() {
 
             <a
               href="#contact"
-              className="bg-brand-red text-white px-5 py-2.5 rounded-full text-sm font-bold hover:bg-brand-red-dark transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-md hover:shadow-lg transform hover:scale-102 whitespace-nowrap shrink-0"
+              className="bg-brand-red text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-brand-red-dark transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-md hover:shadow-lg transform hover:scale-102 whitespace-nowrap shrink-0"
             >
               {t.nav.proposalBtn}
               <ArrowRight className="w-4 h-4" />

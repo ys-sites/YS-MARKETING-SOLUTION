@@ -1,0 +1,16 @@
+- [x] Create `useIsMobile` and `useAnimationConfig` hooks
+- [x] Add `.gpu-accelerated` helper in `index.css`
+- [x] Update components with new animation configuration:
+  - [x] `StatsSection.tsx`
+  - [x] `SocialProof.tsx`
+  - [x] `Services.tsx`
+  - [x] `Portfolio.tsx`
+  - [x] `ImpactSection.tsx`
+  - [x] `ProblemAgitate.tsx`
+  - [x] `ParallaxHeroImages.tsx`
+  - [x] `InteractiveConcept.tsx`
+  - [x] `ContactSection.tsx`
+  - [x] `FaqSection.tsx`
+  - [x] `Navbar.tsx`, `WhatsAppButton.tsx`, `StickyCTA.tsx`
+  - [x] `BlurText.tsx`
+- [x] Verify that TypeScript builds and run checks

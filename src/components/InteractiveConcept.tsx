@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Sparkles, HelpCircle, DollarSign, ArrowRight, Flame } from 'lucide-react';
+import { useAnimationConfig } from '../hooks/useAnimationConfig';
 
 export default function InteractiveConcept() {
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   const [traffic, setTraffic] = useState(10000);
   const [conversionRate, setConversionRate] = useState(1.0);
   const [leadValue, setLeadValue] = useState(100);
@@ -48,17 +50,17 @@ export default function InteractiveConcept() {
   };
 
   return (
-    <section className="py-24 bg-surface relative overflow-hidden border-b border-zinc-100">
+    <section className="py-24 bg-surface relative overflow-hidden border-b border-zinc-100 gpu-accelerated">
       <div className="absolute top-1/4 -right-40 w-96 h-96 bg-brand-red-light/40 blur-[120px] rounded-full -z-10 animate-pulse" />
       <div className="absolute bottom-1/4 -left-40 w-96 h-96 bg-zinc-100 blur-[120px] rounded-full -z-10" />
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Left Side: Text and Strategy */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
+          initial={{ opacity: 0, x: getDistance(-30) }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={viewportConfig}
+          transition={{ duration: getDuration(0.6), ease: getEase() }}
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-6">
             <Flame className="w-3.5 h-3.5 text-brand-red fill-brand-red animate-bounce" />

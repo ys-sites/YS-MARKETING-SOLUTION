@@ -15,8 +15,9 @@ import {
   Play,
 } from 'lucide-react';
 import GlowDot from './GlowDot';
-import ShinyText from './ShinyText';
+import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
+import { useAnimationConfig } from '../hooks/useAnimationConfig';
 
 function useReducedMotionPref() {
   const [reduced, setReduced] = useState(false);
@@ -39,8 +40,8 @@ interface CountUpProps {
 
 function CountUp({ value, suffix = '', compact = false, className = '' }: CountUpProps) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
-  const reducedMotion = useReducedMotionPref();
+  const { viewportConfig, prefersReducedMotion } = useAnimationConfig();
+  const inView = useInView(ref, { once: true, margin: viewportConfig.margin });
   const motionValue = useMotionValue(0);
 
   const formatter = compact
@@ -51,13 +52,13 @@ function CountUp({ value, suffix = '', compact = false, className = '' }: CountU
 
   useEffect(() => {
     if (!inView) return;
-    if (reducedMotion) {
+    if (prefersReducedMotion) {
       motionValue.set(value);
       return;
     }
     const controls = animate(motionValue, value, { duration: 2.2, ease: 'easeOut' });
     return controls.stop;
-  }, [inView, value, motionValue, reducedMotion]);
+  }, [inView, value, motionValue, prefersReducedMotion]);
 
   return (
     <motion.span ref={ref} className={className}>
@@ -67,24 +68,26 @@ function CountUp({ value, suffix = '', compact = false, className = '' }: CountU
 }
 
 function ProgressRule() {
+  const { getDuration, getEase, viewportConfig } = useAnimationConfig();
   return (
     <motion.div
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
+      viewport={viewportConfig}
+      transition={{ duration: getDuration(0.7), ease: getEase('easeOut'), delay: getDuration(0.15) }}
       className="h-1 w-16 bg-brand-red rounded-full origin-left my-5"
     />
   );
 }
 
 function ClientTag({ name, role, tag }: { name: string; role: string; tag: string }) {
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 0, y: getDistance(15) }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.5 }}
+      viewport={viewportConfig}
+      transition={{ duration: getDuration(0.5), ease: getEase() }}
       className="flex flex-wrap items-center gap-3"
     >
       <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-[11px] font-bold uppercase tracking-wider">
@@ -112,13 +115,14 @@ interface PhoneMockupProps {
 
 function PhoneMockup({ src, rotate, fromSide, delay, badge, href, alt, zIndex = 10, onHoverChange }: PhoneMockupProps) {
   const [error, setError] = useState(false);
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
 
   const phone = (
     <motion.div
-      initial={{ opacity: 0, x: fromSide === 'left' ? -90 : 90, rotate: 0 }}
+      initial={{ opacity: 0, x: fromSide === 'left' ? getDistance(-90) : getDistance(90), rotate: 0 }}
       whileInView={{ opacity: 1, x: 0, rotate }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.7, ease: 'easeOut', delay }}
+      viewport={viewportConfig}
+      transition={{ duration: getDuration(0.7), ease: getEase('easeOut'), delay: getDuration(delay) }}
       whileHover={{ rotate: 0, scale: 1.06 }}
       onHoverStart={() => onHoverChange?.(true)}
       onHoverEnd={() => onHoverChange?.(false)}
@@ -171,12 +175,13 @@ interface PhoneVideoMockupProps {
 }
 
 function PhoneVideoMockup({ src, rotate, delay, badge, href, raised = false, zIndex = 20, onHoverChange }: PhoneVideoMockupProps) {
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   const phone = (
     <motion.div
-      initial={{ opacity: 0, y: 60, rotate: 0 }}
+      initial={{ opacity: 0, y: getDistance(60), rotate: 0 }}
       whileInView={{ opacity: 1, y: 0, rotate }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.7, ease: 'easeOut', delay }}
+      viewport={viewportConfig}
+      transition={{ duration: getDuration(0.7), ease: getEase('easeOut'), delay: getDuration(delay) }}
       whileHover={{ rotate: 0, scale: 1.06 }}
       onHoverStart={() => onHoverChange?.(true)}
       onHoverEnd={() => onHoverChange?.(false)}
@@ -230,6 +235,7 @@ function FloatingChip({
   floatDelay?: number;
 }) {
   const chipClasses = "flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white shadow-lg border border-zinc-100 text-xs font-bold text-ink whitespace-nowrap";
+  const { getDuration, viewportConfig } = useAnimationConfig();
   const content = (
     <>
       {image ? (
@@ -245,8 +251,8 @@ function FloatingChip({
     <motion.div
       initial={{ opacity: 0, scale: 0.7 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, delay: revealDelay }}
+      viewport={viewportConfig}
+      transition={{ duration: getDuration(0.5), delay: getDuration(revealDelay) }}
       className={`absolute z-30 ${className}`}
     >
       <motion.div
@@ -312,16 +318,17 @@ function TwoPhoneVisual() {
 
 function InstagramPostCard({ src, href, caption }: { src: string; href: string; caption: string }) {
   const [error, setError] = useState(false);
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
 
   return (
     <motion.a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: getDistance(30) }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6 }}
+      viewport={viewportConfig}
+      transition={{ duration: getDuration(0.6), ease: getEase() }}
       whileHover={{ y: -4 }}
       className="group block w-full max-w-xs mx-auto bg-white rounded-2xl border border-zinc-200 shadow-xl overflow-hidden cursor-pointer"
     >
@@ -361,6 +368,7 @@ const FEEDBACK_REEL_URL = 'https://www.instagram.com/reel/DZQMOA0x60C/?utm_sourc
 function InstagramVideoPostCard({ src, href, caption }: { src: string; href: string; caption: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -377,11 +385,11 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: getDistance(30) }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6 }}
-      className="w-full max-w-xs md:max-w-[300px] mx-auto md:mx-0 bg-white rounded-2xl md:rounded-3xl border border-zinc-200 shadow-xl overflow-hidden"
+      viewport={viewportConfig}
+      transition={{ duration: getDuration(0.6), ease: getEase() }}
+      className="w-full max-w-xs md:max-w-[360px] mx-auto md:mx-0 bg-white rounded-2xl md:rounded-3xl border border-zinc-200 shadow-xl overflow-hidden"
     >
       <div className="flex items-center gap-2.5 px-3.5 md:px-5 py-3 md:py-4 border-b border-zinc-100">
         <div className="w-7 h-7 md:w-9 md:h-9 rounded-full bg-brand-red-light flex items-center justify-center shrink-0">
@@ -432,19 +440,19 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
 
 function RankFlip() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-100px' });
-  const reducedMotion = useReducedMotionPref();
+  const { viewportConfig, prefersReducedMotion } = useAnimationConfig();
+  const inView = useInView(ref, { once: true, margin: viewportConfig.margin });
   const [showFinal, setShowFinal] = useState(false);
 
   useEffect(() => {
     if (!inView) return;
-    if (reducedMotion) {
+    if (prefersReducedMotion) {
       setShowFinal(true);
       return;
     }
     const t = setTimeout(() => setShowFinal(true), 850);
     return () => clearTimeout(t);
-  }, [inView, reducedMotion]);
+  }, [inView, prefersReducedMotion]);
 
   return (
     <div ref={ref} className="inline-block [perspective:800px] overflow-hidden">
@@ -465,6 +473,7 @@ function RankFlip() {
 }
 
 function GoogleSearchMockup() {
+  const { getDistance, getDuration, getEase, getStagger, viewportConfig } = useAnimationConfig();
   const rows = [
     { rank: 1, name: 'Manny Painter', rating: '4.9', reviews: 47, highlight: true },
     { rank: 2, name: 'Peinture Rive-Sud', rating: '4.2', reviews: 18, highlight: false },
@@ -473,10 +482,10 @@ function GoogleSearchMockup() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: getDistance(30) }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6 }}
+      viewport={viewportConfig}
+      transition={{ duration: getDuration(0.6), ease: getEase() }}
       className="relative bg-white rounded-3xl border border-zinc-200 shadow-2xl p-5 sm:p-6 w-full max-w-md mx-auto"
     >
       <div className="flex items-center gap-3 px-4 py-3 rounded-full border border-zinc-200 bg-zinc-50 mb-5">
@@ -488,10 +497,10 @@ function GoogleSearchMockup() {
         {rows.map((row, i) => (
           <motion.div
             key={row.rank}
-            initial={{ opacity: 0, x: -24 }}
+            initial={{ opacity: 0, x: getDistance(-24) }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.5, delay: i * 0.15 }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), delay: i * getStagger(0.15, rows.length), ease: getEase() }}
             className={`relative flex items-center gap-3 p-3 rounded-2xl border overflow-hidden ${
               row.highlight
                 ? 'border-brand-red bg-brand-red-light/40'
@@ -541,10 +550,10 @@ function GoogleSearchMockup() {
             </div>
             {row.highlight && (
               <motion.div
-                initial={{ opacity: 0, x: 10 }}
+                initial={{ opacity: 0, x: getDistance(10) }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.75, duration: 0.4 }}
+                viewport={viewportConfig}
+                transition={{ delay: getDuration(0.75), duration: getDuration(0.4), ease: getEase() }}
                 className="relative hidden sm:flex items-center gap-1 text-[10px] font-bold text-brand-red whitespace-nowrap"
               >
                 Your business
@@ -559,28 +568,33 @@ function GoogleSearchMockup() {
 }
 
 export default function ImpactSection() {
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   return (
-    <section id="results" className="py-24 md:py-32 bg-white relative overflow-hidden">
+    <section id="results" className="py-24 md:py-32 bg-white relative overflow-hidden gpu-accelerated">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-20 md:mb-28 flex flex-col items-center">
           <motion.span
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: getDistance(15) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
             <GlowDot />
             Client Impact
           </motion.span>
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: getDistance(20) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.05 }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6"
           >
-            Real Clients. Real <ShinyText text="Numbers." color="#E11D2E" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />
+            <ShinyTitle
+              blackText="Real Clients. Real "
+              redText="Numbers."
+            />
           </motion.h2>
           <BlurText
             text="No vanity promises — just the measurable growth these two campaigns actually produced."

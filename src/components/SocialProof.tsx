@@ -3,15 +3,17 @@ import { motion } from 'framer-motion';
 import { Quote, Star } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
-import ShinyText from './ShinyText';
+import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
+import { useAnimationConfig } from '../hooks/useAnimationConfig';
 
 export default function SocialProof() {
   const { t } = useLanguage();
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   const testimonials = t.testimonials.items;
 
   return (
-    <section id="testimonials" className="py-28 bg-surface-alt relative overflow-hidden border-b border-zinc-200">
+    <section id="testimonials" className="py-28 bg-surface-alt relative overflow-hidden border-b border-zinc-200 gpu-accelerated">
       {/* Background radial accent */}
       <div className="absolute inset-0 opacity-5 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-red via-transparent to-transparent pointer-events-none" />
 
@@ -20,23 +22,26 @@ export default function SocialProof() {
         {/* Section Header */}
         <div className="text-center mb-20 flex flex-col items-center">
           <motion.span
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: getDistance(15) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
             <GlowDot />
             {t.testimonials.badge}
           </motion.span>
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: getDistance(20) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.05 }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), delay: getDuration(0.05), ease: getEase() }}
             className="text-4xl md:text-6xl font-black text-ink tracking-tight mb-6"
           >
-            {t.testimonials.title.split(' ').slice(0, -1).join(' ')}{' '}
-            <ShinyText text={t.testimonials.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#FCA5A5" speed={2.5} className="font-black" />
+            <ShinyTitle
+              blackText={t.testimonials.title.split(' ').slice(0, -1).join(' ') + ' '}
+              redText={t.testimonials.title.split(' ').slice(-1).join(' ')}
+            />
           </motion.h2>
           <BlurText
             text={t.testimonials.subtitle}
@@ -46,6 +51,7 @@ export default function SocialProof() {
             className="text-muted text-lg md:text-xl max-w-2xl font-light leading-relaxed justify-center text-center"
           />
         </div>
+
 
         {/* Marquee Vertical Grid Grid */}
         <div 

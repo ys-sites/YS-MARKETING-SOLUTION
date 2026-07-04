@@ -3,36 +3,42 @@ import { motion } from 'framer-motion';
 import { Search, Megaphone, Users, PenTool, BarChart3, Globe, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
-import ShinyText from './ShinyText';
+import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
+import { useAnimationConfig } from '../hooks/useAnimationConfig';
 
 const serviceIcons = [Globe, Search, Megaphone, Users, PenTool, BarChart3];
 
 export default function Services() {
   const { t } = useLanguage();
+  const { isMobile, getDistance, getDuration, getEase, getStagger, viewportConfig } = useAnimationConfig();
   const services = t.services.items.map((item, index) => ({ ...item, icon: serviceIcons[index] }));
 
   return (
-    <section id="services" className="py-28 bg-white bg-grid-pattern relative overflow-hidden">
+    <section id="services" className="py-28 bg-white bg-grid-pattern relative overflow-hidden gpu-accelerated">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: getDistance(15) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
             <GlowDot />
             {t.services.badge}
           </motion.div>
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: getDistance(20) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6"
           >
-            <ShinyText text={t.services.title.split(' ').slice(0, -1).join(' ')} color="#0A0A0A" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />{' '}
-            <ShinyText text={t.services.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
+            <ShinyTitle
+              blackText={t.services.title.split(' ').slice(0, -1).join(' ') + ' '}
+              redText={t.services.title.split(' ').slice(-1).join(' ')}
+            />
           </motion.h2>
           <BlurText
             text={t.services.subtitle}
@@ -47,17 +53,25 @@ export default function Services() {
           {services.map((service, index) => (
             <motion.div
               key={service.title}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: getDistance(40) }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={viewportConfig}
               whileHover={{ y: -6 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 200,
-                damping: 22,
-                delay: index * 0.05
-              }}
-              className="group relative bg-white border border-zinc-200/80 rounded-[32px] p-8 hover:bg-brand-red-light/5 hover:border-brand-red/40 transition-colors duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_48px_rgba(0,0,0,0.07)] cursor-pointer overflow-hidden flex flex-col justify-between min-h-[290px]" style={{ willChange: 'transform' }}
+              transition={
+                isMobile
+                  ? {
+                      duration: getDuration(0.45),
+                      ease: getEase(),
+                      delay: index * getStagger(0.05, services.length),
+                    }
+                  : {
+                      type: 'spring',
+                      stiffness: 200,
+                      damping: 22,
+                      delay: index * getStagger(0.05, services.length),
+                    }
+              }
+              className="group relative bg-white border border-zinc-200/80 rounded-[32px] p-8 hover:bg-brand-red-light/5 hover:border-brand-red/40 transition-colors duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_48px_rgba(0,0,0,0.07)] cursor-pointer overflow-hidden flex flex-col justify-between min-h-[290px]"
             >
               {/* Top Border Draws Left to Right on Hover */}
               <div className="absolute top-0 left-0 w-0 group-hover:w-full h-[4px] bg-brand-red transition-all duration-300 ease-out" />
@@ -80,6 +94,7 @@ export default function Services() {
               </div>
             </motion.div>
           ))}
+
         </div>
       </div>
     </section>

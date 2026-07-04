@@ -1,9 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import GlowDot from './GlowDot';
-import ShinyText from './ShinyText';
+import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
 import FaqAccordion, { type FaqItem } from './FaqAccordion';
+import { useAnimationConfig } from '../hooks/useAnimationConfig';
+
+// ... painPoints and items ...
+
 
 const faqItems: FaqItem[] = [
   {
@@ -57,27 +61,29 @@ const faqItems: FaqItem[] = [
 ];
 
 export default function FaqSection() {
+  const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   return (
-    <section id="faq" className="py-24 md:py-28 bg-surface-alt relative overflow-hidden border-t border-zinc-100">
+    <section id="faq" className="py-24 md:py-28 bg-surface-alt relative overflow-hidden border-t border-zinc-100 gpu-accelerated">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-14 flex flex-col items-center">
           <motion.span
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: getDistance(15) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
             <GlowDot />
             FAQ
           </motion.span>
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: getDistance(20) }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.05 }}
+            viewport={viewportConfig}
+            transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="text-4xl md:text-5xl font-extrabold tracking-tight text-ink mb-6"
           >
-            Questions, <ShinyText text="answered." color="#E11D2E" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />
+            <ShinyTitle blackText="Questions, " redText="answered." />
           </motion.h2>
           <BlurText
             text="Everything business owners ask us before starting a project — search below or browse them all."
