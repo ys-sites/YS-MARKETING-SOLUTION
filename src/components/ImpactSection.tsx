@@ -101,13 +101,15 @@ interface PhoneMockupProps {
   rotate: number;
   fromSide: 'left' | 'right';
   delay: number;
-  viewBadge: string;
+  badge: string;
+  href?: string;
+  alt?: string;
 }
 
-function PhoneMockup({ src, rotate, fromSide, delay, viewBadge }: PhoneMockupProps) {
+function PhoneMockup({ src, rotate, fromSide, delay, badge, href, alt }: PhoneMockupProps) {
   const [error, setError] = useState(false);
 
-  return (
+  const phone = (
     <motion.div
       initial={{ opacity: 0, x: fromSide === 'left' ? -90 : 90, rotate: 0 }}
       whileInView={{ opacity: 1, x: 0, rotate }}
@@ -121,7 +123,7 @@ function PhoneMockup({ src, rotate, fromSide, delay, viewBadge }: PhoneMockupPro
         {!error ? (
           <img
             src={src}
-            alt="Viral social media content for 1001 Nuits"
+            alt={alt ?? 'Social media content for 1001 Nuits'}
             loading="lazy"
             onError={() => setError(true)}
             className="w-full h-full object-cover"
@@ -135,10 +137,18 @@ function PhoneMockup({ src, rotate, fromSide, delay, viewBadge }: PhoneMockupPro
           </div>
         )}
         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold whitespace-nowrap">
-          <Play className="w-2.5 h-2.5 fill-white" /> {viewBadge}
+          <Instagram className="w-2.5 h-2.5" /> {badge}
         </div>
       </div>
     </motion.div>
+  );
+
+  return href ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" aria-label="View on Instagram">
+      {phone}
+    </a>
+  ) : (
+    phone
   );
 }
 
@@ -147,18 +157,19 @@ interface PhoneVideoMockupProps {
   rotate: number;
   delay: number;
   badge: string;
+  href?: string;
   raised?: boolean;
 }
 
-function PhoneVideoMockup({ src, rotate, delay, badge, raised = false }: PhoneVideoMockupProps) {
-  return (
+function PhoneVideoMockup({ src, rotate, delay, badge, href, raised = false }: PhoneVideoMockupProps) {
+  const phone = (
     <motion.div
       initial={{ opacity: 0, y: 60, rotate: 0 }}
       whileInView={{ opacity: 1, y: 0, rotate }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.7, ease: 'easeOut', delay }}
       whileHover={{ rotate: 0, scale: 1.06, zIndex: 20 }}
-      className={`relative w-28 sm:w-36 md:w-44 aspect-[9/19] rounded-[2rem] border-[6px] border-zinc-900 bg-zinc-900 shadow-2xl overflow-hidden cursor-pointer select-none z-10 ${
+      className={`relative w-36 sm:w-44 md:w-52 aspect-[9/19] rounded-[2rem] border-[6px] border-zinc-900 bg-zinc-900 shadow-2xl overflow-hidden cursor-pointer select-none z-10 ${
         raised ? '-translate-y-4 md:-translate-y-6' : ''
       }`}
     >
@@ -179,21 +190,45 @@ function PhoneVideoMockup({ src, rotate, delay, badge, raised = false }: PhoneVi
       </div>
     </motion.div>
   );
+
+  return href ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" aria-label="View on Instagram">
+      {phone}
+    </a>
+  ) : (
+    phone
+  );
 }
 
 function FloatingChip({
   icon: Icon,
+  image,
   label,
+  href,
   className = '',
   revealDelay = 0,
   floatDelay = 0,
 }: {
-  icon: React.ElementType;
+  icon?: React.ElementType;
+  image?: string;
   label: string;
+  href?: string;
   className?: string;
   revealDelay?: number;
   floatDelay?: number;
 }) {
+  const chipClasses = "flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white shadow-lg border border-zinc-100 text-xs font-bold text-ink whitespace-nowrap";
+  const content = (
+    <>
+      {image ? (
+        <img src={image} alt="" className="w-3.5 h-3.5 object-contain shrink-0" />
+      ) : Icon ? (
+        <Icon className="w-3.5 h-3.5 text-brand-red shrink-0" />
+      ) : null}
+      {label}
+    </>
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.7 }}
@@ -205,41 +240,95 @@ function FloatingChip({
       <motion.div
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: floatDelay }}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white shadow-lg border border-zinc-100 text-xs font-bold text-ink whitespace-nowrap"
       >
-        <Icon className="w-3.5 h-3.5 text-brand-red shrink-0" />
-        {label}
+        {href ? (
+          <a href={href} target="_blank" rel="noopener noreferrer" className={`${chipClasses} hover:border-brand-red/30 hover:shadow-xl transition-all duration-200 cursor-pointer pointer-events-auto`}>
+            {content}
+          </a>
+        ) : (
+          <div className={chipClasses}>{content}</div>
+        )}
       </motion.div>
     </motion.div>
   );
 }
 
-function ViralPhonesVisual() {
+const IG_VIDEO_URL = 'https://www.instagram.com/reel/DYGqIS0ujCQ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==';
+const IG_PROFILE_URL = 'https://www.instagram.com/1001nu1t/';
+const IG_GROWTH_POST_URL = 'https://www.instagram.com/p/DZQNaGFRsd7/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==';
+
+function TwoPhoneVisual() {
   return (
     <div className="relative flex items-center justify-center min-h-[360px] sm:min-h-[400px] py-10">
       <div className="absolute w-64 h-64 md:w-80 md:h-80 bg-brand-red/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative flex items-end -space-x-8 sm:-space-x-10 md:-space-x-12">
-        <PhoneMockup src="/results/1001nuits-viral-1.jpg" rotate={-10} fromSide="left" delay={0} viewBadge="487K" />
-        <PhoneVideoMockup src="/feedback.mp4" rotate={0} delay={0.15} badge="Client Feedback" raised />
-        <PhoneMockup src="/results/1001nuits-viral-2.jpg" rotate={10} fromSide="right" delay={0.3} viewBadge="1.2M" />
+      <div className="relative flex items-center -space-x-8 sm:-space-x-10 md:-space-x-12">
+        <PhoneVideoMockup src="/video-business.mp4" rotate={-8} delay={0} badge="212K reach" href={IG_VIDEO_URL} />
+        <PhoneMockup
+          src="/insta.png"
+          rotate={8}
+          fromSide="right"
+          delay={0.15}
+          badge="@1001nu1t"
+          href={IG_PROFILE_URL}
+          alt="1001 Nuits Instagram profile"
+        />
       </div>
 
-      <FloatingChip
-        icon={Instagram}
-        label="▶ 1M+ views"
-        className="top-2 left-2 sm:left-6 md:left-2"
-        revealDelay={0.7}
-        floatDelay={0}
-      />
       <FloatingChip
         icon={Music2}
         label="+7,000 followers"
         className="bottom-4 right-2 sm:right-6 md:right-0"
-        revealDelay={0.95}
-        floatDelay={1.4}
+        revealDelay={0.8}
+        floatDelay={0.6}
       />
     </div>
+  );
+}
+
+function InstagramPostCard({ src, href, caption }: { src: string; href: string; caption: string }) {
+  const [error, setError] = useState(false);
+
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.6 }}
+      whileHover={{ y: -4 }}
+      className="group block w-full max-w-xs mx-auto bg-white rounded-2xl border border-zinc-200 shadow-xl overflow-hidden cursor-pointer"
+    >
+      <div className="flex items-center gap-2.5 px-3.5 py-3 border-b border-zinc-100">
+        <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-400 via-brand-red to-purple-600 p-[2px] shrink-0">
+          <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
+            <img src="/insta.png" alt="" className="w-full h-full object-cover" />
+          </div>
+        </div>
+        <span className="text-xs font-bold text-ink">1001nu1t</span>
+        <Instagram className="w-3.5 h-3.5 text-zinc-400 ml-auto shrink-0" />
+      </div>
+      <div className="relative aspect-square bg-zinc-100 overflow-hidden">
+        {!error ? (
+          <img
+            src={src}
+            alt={caption}
+            loading="lazy"
+            onError={() => setError(true)}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-red via-brand-red-dark to-zinc-900">
+            <Instagram className="w-10 h-10 text-white/70" />
+          </div>
+        )}
+      </div>
+      <div className="px-3.5 py-3">
+        <p className="text-xs text-zinc-600 leading-relaxed">{caption}</p>
+      </div>
+    </motion.a>
   );
 }
 
@@ -417,7 +506,7 @@ export default function ImpactSection() {
                   <CountUp value={1000000} suffix="+" compact />
                 </div>
                 <p className="text-xs sm:text-sm font-semibold text-muted mt-2 leading-snug">
-                  Views across Instagram &amp; TikTok
+                  Combined interactions across Instagram &amp; TikTok
                 </p>
               </div>
             </div>
@@ -426,8 +515,13 @@ export default function ImpactSection() {
               and 1001 Nuits is now a local brand people actively search for and recognize on the street.
             </p>
           </div>
-          <div className="order-2">
-            <ViralPhonesVisual />
+          <div className="order-2 space-y-8 md:space-y-10">
+            <TwoPhoneVisual />
+            <InstagramPostCard
+              src="/growth.png"
+              href={IG_GROWTH_POST_URL}
+              caption="Professional dashboard — 615.6K views in the last 30 days."
+            />
           </div>
         </div>
 
