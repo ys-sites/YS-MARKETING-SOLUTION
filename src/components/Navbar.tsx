@@ -25,10 +25,10 @@ export default function Navbar() {
   return (
     <nav
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b',
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? 'bg-white/95 backdrop-blur-md border-zinc-200/60 shadow-md py-4 text-ink'
-          : 'bg-transparent border-transparent py-6 text-white'
+          ? 'liquid-glass py-4 text-white shadow-xl'
+          : 'bg-transparent py-6 text-white'
       )}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -38,14 +38,8 @@ export default function Navbar() {
         >
           {/* Logo asset kept exactly as-is */}
           <img src="/YS.png" alt="YS Marketing Solutions" className="h-12 w-auto" />
-          <span className={cn(
-            "text-xl font-extrabold tracking-tight transition-colors duration-300",
-            isScrolled ? "text-ink" : "text-white"
-          )}>
-            YS Marketing Solutions
-          </span>
         </button>
-
+ 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
@@ -55,7 +49,7 @@ export default function Navbar() {
               className={cn(
                 "text-sm font-semibold transition-colors duration-200 cursor-pointer",
                 isScrolled 
-                  ? "text-muted hover:text-brand-red" 
+                  ? "text-zinc-300 hover:text-white" 
                   : "text-zinc-200 hover:text-white"
               )}
             >
@@ -70,14 +64,11 @@ export default function Navbar() {
             <ArrowRight className="w-4 h-4" />
           </a>
         </div>
-
+ 
         {/* Mobile Toggle */}
         <button 
           aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-          className={cn(
-            "md:hidden cursor-pointer transition-colors duration-200",
-            isScrolled ? "text-ink" : "text-white"
-          )}
+          className="md:hidden cursor-pointer transition-colors duration-200 text-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

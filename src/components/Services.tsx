@@ -37,7 +37,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="py-24 bg-surface relative overflow-hidden">
+    <section id="services" className="py-28 bg-white bg-grid-pattern relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20">
           <motion.div
@@ -71,17 +71,23 @@ export default function Services() {
           {services.map((service, index) => (
             <motion.div
               key={service.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-              className="group relative bg-white border border-zinc-200 rounded-[32px] p-8 hover:bg-brand-red-light/10 hover:border-brand-red/30 transition-all duration-300 shadow-sm hover:shadow-xl cursor-pointer overflow-hidden flex flex-col justify-between min-h-[280px]"
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 150,
+                damping: 20,
+                delay: index * 0.05
+              }}
+              className="group relative bg-white border border-zinc-200/80 rounded-[32px] p-8 hover:bg-brand-red-light/5 hover:border-brand-red/40 transition-all duration-300 shadow-sm hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] cursor-pointer overflow-hidden flex flex-col justify-between min-h-[290px]"
             >
               {/* Top Border Draws Left to Right on Hover */}
               <div className="absolute top-0 left-0 w-0 group-hover:w-full h-[4px] bg-brand-red transition-all duration-300 ease-out" />
 
               <div>
-                <div className="w-14 h-14 rounded-2xl bg-brand-red-light flex items-center justify-center mb-6 group-hover:bg-brand-red group-hover:scale-110 transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-brand-red-light flex items-center justify-center mb-6 group-hover:bg-brand-red group-hover:scale-110 transition-all duration-300 shadow-[0_4px_10px_rgba(225,29,46,0.1)]">
                   <service.icon className="w-6 h-6 text-brand-red group-hover:text-white transition-colors duration-300" />
                 </div>
                 <h3 className="text-xl font-bold text-ink mb-4 group-hover:text-brand-red transition-colors duration-200">

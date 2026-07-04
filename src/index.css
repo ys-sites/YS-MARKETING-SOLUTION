@@ -24,11 +24,52 @@ body {
   background-clip: text;
 }
 
+.liquid-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 15, 15, 0.65),
+    rgba(30, 30, 30, 0.8) 30%,
+    rgba(15, 15, 15, 0.65) 50%,
+    rgba(40, 40, 40, 0.8) 70%,
+    rgba(15, 15, 15, 0.65)
+  );
+  background-size: 300% 300%;
+  animation: shine 12s ease-in-out infinite;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 10px 40px -10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0px rgba(255, 255, 255, 0.15);
+}
+
+@keyframes shine {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .text-gradient-red {
   background: linear-gradient(to right, #E11D2E, #B3121F);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.bg-grid-pattern {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Custom white card look */

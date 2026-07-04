@@ -30,7 +30,7 @@ export default function Hero() {
   return (
     <section className="relative h-screen flex items-center justify-start overflow-hidden">
       {/* Background Video */}
-      <div className="absolute inset-0 w-full h-full object-cover -z-20">
+      <div className="absolute inset-0 w-full h-full object-cover z-0">
         <video
           autoPlay
           muted
@@ -47,11 +47,11 @@ export default function Hero() {
       </div>
 
       {/* Dark Legibility Overlay Scrim */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-transparent -z-10" />
-      <div className="absolute inset-0 bg-black/40 -z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent z-10" />
+      <div className="absolute inset-0 bg-black/30 z-10" />
 
       {/* Hero Content Area */}
-      <div className="max-w-7xl w-full mx-auto px-6 text-left text-white z-10">
+      <div className="max-w-7xl w-full mx-auto px-6 text-left text-white relative z-20">
         <motion.div
           variants={containerVariants}
           initial="hidden"
