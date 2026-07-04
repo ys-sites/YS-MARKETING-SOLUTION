@@ -59,8 +59,8 @@ function ProjectCard({ project, index }: ProjectCardProps) {
 
   const scrollDistance = imgHeight > containerHeight ? imgHeight - containerHeight : 0;
   
-  // Dynamic duration: 40px scrolled per second, bound between 10s and 25s for a slower, smoother scroll
-  const duration = scrollDistance > 0 ? Math.max(10, Math.min(25, scrollDistance / 40)) : 12;
+  // Dynamic duration: 25px scrolled per second, bound between 15s and 35s for an extra slow and readable scroll down
+  const duration = scrollDistance > 0 ? Math.max(15, Math.min(35, scrollDistance / 25)) : 16;
 
   return (
     <motion.div
@@ -115,7 +115,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
             }
             transition={{
               duration: duration,
-              times: [0, 0.85, 0.90, 0.95, 1], // 85% time scrolling down, 5% pause at bottom, 5% fast scroll to top, 5% pause at top
+              times: [0, 0.90, 0.95, 0.96, 1], // 90% time scrolling down, 5% pause at bottom, 1% fast reset to top, 4% pause at top
               ease: "easeInOut",
               repeat: Infinity,
               repeatType: "loop"
