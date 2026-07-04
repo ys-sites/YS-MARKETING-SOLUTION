@@ -471,7 +471,7 @@ function GoogleSearchMockup() {
             className={`relative flex items-center gap-3 p-3 rounded-2xl border overflow-hidden ${
               row.highlight
                 ? 'border-brand-red bg-brand-red-light/40'
-                : 'border-zinc-100 bg-zinc-50/70 grayscale opacity-60 blur-[0.5px]'
+                : 'border-zinc-100 bg-zinc-50/70 grayscale opacity-60'
             }`}
           >
             {row.highlight && (
@@ -492,7 +492,14 @@ function GoogleSearchMockup() {
             </div>
             <div className="relative min-w-0 flex-1">
               <p className={`text-sm font-bold truncate ${row.highlight ? 'text-ink' : 'text-zinc-500'}`}>
-                {row.name}
+                {row.highlight ? (
+                  row.name
+                ) : (
+                  <>
+                    <span>{row.name.charAt(0)}</span>
+                    <span className="blur-[4px] select-none">{row.name.slice(1)}</span>
+                  </>
+                )}
               </p>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, s) => (
