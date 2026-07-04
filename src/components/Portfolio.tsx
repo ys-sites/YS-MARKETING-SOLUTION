@@ -209,7 +209,7 @@ export default function Portfolio() {
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink mb-6"
             >
               {t.portfolio.title.split(' ').slice(0, -1).join(' ')}{' '}
-              <ShinyText text={t.portfolio.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
+              <ShinyText text={t.portfolio.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />
             </motion.h2>
             <BlurText
               text={t.portfolio.subtitle}

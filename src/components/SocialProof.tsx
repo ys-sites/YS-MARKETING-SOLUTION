@@ -36,7 +36,7 @@ export default function SocialProof() {
             className="text-4xl md:text-6xl font-black text-ink tracking-tight mb-6"
           >
             {t.testimonials.title.split(' ').slice(0, -1).join(' ')}{' '}
-            <ShinyText text={t.testimonials.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-black" />
+            <ShinyText text={t.testimonials.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#FCA5A5" speed={2.5} className="font-black" />
           </motion.h2>
           <BlurText
             text={t.testimonials.subtitle}

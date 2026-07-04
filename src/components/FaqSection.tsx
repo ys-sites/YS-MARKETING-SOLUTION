@@ -77,7 +77,7 @@ export default function FaqSection() {
             transition={{ delay: 0.05 }}
             className="text-4xl md:text-5xl font-extrabold tracking-tight text-ink mb-6"
           >
-            Questions, <ShinyText text="answered." color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
+            Questions, <ShinyText text="answered." color="#E11D2E" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />
           </motion.h2>
           <BlurText
             text="Everything business owners ask us before starting a project — search below or browse them all."

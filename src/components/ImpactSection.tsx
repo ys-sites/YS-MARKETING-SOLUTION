@@ -381,7 +381,7 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.6 }}
-      className="w-full max-w-xs md:max-w-none mx-auto md:mx-0 bg-white rounded-2xl md:rounded-3xl border border-zinc-200 shadow-xl overflow-hidden"
+      className="w-full max-w-xs md:max-w-[300px] mx-auto md:mx-0 bg-white rounded-2xl md:rounded-3xl border border-zinc-200 shadow-xl overflow-hidden"
     >
       <div className="flex items-center gap-2.5 px-3.5 md:px-5 py-3 md:py-4 border-b border-zinc-100">
         <div className="w-7 h-7 md:w-9 md:h-9 rounded-full bg-brand-red-light flex items-center justify-center shrink-0">
@@ -580,7 +580,7 @@ export default function ImpactSection() {
             transition={{ delay: 0.05 }}
             className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6"
           >
-            Real Clients. Real <ShinyText text="Numbers." color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
+            Real Clients. Real <ShinyText text="Numbers." color="#E11D2E" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />
           </motion.h2>
           <BlurText
             text="No vanity promises — just the measurable growth these two campaigns actually produced."
@@ -624,8 +624,21 @@ export default function ImpactSection() {
             <h4 className="text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
               The progress, <span className="text-brand-red">so far.</span>
             </h4>
+            <div className="mb-6">
+              <div className="text-5xl sm:text-6xl font-extrabold tracking-tight text-brand-red">
+                <CountUp value={615600} suffix="+" compact />
+              </div>
+              <p className="text-xs sm:text-sm font-semibold text-muted mt-2 uppercase tracking-wide">
+                Views in the last 30 days alone
+              </p>
+            </div>
+            <p className="text-zinc-600 leading-relaxed max-w-lg mb-2">
+              This isn't a one-off spike from a single viral post — it's a snapshot of where the account stands
+              today, and it's still climbing.
+            </p>
             <p className="text-zinc-600 leading-relaxed max-w-lg">
-              A snapshot of where these campaigns stand today — and it's still climbing.
+              It's the result of a consistent content system: reels published on a regular schedule, tracked in
+              a live performance dashboard, and refined every month based on what's actually working.
             </p>
           </div>
           <div className="order-2">

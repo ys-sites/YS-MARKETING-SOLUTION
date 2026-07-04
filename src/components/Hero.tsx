@@ -83,7 +83,7 @@ export default function Hero() {
               {t.hero.title2}
             </motion.span>
             <motion.span variants={itemVariants} className="block">
-              <ShinyText text={t.hero.title3} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
+              <ShinyText text={t.hero.title3} color="#E11D2E" shineColor="#FCA5A5" speed={2.5} className="font-extrabold" />
             </motion.span>
           </h1>
 
