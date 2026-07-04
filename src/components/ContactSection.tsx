@@ -120,14 +120,14 @@ export default function ContactSection() {
           className="flex flex-col justify-center"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-6 w-fit">
-            Get Audited
+            Get Proposal
           </div>
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6 leading-tight">
             Ready to Scale Your <br />
             <span className="text-brand-red">Conversions?</span>
           </h2>
           <p className="text-muted text-lg leading-relaxed mb-10 max-w-md font-light">
-            Fill out the form for a free conversion-performance audit. We'll find exactly where your website is leaking leads and deliver a custom blueprint to fix it.
+            Fill out the form for a free conversion-performance proposal. We'll find exactly where your website is leaking leads and deliver a custom blueprint to fix it.
           </p>
 
           <div className="space-y-4">
@@ -289,7 +289,7 @@ export default function ContactSection() {
               ) : status === 'success' ? (
                 <>
                   <CheckCircle2 className="w-5 h-5" />
-                  Audit Requested Successfully!
+                  Proposal Requested Successfully!
                 </>
               ) : status === 'error' ? (
                 <>
@@ -297,7 +297,7 @@ export default function ContactSection() {
                   Submission Failed
                 </>
               ) : (
-                'Request Free website Audit'
+                'Request Free Website Proposal'
               )}
             </button>
             {status === 'error' && errorMessage ? (

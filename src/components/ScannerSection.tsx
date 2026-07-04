@@ -433,7 +433,7 @@ export default function ScannerSection() {
       >
         <div className="absolute top-16 left-1/2 -translate-x-1/2 text-center z-50 w-full px-4">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink mb-4 tracking-tight">
-            Our Automated <span className="text-brand-red">Conversion Auditing</span>
+            Our Automated <span className="text-brand-red">Conversion Analysis</span>
           </h2>
           <p className="text-muted text-sm md:text-base max-w-lg mx-auto">
             Swipe or drag the card stream below to simulate our scanner analyzing layout rendering, speed performance, and code logic.

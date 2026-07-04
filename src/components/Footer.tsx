@@ -11,19 +11,19 @@ export default function Footer() {
   return (
     <footer className="bg-zinc-950 text-zinc-400 border-t border-zinc-900 pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-[1.5fr_2fr_1fr_1.5fr] gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1.5fr] gap-12 mb-16">
 
           {/* Col 1: Logo + Name + Social */}
           <div className="flex flex-col gap-6">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="flex items-center gap-3 cursor-pointer hover:opacity-90 transition-opacity self-start"
+              className="flex items-center gap-2.5 cursor-pointer hover:opacity-90 transition-opacity self-start"
             >
               {/* Logo asset in a padded circle */}
-              <div className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center p-2.5 backdrop-blur-sm">
+              <div className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center p-2 backdrop-blur-sm shrink-0">
                 <img src="/YS.png" alt="YS Marketing Solutions" className="h-full w-auto object-contain" />
               </div>
-              <span className="text-lg font-black tracking-wider text-white uppercase">YS Marketing Solutions</span>
+              <span className="text-sm md:text-base font-black tracking-wider text-white uppercase whitespace-nowrap">YS Marketing Solutions</span>
             </button>
             <p className="text-zinc-400 text-sm leading-relaxed">
               We design and build high-performance websites and strategic digital systems that help your business scale conversions and dominate its local market.
@@ -39,14 +39,6 @@ export default function Footer() {
                 <Instagram className="w-5 h-5" />
               </a>
             </div>
-          </div>
-
-          {/* Col 2: Mission */}
-          <div className="flex flex-col gap-4">
-            <h4 className="text-white font-bold text-base uppercase tracking-wider">Our Mission</h4>
-            <p className="text-zinc-400 text-sm leading-relaxed">
-              We started YS Sites with a single, aggressive promise: **Stop burning cash on bad websites.** Most agencies deliver pretty pages that sit dead in search indices. We weave search engineering, conversion triggers, and lead automations into the very foundation of your web presence.
-            </p>
           </div>
 
           {/* Col 3: Quick Links */}

@@ -4,7 +4,7 @@ import { mkdirSync } from 'fs';
 const sites = [
   { slug: 'allball',      url: 'https://www.centreallball.com' },
   { slug: 'mevoyages',    url: 'https://www.mevoyages.com' },
-  { slug: '1001nuits',    url: 'https://www.1001nuit.com' }, // User verified: 1001nuit.com is correct
+  { slug: '1001nuits',    url: 'https://www.1001nuit.com' },
   { slug: 'ironfuellab',  url: 'https://www.ironfuellab.com' },
   { slug: 'jannette',     url: 'https://www.jannettecaribbean.ca' },
   { slug: 'mannypainter', url: 'https://www.mannypainter.ca' },
@@ -17,7 +17,7 @@ mkdirSync('public/portfolio', { recursive: true });
 const browser = await chromium.launch();
 
 for (const { slug, url } of sites) {
-  // Start with a standard laptop viewport so document scrollHeight measures accurately
+  // Keep the viewport at standard desktop size to prevent 100vh elements from stretching
   const page = await browser.newPage({ 
     viewport: { width: 1440, height: 900 }, 
     deviceScaleFactor: 1 
@@ -26,29 +26,61 @@ for (const { slug, url } of sites) {
   console.log(`Navigating to ${url}...`);
   try {
     await page.goto(url, { waitUntil: 'load', timeout: 50000 });
-    await page.waitForTimeout(2000); // Wait for page to initialize
+    await page.waitForTimeout(3000); // Wait for page to settle
 
-    // Hide common overlays, popups, cookie consent banners, and newsletter modal dialogs
-    await page.addStyleTag({
-      content: `
-        /* Cookie consent, banners, modals, and newsletter signups */
-        .cookie-banner, .cookie-consent, #cookie-law, .modal, .popup, 
-        .newsletter-popup, [class*="cookie" i], [class*="popup" i], 
-        [id*="cookie" i], [id*="popup" i], [class*="modal" i], [id*="modal" i],
-        .sq-modal, .sq-popup, .newsletter-modal, #newsletter, .pop-up,
-        .consent-banner, .banner-cookie, [class*="overlay" i] {
-          display: none !important;
-          opacity: 0 !important;
-          pointer-events: none !important;
-          visibility: hidden !important;
+    // Attempt to dismiss overlays via Escape keys
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('Escape');
+
+    // Advanced dynamic script to hide large overlays/popups/modals
+    await page.evaluate(() => {
+      const selectors = [
+        '.cookie-banner', '.cookie-consent', '#cookie-law', '.modal', '.popup', 
+        '.newsletter-popup', '[class*="cookie" i]', '[class*="popup" i]', 
+        '[id*="cookie" i]', '[id*="popup" i]', '[class*="modal" i]', '[id*="modal" i]',
+        '.sq-modal', '.sq-popup', '.newsletter-modal', '#newsletter', '.pop-up',
+        '.consent-banner', '.banner-cookie', '[class*="overlay" i]', '.sqs-announcement-bar-dropzone',
+        '.age-gate', '.agegate', '.verification-modal', '#age-gate-modal'
+      ];
+      
+      selectors.forEach(sel => {
+        try {
+          document.querySelectorAll(sel).forEach(el => {
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('opacity', '0', 'important');
+            el.style.setProperty('pointer-events', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+          });
+        } catch (e) {}
+      });
+
+      // Scan all DOM elements to find and hide elements covering the viewport
+      const allElements = document.querySelectorAll('*');
+      for (const el of allElements) {
+        const style = window.getComputedStyle(el);
+        const zIndex = parseInt(style.zIndex, 10);
+        const isFixedOrAbsolute = style.position === 'fixed' || style.position === 'absolute';
+        
+        if (isFixedOrAbsolute && zIndex >= 50) {
+          const rect = el.getBoundingClientRect();
+          const coversViewport = rect.width > window.innerWidth * 0.7 && rect.height > window.innerHeight * 0.7;
+          const hasPopupKeyword = /popup|modal|cookie|consent|banner|overlay|dialog|age|gate/i.test(el.className || '') || 
+                                  /popup|modal|cookie|consent|banner|overlay|dialog|age|gate/i.test(el.id || '');
+          
+          if (coversViewport || hasPopupKeyword) {
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('opacity', '0', 'important');
+            el.style.setProperty('pointer-events', 'none', 'important');
+          }
         }
-        body, html {
-          overflow: auto !important;
-        }
-      `
+      }
+
+      // Force scrolling to be allowed on the page
+      document.body.style.setProperty('overflow', 'auto', 'important');
+      document.documentElement.style.setProperty('overflow', 'auto', 'important');
     });
 
-    // Smooth scroll to bottom and back up to trigger lazy-loaded assets
+    // Scroll to the bottom and back to top to trigger lazy load assets
     await page.evaluate(async () => {
       await new Promise((resolve) => {
         let totalHeight = 0;
@@ -66,41 +98,18 @@ for (const { slug, url } of sites) {
       });
     });
 
-    await page.waitForTimeout(2000); // Wait for scroll-back-to-top to settle
+    await page.waitForTimeout(2000); // Allow scrolling to settle
 
-    // Measure the actual layout content height, capped at 5000px
-    const actualHeight = await page.evaluate(() => {
-      // Find the maximum of various height elements
-      return Math.min(5000, Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.offsetHeight,
-        document.body.clientHeight,
-        document.documentElement.clientHeight
-      ));
-    });
-
-    console.log(`Setting viewport size to 1440x${actualHeight} for ${slug}...`);
-    await page.setViewportSize({ width: 1440, height: actualHeight });
-    await page.waitForTimeout(2000); // Allow layout engines to recalculate
-
+    // Take screenshot using native fullPage mode for perfect aspect ratio and elements rendering
     await page.screenshot({ 
       path: `public/portfolio/${slug}.jpg`, 
       type: 'jpeg', 
-      quality: 75
+      quality: 75,
+      fullPage: true
     });
-    console.log(`Captured ${slug} successfully (${actualHeight}px tall).`);
+    console.log(`Captured ${slug} successfully using fullPage mode.`);
   } catch (error) {
-    console.error(`Failed to capture full page for ${url}, trying fallback...`, error);
-    try {
-      await page.setViewportSize({ width: 1440, height: 1600 });
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await page.waitForTimeout(2000);
-      await page.screenshot({ path: `public/portfolio/${slug}.jpg`, type: 'jpeg', quality: 75 });
-    } catch (fallbackError) {
-      console.error(`Fallback failed for ${url}:`, fallbackError);
-    }
+    console.error(`Failed to capture full page for ${url}:`, error);
   } finally {
     await page.close();
   }

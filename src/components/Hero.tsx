@@ -47,8 +47,8 @@ export default function Hero() {
       </div>
 
       {/* Dark Legibility Overlay Scrim */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent z-10" />
-      <div className="absolute inset-0 bg-black/30 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent z-10" />
+      <div className="absolute inset-0 bg-black/15 z-10" />
 
       {/* Hero Content Area */}
       <div className="max-w-7xl w-full mx-auto px-6 text-left text-white relative z-20">
@@ -101,7 +101,7 @@ export default function Hero() {
               href="#contact"
               className="group relative flex items-center justify-center gap-3 px-8 py-4 bg-brand-red text-white rounded-full font-bold text-lg hover:bg-brand-red-dark transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(225,29,46,0.3)] hover:shadow-[0_0_40px_-8px_rgba(225,29,46,0.7)] w-full sm:w-auto cursor-pointer"
             >
-              Get Your Free Audit
+              Get Your Free Proposal
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
             </a>
 

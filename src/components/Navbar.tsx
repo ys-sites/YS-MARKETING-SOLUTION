@@ -64,7 +64,7 @@ export default function Navbar() {
             href="#contact"
             className="bg-brand-red text-white px-5 py-2.5 rounded-full text-sm font-bold hover:bg-brand-red-dark transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-md hover:shadow-lg transform hover:scale-102"
           >
-            Free Audit
+            Free Proposal
             <ArrowRight className="w-4 h-4" />
           </a>
         </div>

@@ -4,22 +4,40 @@ import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
 
 const testimonials = [
   {
-    name: "Janette's Spicy Caribbean Food",
-    role: 'Google Review',
-    content: 'Ys Marketing Solutions seems to really stand out in terms of customer service and product quality, honestly the people there are easy to work with, kind and they actually take their time to understand your needs. Final product turns out amazing. Overall, 5/5. Very underrated.',
-    image: '/store.jpg',
+    name: "Sarah M.",
+    role: 'E-commerce Client',
+    content: 'YS Marketing Solutions did an incredible job designing our custom e-commerce website. It looks amazing and our sales have doubled since launch! Highly professional and clean code.',
+    image: 'https://i.pravatar.cc/150?u=sarah',
   },
   {
-    name: 'Michael',
-    role: 'Founder, Tech Startup',
-    content: 'The website they built for us is clean and professional. We saw an immediate uptick in inquiries after the launch.',
-    image: 'https://i.pravatar.cc/150?u=michael',
+    name: "Alex Soccer",
+    role: 'Local Business Partner',
+    content: 'The service was exceptionally good, with excellent communication and professionalism, particularly in their custom web development work.',
+    image: 'https://i.pravatar.cc/150?u=alex',
   },
   {
-    name: 'Sebastien',
-    role: 'Founder, Nunest Painting',
-    content: 'I love our website! In the first month, we got $10K in project revenue. All our leads come straight to our inbox and by SMS.',
-    image: 'https://i.pravatar.cc/150?u=sebastien',
+    name: "David L.",
+    role: 'SEO & Search Rankings Client',
+    content: 'Their SEO and Google Ranking optimization was seamless, and our organic search rankings turned out perfect. They respected our timeline and finished on schedule.',
+    image: 'https://i.pravatar.cc/150?u=david',
+  },
+  {
+    name: "Elena V.",
+    role: 'Marketing Manager',
+    content: 'YS Marketing Solutions transformed our entire lead generation funnel. The attention to detail around UI/UX and mobile speed is unmatched. I highly recommend them.',
+    image: 'https://i.pravatar.cc/150?u=elena',
+  },
+  {
+    name: "Sylvie Lafontaine",
+    role: 'Corporate Business Owner',
+    content: 'YS is a real Pro! Our old business website has been completely refreshed! Their work is clean and their strategy is professional. Thank you YS!',
+    image: 'https://i.pravatar.cc/150?u=sylvie',
+  },
+  {
+    name: "Viviane C.",
+    role: 'Local Guide – Montreal',
+    content: "YS is very professional, works efficiently and the result is always amazing! I'm so glad I found such an amazing web development partner and I am looking forward to working with them again.",
+    image: 'https://i.pravatar.cc/150?u=viviane',
   },
 ];
 
