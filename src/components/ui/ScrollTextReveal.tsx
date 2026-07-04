@@ -193,7 +193,7 @@ export default function ScrollTextReveal({
   wrapperClassName = "",
   delay = 0,
   textColor = "#1a1c19",
-  variant = "pixel",
+  variant = "blossom",
 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -272,11 +272,11 @@ export default function ScrollTextReveal({
       let offsetY = 0;
 
       if (variant === "blossom") {
-        // Expand cherry blossom bounds by 25% on left/right and add 200px at bottom
-        offsetX = r.width * 0.25;
-        offsetY = 0;
-        canvasW = Math.ceil(r.width * 1.5);
-        canvasH = Math.ceil(r.height + 200);
+        // Expand cherry blossom bounds: 2.5x width and +300px height to support horizontal wind drift
+        offsetX = r.width * 0.2;
+        offsetY = 100;
+        canvasW = Math.ceil(r.width * 2.5);
+        canvasH = Math.ceil(r.height + 300);
         
         cv.style.left = -offsetX + "px";
         cv.style.top = -offsetY + "px";
@@ -301,7 +301,6 @@ export default function ScrollTextReveal({
 
       // Initialize particles based on variant
       psRef.current = sampled.map((p) => {
-        // Adjust start coordinates relative to the expanded canvas
         const pX = p.startX + offsetX;
         const pY = p.startY + offsetY;
 
@@ -317,29 +316,30 @@ export default function ScrollTextReveal({
             x: pX,
             y: pY,
             r, g, b,
-            vx: -0.8 + Math.random() * 1.6,
-            vy: 0.2 + Math.random() * 0.8,
-            decay: 0.002 + Math.random() * 0.002, // slower decay ~0.003
+            // Sweeps right and slightly upwards mimicking diagonal wind tunnel in images
+            vx: 0.5 + Math.random() * 2.0,
+            vy: -0.5 - Math.random() * 1.5,
+            decay: 0.0012 + Math.random() * 0.002, // slower decay ~0.0022 for longer flight
             swaySpeed: 0.02 + Math.random() * 0.03,
             swayOffset: Math.random() * Math.PI * 2,
-            gravity: 0.02 + Math.random() * 0.02, // gravity ~0.03
+            gravity: 0.02 + Math.random() * 0.02,
             rotation: Math.random() * Math.PI * 2,
             rotationSpeed: -0.04 + Math.random() * 0.08,
             flutterSpeed: 0.04 + Math.random() * 0.06,
-            sizeX: 3 + Math.random() * 2, // 3 - 5px
-            sizeY: 5 + Math.random() * 3, // 5 - 8px
+            sizeX: 3 + Math.random() * 2.5,
+            sizeY: 5 + Math.random() * 3.5,
           };
         } else {
           // Pixel variant setup
           const angle = Math.random() * Math.PI * 2;
-          const speed = 0.5 + Math.random() * 2.5; // gentler speed 0.5 - 3
+          const speed = 0.5 + Math.random() * 2.5;
           return {
             ...p,
             x: pX,
             y: pY,
             vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed - 0.3, // upward drift bias
-            decay: 0.004 + Math.random() * 0.004, // slower decay 0.004 - 0.008
+            vy: Math.sin(angle) * speed - 0.3,
+            decay: 0.004 + Math.random() * 0.004,
           };
         }
       });
@@ -364,19 +364,28 @@ export default function ScrollTextReveal({
         frameCount++;
 
         if (variant === "blossom") {
+          // Wind sweep forces
+          const windX = 0.03 + Math.random() * 0.03; // push right
+          const windY = -0.015 - Math.random() * 0.02; // lift up
+
           for (const p of psRef.current) {
             if (p.alpha <= 0) continue;
             alive++;
 
             p.rotation = (p.rotation || 0) + (p.rotationSpeed || 0);
-            p.vy += p.gravity || 0.03;
-            p.vx *= 0.985;
-            p.vy *= 0.985;
+            
+            // Dynamic wind acceleration
+            p.vx += windX;
+            p.vy += windY;
+            p.vx *= 0.975;
+            p.vy *= 0.975;
 
-            // Sway wave horizontal drift
-            const sway = Math.sin((p.swayOffset || 0) + frameCount * (p.swaySpeed || 0.03)) * 0.4;
+            // Sway wave horizontal/vertical turbulence
+            const sway = Math.sin((p.swayOffset || 0) + frameCount * (p.swaySpeed || 0.03)) * 0.5;
+            const flutterY = Math.cos((p.swayOffset || 0) + frameCount * (p.swaySpeed || 0.03)) * 0.25;
+
             p.x += p.vx + sway;
-            p.y += p.vy;
+            p.y += p.vy + flutterY;
             p.alpha -= p.decay;
 
             // 3D flutter scale
@@ -420,6 +429,7 @@ export default function ScrollTextReveal({
             ctx2d.shadowBlur = 0; // Reset
           }
         }
+
 
         if (alive > 0) {
           rafRef.current = requestAnimationFrame(animParticles);
