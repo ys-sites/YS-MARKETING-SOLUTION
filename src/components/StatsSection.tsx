@@ -36,10 +36,10 @@ function Counter({ value, suffix = '', prefix = '', decimals = 0 }: CounterProps
 
 export default function StatsSection() {
   const stats = [
-    { label: 'SITES LAUNCHED', value: 45, suffix: '+', prefix: '' },
-    { label: 'AD SPEND MANAGED', value: 2.4, suffix: 'M+', prefix: '$', decimals: 1 },
-    { label: 'AVG. CONVERSION LIFT', value: 38, suffix: '%', prefix: '' },
-    { label: 'CLIENT REVENUE GENERATED', value: 12, suffix: 'M+', prefix: '$' },
+    { label: 'SITES LAUNCHED', value: 10, suffix: '+', prefix: '', decimals: 0 },
+    { label: 'AD SPEND MANAGED', value: 25, suffix: 'K+', prefix: '$', decimals: 0 },
+    { label: 'AVG. CONVERSION LIFT', value: 35, suffix: '%', prefix: '', decimals: 0 },
+    { label: 'CLIENT REVENUE GENERATED', value: 150, suffix: 'K+', prefix: '$', decimals: 0 },
   ];
 
   return (
