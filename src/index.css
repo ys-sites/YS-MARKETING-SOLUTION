@@ -75,6 +75,10 @@ body {
   background-clip: text;
 }
 
+.shiny-text {
+  display: inline-block;
+}
+
 .text-gradient-red {
   background: linear-gradient(to right, #E11D2E, #B3121F);
   -webkit-background-clip: text;

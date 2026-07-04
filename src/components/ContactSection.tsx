@@ -3,6 +3,7 @@ import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-mot
 import { Heart, ShoppingCart, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
+import BlurText from './BlurText';
 
 const WEBHOOK_URL = 'https://hook.us2.make.com/9z1ldu1b99eooozbpe3a4u99p5b19ji2';
 const REQUEST_TIMEOUT_MS = 10000;
@@ -129,9 +130,13 @@ export default function ContactSection() {
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6 leading-tight">
             {t.contact.title}
           </h2>
-          <p className="text-muted text-lg leading-relaxed mb-10 max-w-md font-light">
-            {t.contact.subtitle}
-          </p>
+          <BlurText
+            text={t.contact.subtitle}
+            delay={50}
+            animateBy="words"
+            direction="top"
+            className="text-muted text-lg leading-relaxed mb-10 max-w-md font-light"
+          />
 
           <div className="space-y-4">
             <motion.div 

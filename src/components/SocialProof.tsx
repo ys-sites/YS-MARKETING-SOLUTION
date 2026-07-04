@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Quote, Star } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
+import ShinyText from './ShinyText';
+import BlurText from './BlurText';
 
 export default function SocialProof() {
   const { t } = useLanguage();
@@ -34,17 +36,15 @@ export default function SocialProof() {
             className="text-4xl md:text-6xl font-black text-ink tracking-tight mb-6"
           >
             {t.testimonials.title.split(' ').slice(0, -1).join(' ')}{' '}
-            <span className="text-brand-red">{t.testimonials.title.split(' ').slice(-1)}</span>
+            <ShinyText text={t.testimonials.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-black" />
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-muted text-lg md:text-xl max-w-2xl font-light leading-relaxed"
-          >
-            {t.testimonials.subtitle}
-          </motion.p>
+          <BlurText
+            text={t.testimonials.subtitle}
+            delay={40}
+            animateBy="words"
+            direction="top"
+            className="text-muted text-lg md:text-xl max-w-2xl font-light leading-relaxed justify-center text-center"
+          />
         </div>
 
         {/* Marquee Vertical Grid Grid */}

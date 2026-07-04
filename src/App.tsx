@@ -7,6 +7,7 @@ import ScannerSection from './components/ScannerSection';
 import Portfolio from './components/Portfolio';
 import ImpactSection from './components/ImpactSection';
 import SocialProof from './components/SocialProof';
+import FaqSection from './components/FaqSection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import StickyCTA from './components/StickyCTA';
@@ -32,6 +33,7 @@ export default function App() {
             <ImpactSection />
             <SocialProof />
             <ScannerSection />
+            <FaqSection />
             <ContactSection />
           </div>
         </main>

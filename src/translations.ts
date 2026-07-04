@@ -3,7 +3,9 @@ export const translations = {
     nav: {
       services: "Services",
       portfolio: "Portfolio",
+      results: "Results",
       testimonials: "Testimonials",
+      contact: "Contact",
       proposalBtn: "Free Proposal"
     },
     hero: {
@@ -11,8 +13,8 @@ export const translations = {
       title1: "Digital",
       title2: "Marketing",
       title3: "Services",
-      subtitle: "Your website should sell while you sleep. We build fast, conversion-engineered sites—no templates, no fluff—that turn visitors into booked calls and paying customers, starting week one.",
-      ctaPrimary: "Get Your Free Proposal",
+      subtitle: "Most websites look fine and convert nothing. We build sites engineered to bring in calls and customers — not just compliments.",
+      ctaPrimary: "Book a Free Audit",
       ctaSecondary: "See Our Work"
     },
     services: {
@@ -22,27 +24,27 @@ export const translations = {
       items: [
         {
           title: "Website Development",
-          description: "We design and build custom, high-performance websites optimized for speed, search visibility, and maximum conversion rates."
+          description: "Custom, high-performance websites built for speed and conversions."
         },
         {
           title: "Google Ranking (SEO)",
-          description: "Get discovered by high-intent customers who are actively searching for what you offer. Real rankings, real traffic."
+          description: "Rank higher on Google and get found by customers searching for you."
         },
         {
           title: "Meta Ads",
-          description: "Laser-targeted paid campaign management that bypasses search organic timeframes to capture immediate buying leads."
+          description: "Targeted Facebook and Instagram ads that bring in leads fast."
         },
         {
           title: "Social Media",
-          description: "Build an active, authentic audience and turn passive scrollers into long-term brand advocates with high-quality content."
+          description: "Consistent, on-brand content that grows a real, engaged following."
         },
         {
           title: "Content Creation",
-          description: "Copywriting, graphic design, and custom brand assets designed to tell your story and optimize conversion rate."
+          description: "Copy, graphics, and brand assets that look professional and convert."
         },
         {
           title: "Digital Strategy",
-          description: "Comprehensive scaling roadmaps, market analyses, and conversion funnels mapped directly to your revenue targets."
+          description: "A clear growth plan built around your numbers, not guesswork."
         }
       ]
     },
@@ -174,7 +176,9 @@ export const translations = {
     nav: {
       services: "Services",
       portfolio: "Réalisations",
+      results: "Résultats",
       testimonials: "Témoignages",
+      contact: "Contact",
       proposalBtn: "Proposition Gratuite"
     },
     hero: {
@@ -193,27 +197,27 @@ export const translations = {
       items: [
         {
           title: "Développement de Sites Web",
-          description: "Nous concevons et bâtissons des sites web sur mesure haute performance, optimisés pour la vitesse, la visibilité de recherche et des taux de conversion maximaux."
+          description: "Des sites web sur mesure, rapides et pensés pour convertir."
         },
         {
           title: "Classement Google (SEO)",
-          description: "Faites-vous repérer par des clients à forte intention qui recherchent activement vos services. Vrais classements, vrai trafic."
+          description: "Soyez mieux classé sur Google et trouvé par vos clients."
         },
         {
           title: "Publicités Meta",
-          description: "Gestion de campagnes publicitaires payantes ciblées qui contournent les délais organiques pour capter des prospects immédiatement acheteurs."
+          description: "Des publicités Facebook et Instagram ciblées qui génèrent des prospects rapidement."
         },
         {
           title: "Réseaux Sociaux",
-          description: "Développez une audience active et authentique et transformez les utilisateurs passifs en défenseurs de votre marque grâce à du contenu de haute qualité."
+          description: "Du contenu constant et cohérent qui fait grandir une vraie communauté."
         },
         {
           title: "Création de Contenu",
-          description: "Rédaction, design graphique et création d'actifs de marque uniques conçus pour raconter votre histoire et optimiser vos taux de conversion."
+          description: "Textes, visuels et image de marque qui font professionnel et qui convertissent."
         },
         {
           title: "Stratégie Numérique",
-          description: "Feuilles de route d'évolution complètes, analyses de marché et entonnoirs de conversion directement corrélés à vos objectifs de revenus."
+          description: "Un plan de croissance clair, basé sur vos chiffres, pas des suppositions."
         }
       ]
     },

@@ -7,7 +7,9 @@ export default function Footer() {
   const quickLinks = [
     { name: t.nav.services, href: '#services' },
     { name: t.nav.portfolio, href: '#portfolio' },
+    { name: t.nav.results, href: '#results' },
     { name: t.nav.testimonials, href: '#testimonials' },
+    { name: t.nav.contact, href: '#contact' },
   ];
 
   return (

@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Search, Megaphone, Users, PenTool, BarChart3, Globe, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
+import ShinyText from './ShinyText';
+import BlurText from './BlurText';
 
 const serviceIcons = [Globe, Search, Megaphone, Users, PenTool, BarChart3];
 
@@ -30,17 +32,15 @@ export default function Services() {
             className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink mb-6"
           >
             {t.services.title.split(' ').slice(0, -1).join(' ')}{' '}
-            <span className="text-brand-red">{t.services.title.split(' ').slice(-1)}</span>
+            <ShinyText text={t.services.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light"
-          >
-            {t.services.subtitle}
-          </motion.p>
+          <BlurText
+            text={t.services.subtitle}
+            delay={60}
+            animateBy="words"
+            direction="top"
+            className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light justify-center text-center"
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

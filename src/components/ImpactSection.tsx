@@ -9,14 +9,14 @@ import {
 } from 'framer-motion';
 import {
   Instagram,
-  Music2,
   Star,
   Search,
   ArrowRight,
-  ArrowUpRight,
   Play,
 } from 'lucide-react';
 import GlowDot from './GlowDot';
+import ShinyText from './ShinyText';
+import BlurText from './BlurText';
 
 function useReducedMotionPref() {
   const [reduced, setReduced] = useState(false);
@@ -106,9 +106,11 @@ interface PhoneMockupProps {
   badge: string;
   href?: string;
   alt?: string;
+  zIndex?: number;
+  onHoverChange?: (hovered: boolean) => void;
 }
 
-function PhoneMockup({ src, rotate, fromSide, delay, badge, href, alt }: PhoneMockupProps) {
+function PhoneMockup({ src, rotate, fromSide, delay, badge, href, alt, zIndex = 10, onHoverChange }: PhoneMockupProps) {
   const [error, setError] = useState(false);
 
   const phone = (
@@ -117,7 +119,10 @@ function PhoneMockup({ src, rotate, fromSide, delay, badge, href, alt }: PhoneMo
       whileInView={{ opacity: 1, x: 0, rotate }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.7, ease: 'easeOut', delay }}
-      whileHover={{ rotate: 0, scale: 1.06, zIndex: 20 }}
+      whileHover={{ rotate: 0, scale: 1.06 }}
+      onHoverStart={() => onHoverChange?.(true)}
+      onHoverEnd={() => onHoverChange?.(false)}
+      style={{ zIndex }}
       className="relative w-36 sm:w-44 md:w-52 aspect-[9/19] rounded-[2rem] border-[6px] border-zinc-900 bg-zinc-900 shadow-2xl overflow-hidden cursor-pointer select-none"
     >
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-4 bg-zinc-900 rounded-b-xl z-20" />
@@ -161,17 +166,22 @@ interface PhoneVideoMockupProps {
   badge: string;
   href?: string;
   raised?: boolean;
+  zIndex?: number;
+  onHoverChange?: (hovered: boolean) => void;
 }
 
-function PhoneVideoMockup({ src, rotate, delay, badge, href, raised = false }: PhoneVideoMockupProps) {
+function PhoneVideoMockup({ src, rotate, delay, badge, href, raised = false, zIndex = 20, onHoverChange }: PhoneVideoMockupProps) {
   const phone = (
     <motion.div
       initial={{ opacity: 0, y: 60, rotate: 0 }}
       whileInView={{ opacity: 1, y: 0, rotate }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.7, ease: 'easeOut', delay }}
-      whileHover={{ rotate: 0, scale: 1.06, zIndex: 20 }}
-      className={`relative w-36 sm:w-44 md:w-52 aspect-[9/19] rounded-[2rem] border-[6px] border-zinc-900 bg-zinc-900 shadow-2xl overflow-hidden cursor-pointer select-none z-10 ${
+      whileHover={{ rotate: 0, scale: 1.06 }}
+      onHoverStart={() => onHoverChange?.(true)}
+      onHoverEnd={() => onHoverChange?.(false)}
+      style={{ zIndex }}
+      className={`relative w-36 sm:w-44 md:w-52 aspect-[9/19] rounded-[2rem] border-[6px] border-zinc-900 bg-zinc-900 shadow-2xl overflow-hidden cursor-pointer select-none ${
         raised ? '-translate-y-4 md:-translate-y-6' : ''
       }`}
     >
@@ -260,12 +270,22 @@ const IG_PROFILE_URL = 'https://www.instagram.com/1001nu1t/';
 const IG_GROWTH_POST_URL = 'https://www.instagram.com/p/DZQNaGFRsd7/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==';
 
 function TwoPhoneVisual() {
+  const [frontPhone, setFrontPhone] = useState<'video' | 'profile'>('video');
+
   return (
     <div className="relative flex items-center justify-center min-h-[360px] sm:min-h-[400px] py-10">
       <div className="absolute w-64 h-64 md:w-80 md:h-80 bg-brand-red/20 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative flex items-center -space-x-8 sm:-space-x-10 md:-space-x-12">
-        <PhoneVideoMockup src="/video-business.mp4" rotate={-8} delay={0} badge="212K reach" href={IG_VIDEO_URL} />
+        <PhoneVideoMockup
+          src="/video-business.mp4"
+          rotate={-8}
+          delay={0}
+          badge="212K reach"
+          href={IG_VIDEO_URL}
+          zIndex={frontPhone === 'video' ? 20 : 10}
+          onHoverChange={() => setFrontPhone('video')}
+        />
         <PhoneMockup
           src="/insta.png"
           rotate={8}
@@ -274,11 +294,13 @@ function TwoPhoneVisual() {
           badge="@1001nu1t"
           href={IG_PROFILE_URL}
           alt="1001 Nuits Instagram profile"
+          zIndex={frontPhone === 'profile' ? 20 : 10}
+          onHoverChange={(hovered) => setFrontPhone(hovered ? 'profile' : 'video')}
         />
       </div>
 
       <FloatingChip
-        icon={Music2}
+        icon={Instagram}
         label="+7,000 followers"
         className="bottom-4 right-2 sm:right-6 md:right-0"
         revealDelay={0.8}
@@ -368,7 +390,7 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
         <span className="text-xs md:text-sm font-bold text-ink">Client Feedback</span>
         <Instagram className="w-3.5 h-3.5 md:w-4 md:h-4 text-zinc-400 ml-auto shrink-0" />
       </div>
-      <div className="relative aspect-square bg-zinc-900 overflow-hidden">
+      <div className="relative aspect-[9/16] bg-zinc-900 overflow-hidden">
         <video
           ref={videoRef}
           src={src}
@@ -558,17 +580,15 @@ export default function ImpactSection() {
             transition={{ delay: 0.05 }}
             className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6"
           >
-            Real Clients. Real <span className="text-brand-red">Numbers.</span>
+            Real Clients. Real <ShinyText text="Numbers." color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light"
-          >
-            No vanity promises — just the measurable growth these two campaigns actually produced.
-          </motion.p>
+          <BlurText
+            text="No vanity promises — just the measurable growth these two campaigns actually produced."
+            delay={40}
+            animateBy="words"
+            direction="top"
+            className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light justify-center text-center"
+          />
         </div>
 
         {/* Case Study 1: 1001 Nuits */}
@@ -576,27 +596,21 @@ export default function ImpactSection() {
           <div className="order-1">
             <ClientTag name="1001 Nuits" role="Halal Restaurant, Montreal" tag="Social Media Management" />
             <ProgressRule />
-            <div className="grid grid-cols-2 gap-6 mb-6">
-              <div>
-                <div className="text-5xl sm:text-6xl font-extrabold tracking-tight text-brand-red">
-                  <CountUp value={7000} suffix="+" />
-                </div>
-                <p className="text-xs sm:text-sm font-semibold text-muted mt-2 leading-snug">
-                  Followers grown from zero
-                </p>
+            <div className="mb-6">
+              <div className="text-6xl sm:text-7xl font-extrabold tracking-tight text-brand-red">
+                <CountUp value={1000000} suffix="+" compact />
               </div>
-              <div>
-                <div className="text-5xl sm:text-6xl font-extrabold tracking-tight text-brand-red">
-                  <CountUp value={1000000} suffix="+" compact />
-                </div>
-                <p className="text-xs sm:text-sm font-semibold text-muted mt-2 leading-snug">
-                  Combined interactions across Instagram &amp; TikTok
-                </p>
-              </div>
+              <p className="text-xs sm:text-sm font-semibold text-muted mt-3 leading-snug uppercase tracking-wide">
+                Combined views across Instagram &amp; TikTok
+              </p>
             </div>
+            <p className="text-zinc-600 leading-relaxed max-w-lg mb-2">
+              Started from zero — no followers, no content, no online presence at all. We built an organic
+              content strategy from scratch around viral reels that grew the account past 7,000 engaged followers.
+            </p>
             <p className="text-zinc-600 leading-relaxed max-w-lg">
-              Started from zero with no online presence. We built an organic content strategy around viral reels,
-              and 1001 Nuits is now a local brand people actively search for and recognize on the street.
+              The impact has been huge: over 1,000,000 combined views across Instagram and TikTok, and a steady
+              stream of consistent new customers walking through the door every week.
             </p>
           </div>
           <div className="order-2">
@@ -652,40 +666,6 @@ export default function ImpactSection() {
           </div>
         </div>
 
-        {/* Progress Recap */}
-        <div className="mt-20 md:mt-28 pt-16 border-t border-zinc-100 text-center">
-          <h4 className="text-2xl md:text-3xl font-extrabold tracking-tight text-ink mb-2">
-            The progress, <span className="text-brand-red">so far.</span>
-          </h4>
-          <p className="text-muted max-w-xl mx-auto mb-10">
-            A snapshot of where these campaigns stand today — and it's still climbing.
-          </p>
-          <InstagramPostCard
-            src="/growth.png"
-            href={IG_GROWTH_POST_URL}
-            caption="Professional dashboard — 615.6K views in the last 30 days."
-          />
-        </div>
-
-        {/* Closing CTA Strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mt-28 md:mt-36 pt-12 border-t border-zinc-100 flex flex-col items-center text-center gap-6"
-        >
-          <h4 className="text-2xl md:text-3xl font-extrabold tracking-tight text-ink">
-            Your business could be <span className="text-brand-red">next.</span>
-          </h4>
-          <a
-            href="#contact"
-            className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-brand-red text-white rounded-full font-bold text-lg hover:bg-brand-red-dark transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(225,29,46,0.2)] hover:shadow-[0_0_40px_-8px_rgba(225,29,46,0.5)] cursor-pointer"
-          >
-            Get Your Free Audit
-            <ArrowUpRight className="w-5 h-5" />
-          </a>
-        </motion.div>
       </div>
     </section>
   );

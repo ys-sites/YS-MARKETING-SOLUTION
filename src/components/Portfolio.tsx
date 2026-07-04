@@ -3,6 +3,9 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
+import ShinyText from './ShinyText';
+import BlurText from './BlurText';
+import { ParallaxHeroImages } from './ParallaxHeroImages';
 
 const categories = [
   { id: 'All', key: 'all' },
@@ -175,34 +178,47 @@ export default function Portfolio() {
   return (
     <section id="portfolio" className="py-24 bg-surface-alt relative overflow-hidden border-y border-zinc-100">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
-          >
-            <GlowDot />
-            {t.portfolio.badge}
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink mb-6"
-          >
-            {t.portfolio.title.split(' ').slice(0, -1).join(' ')}{' '}
-            <span className="text-brand-red">{t.portfolio.title.split(' ').slice(-1)}</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light"
-          >
-            {t.portfolio.subtitle}
-          </motion.p>
+        <div className="relative text-center mb-16 min-h-[420px] md:min-h-[480px] flex flex-col items-center justify-center">
+          <ParallaxHeroImages
+            images={[
+              '/portfolio/allball.jpg',
+              '/portfolio/mevoyages.jpg',
+              '/portfolio/1001nuits.jpg',
+              '/portfolio/ironfuellab.jpg',
+              '/portfolio/jannette.jpg',
+              '/portfolio/mannypainter.jpg',
+              '/portfolio/tierexotics.jpg',
+              '/portfolio/pressurewash.jpg',
+            ]}
+            imageClassName="h-12 w-16 sm:h-16 sm:w-24 md:h-20 md:w-28 opacity-20"
+          />
+          <div className="relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
+            >
+              <GlowDot />
+              {t.portfolio.badge}
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink mb-6"
+            >
+              {t.portfolio.title.split(' ').slice(0, -1).join(' ')}{' '}
+              <ShinyText text={t.portfolio.title.split(' ').slice(-1).join(' ')} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
+            </motion.h2>
+            <BlurText
+              text={t.portfolio.subtitle}
+              delay={60}
+              animateBy="words"
+              direction="top"
+              className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light justify-center text-center"
+            />
+          </div>
         </div>
 
         {/* Category Filter Tabs */}
