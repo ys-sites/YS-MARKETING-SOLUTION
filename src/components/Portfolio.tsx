@@ -130,30 +130,22 @@ function ProjectCard({ project, index }: ProjectCardProps) {
             </span>
           </div>
         ) : (
-          <motion.img
+          <img
             ref={imgRef}
             src={`/portfolio/${project.slug}.jpg`}
             alt={project.name}
+            width={350}
+            height={314}
+            decoding="async"
             onError={() => setImageError(true)}
-            className="w-full h-auto block select-none pointer-events-none origin-top"
-            animate={
-              isInView && !isHovered && !prefersReducedMotion && scrollDistance > 0
-                ? {
-                    // Scroll down smoothly, then fade out at bottom, jump back, fade in
-                    // — the reset happens while opacity=0 so it's invisible (no flash)
-                    y: [0, -scrollDistance, -scrollDistance, 0, 0],
-                    opacity: [1, 1, 0, 0, 1],
-                  }
-                : { y: 0, opacity: 1 }
-            }
-            transition={{
-              duration: duration,
-              delay: phaseOffset,
-              times: [0, 0.82, 0.84, 0.86, 1],
-              ease: 'linear',
-              repeat: Infinity,
-              repeatType: 'loop',
-            }}
+            className={`w-full h-auto block select-none pointer-events-none origin-top portfolio-scroll-img ${
+              isInView && !isHovered && !prefersReducedMotion && scrollDistance > 0 ? '' : 'paused'
+            }`}
+            style={{
+              '--scroll-distance': `-${scrollDistance}px`,
+              '--scroll-duration': `${duration}s`,
+              '--scroll-delay': `${phaseOffset}s`,
+            } as React.CSSProperties}
             loading="lazy"
           />
         )}
@@ -212,8 +204,8 @@ export default function Portfolio() {
               transition={{ duration: getDuration(0.5), ease: getEase() }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
             >
-              <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
-                <GlowDot />
+              <GlowDot />
+              <ScrollTextReveal delay={0} textColor="#E11D2E">
                 {t.portfolio.badge}
               </ScrollTextReveal>
             </motion.div>
@@ -244,7 +236,7 @@ export default function Portfolio() {
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="flex overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory gap-2 md:gap-3 mb-12 max-w-full pb-4 px-4 -mx-4 justify-start md:justify-center">
+        <div className="flex flex-nowrap overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory gap-2 md:gap-3 mb-12 max-w-full pb-4 px-4 -mx-4 justify-start md:justify-center">
           {categories.map((category) => (
             <button
               key={category.id}

@@ -307,9 +307,15 @@ export default function ScrollTextReveal({
         if (variant === "blossom") {
           const pink = pinks[Math.floor(Math.random() * pinks.length)];
           // Blend text pixel color 30% with pink
-          const r = Math.round(p.r * 0.7 + pink.r * 0.3);
-          const g = Math.round(p.g * 0.7 + pink.g * 0.3);
-          const b = Math.round(p.b * 0.7 + pink.b * 0.3);
+          const blendedR = Math.round(p.r * 0.7 + pink.r * 0.3);
+          const blendedG = Math.round(p.g * 0.7 + pink.g * 0.3);
+          const blendedB = Math.round(p.b * 0.7 + pink.b * 0.3);
+
+          // Apply shading variance (some leaves are darker than others)
+          const shade = 0.55 + Math.random() * 0.45; // 0.55x to 1.0x brightness
+          const r = Math.round(blendedR * shade);
+          const g = Math.round(blendedG * shade);
+          const b = Math.round(blendedB * shade);
 
           return {
             ...p,
@@ -395,9 +401,16 @@ export default function ScrollTextReveal({
             ctx2d.translate(p.x, p.y);
             ctx2d.rotate(p.rotation);
             ctx2d.scale(1, scaleY);
+            
+            const sizeX = p.sizeX || 4;
+            const sizeY = p.sizeY || 6;
+            const grad = ctx2d.createLinearGradient(0, sizeY, 0, -sizeY);
+            grad.addColorStop(0, `rgba(${p.r},${p.g},${p.b},${Math.max(0, p.alpha)})`); // base
+            grad.addColorStop(1, `rgba(255, 238, 243, ${Math.max(0, p.alpha)})`); // tip (light tip)
+            
             ctx2d.beginPath();
-            ctx2d.ellipse(0, 0, p.sizeX || 4, p.sizeY || 6, 0, 0, Math.PI * 2);
-            ctx2d.fillStyle = `rgba(${p.r},${p.g},${p.b},${Math.max(0, p.alpha)})`;
+            ctx2d.ellipse(0, 0, sizeX, sizeY, 0, 0, Math.PI * 2);
+            ctx2d.fillStyle = grad;
             ctx2d.fill();
             ctx2d.restore();
           }

@@ -391,7 +391,7 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
       whileInView={{ opacity: 1, y: 0 }}
       viewport={viewportConfig}
       transition={{ duration: getDuration(0.6), ease: getEase() }}
-      className="w-full max-w-xs md:max-w-[360px] mx-auto md:mx-0 bg-white rounded-2xl md:rounded-3xl border border-zinc-200 shadow-xl overflow-hidden"
+      className="w-full max-w-xs md:max-w-[360px] mx-auto md:ml-auto md:mr-0 bg-white rounded-2xl md:rounded-3xl border border-zinc-200 shadow-xl overflow-hidden"
     >
       <div className="flex items-center gap-2.5 px-3.5 md:px-5 py-3 md:py-4 border-b border-zinc-100">
         <div className="w-7 h-7 md:w-9 md:h-9 rounded-full bg-brand-red-light flex items-center justify-center shrink-0">
@@ -583,8 +583,8 @@ export default function ImpactSection() {
             transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
-            <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
-              <GlowDot />
+            <GlowDot />
+            <ScrollTextReveal delay={0} textColor="#E11D2E">
               Client Impact
             </ScrollTextReveal>
           </motion.span>
@@ -687,7 +687,7 @@ export default function ImpactSection() {
         </div>
 
         {/* Case Study 2: Manny Painter */}
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div className="order-1 md:order-2">
             <ClientTag name="Manny Painter" role="Painting Services, Montreal" tag="Google Business Profile & Local SEO" />
             <ProgressRule />

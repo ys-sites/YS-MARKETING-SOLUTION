@@ -75,8 +75,8 @@ export default function FaqSection() {
             transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
-            <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
-              <GlowDot />
+            <GlowDot />
+            <ScrollTextReveal delay={0} textColor="#E11D2E">
               FAQ
             </ScrollTextReveal>
           </motion.span>

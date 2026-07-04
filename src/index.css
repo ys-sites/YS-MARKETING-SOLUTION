@@ -515,3 +515,44 @@ body {
   backface-visibility: hidden;
 }
 
+@keyframes portfolioScroll {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  82% {
+    transform: translateY(var(--scroll-distance, 0px));
+    opacity: 1;
+  }
+  84% {
+    transform: translateY(var(--scroll-distance, 0px));
+    opacity: 0;
+  }
+  86% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.portfolio-scroll-img {
+  will-change: transform;
+  transform: translateZ(0);
+  animation: portfolioScroll var(--scroll-duration, 20s) linear infinite;
+  animation-delay: var(--scroll-delay, 0s);
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+

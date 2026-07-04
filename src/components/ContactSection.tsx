@@ -127,8 +127,8 @@ export default function ContactSection() {
           className="flex flex-col justify-center"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-6 w-fit">
-            <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
-              <GlowDot />
+            <GlowDot />
+            <ScrollTextReveal delay={0} textColor="#E11D2E">
               {t.contact.badge}
             </ScrollTextReveal>
           </div>
