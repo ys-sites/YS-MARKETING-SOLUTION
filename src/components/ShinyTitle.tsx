@@ -63,8 +63,8 @@ export default function ShinyTitle({ blackText, redText, className = '' }: Shiny
     lastTimeRef.current = time;
     elapsedRef.current += delta;
 
-    const cycleDuration = 3800; // 3.8 seconds total cycle (including pause)
-    const sweepDuration = 1500; // 1.5 seconds sweep
+    const cycleDuration = 5200; // 5.2 seconds total cycle (including pause)
+    const sweepDuration = 2400; // 2.4 seconds sweep
     const cycleTime = elapsedRef.current % cycleDuration;
 
     if (cycleTime < sweepDuration) {

@@ -178,6 +178,19 @@ interface PhoneVideoMockupProps {
 
 function PhoneVideoMockup({ src, rotate, delay, badge, href, raised = false, zIndex = 20, onHoverChange }: PhoneVideoMockupProps) {
   const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const isInView = useInView(videoRef, { margin: "200px" });
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (isInView) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [isInView]);
+
   const phone = (
     <motion.div
       initial={{ opacity: 0, y: getDistance(60), rotate: 0 }}
@@ -195,6 +208,7 @@ function PhoneVideoMockup({ src, rotate, delay, badge, href, raised = false, zIn
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-4 bg-zinc-900 rounded-b-xl z-20" />
       <div className="relative w-full h-full bg-zinc-100">
         <video
+          ref={videoRef}
           src={src}
           muted
           loop
@@ -202,6 +216,7 @@ function PhoneVideoMockup({ src, rotate, delay, badge, href, raised = false, zIn
           autoPlay
           preload="metadata"
           className="w-full h-full object-cover"
+          style={{ transform: "translate3d(0,0,0)" }}
         />
         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold whitespace-nowrap">
           <Play className="w-2.5 h-2.5 fill-white" /> {badge}
@@ -371,6 +386,17 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
+  const isInView = useInView(videoRef, { margin: "200px" });
+
+  useEffect(() => {
+    if (!isInView && isPlaying) {
+      const video = videoRef.current;
+      if (video) {
+        video.pause();
+        setIsPlaying(false);
+      }
+    }
+  }, [isInView, isPlaying]);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -409,6 +435,7 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
           muted
           preload="metadata"
           className="w-full h-full object-cover cursor-pointer"
+          style={{ transform: "translate3d(0,0,0)" }}
           onClick={togglePlay}
           onPause={() => setIsPlaying(false)}
         />
@@ -477,7 +504,7 @@ function RankFlip() {
 function GoogleSearchMockup() {
   const { getDistance, getDuration, getEase, getStagger, viewportConfig } = useAnimationConfig();
   const rows = [
-    { rank: 1, name: 'Manny Painter', rating: '4.9', reviews: 47, highlight: true },
+    { rank: 1, name: 'Manny Painter', rating: '5.0', reviews: 8, highlight: true },
     { rank: 2, name: 'Peinture Rive-Sud', rating: '4.2', reviews: 18, highlight: false },
     { rank: 3, name: 'Atelier Couleur Pro', rating: '4.0', reviews: 9, highlight: false },
   ];

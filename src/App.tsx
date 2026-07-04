@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import StatsSection from './components/StatsSection';
 import Services from './components/Services';
-import ScannerSection from './components/ScannerSection';
-import Portfolio from './components/Portfolio';
-import ImpactSection from './components/ImpactSection';
-import SocialProof from './components/SocialProof';
-import FaqSection from './components/FaqSection';
-import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import StickyCTA from './components/StickyCTA';
 import WhatsAppButton from './components/WhatsAppButton';
 import { LanguageProvider } from './context/LanguageContext';
+
+const Portfolio = React.lazy(() => import('./components/Portfolio'));
+const ImpactSection = React.lazy(() => import('./components/ImpactSection'));
+const SocialProof = React.lazy(() => import('./components/SocialProof'));
+const ScannerSection = React.lazy(() => import('./components/ScannerSection'));
+const ContactSection = React.lazy(() => import('./components/ContactSection'));
+const FaqSection = React.lazy(() => import('./components/FaqSection'));
 
 export default function App() {
   return (
@@ -29,12 +30,30 @@ export default function App() {
           >
             <StatsSection />
             <Services />
-            <Portfolio />
-            <ImpactSection />
-            <SocialProof />
-            <ScannerSection />
-            <ContactSection />
-            <FaqSection />
+            
+            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+              <Portfolio />
+            </Suspense>
+            
+            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+              <ImpactSection />
+            </Suspense>
+            
+            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+              <SocialProof />
+            </Suspense>
+            
+            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+              <ScannerSection />
+            </Suspense>
+            
+            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+              <ContactSection />
+            </Suspense>
+            
+            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+              <FaqSection />
+            </Suspense>
           </div>
         </main>
         <Footer />

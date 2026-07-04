@@ -305,17 +305,20 @@ export default function ScrollTextReveal({
         const pY = p.startY + offsetY;
 
         if (variant === "blossom") {
-          const pink = pinks[Math.floor(Math.random() * pinks.length)];
-          // Blend text pixel color 30% with pink
-          const blendedR = Math.round(p.r * 0.7 + pink.r * 0.3);
-          const blendedG = Math.round(p.g * 0.7 + pink.g * 0.3);
-          const blendedB = Math.round(p.b * 0.7 + pink.b * 0.3);
-
+          // Vibrant cherry blossom base pinks (independent of text color to avoid grey/muddy outcomes)
+          const basePinks = [
+            { r: 255, g: 77,  b: 128 }, // Dark pink
+            { r: 255, g: 110, b: 145 }, // Deep rose
+            { r: 255, g: 143, b: 171 }, // Medium pink
+            { r: 255, g: 165, b: 188 }, // Light-medium pink
+          ];
+          const base = basePinks[Math.floor(Math.random() * basePinks.length)];
+          
           // Apply shading variance (some leaves are darker than others)
-          const shade = 0.55 + Math.random() * 0.45; // 0.55x to 1.0x brightness
-          const r = Math.round(blendedR * shade);
-          const g = Math.round(blendedG * shade);
-          const b = Math.round(blendedB * shade);
+          const shade = 0.8 + Math.random() * 0.2; // 0.8 to 1.0 brightness
+          const r = Math.round(base.r * shade);
+          const g = Math.round(base.g * shade);
+          const b = Math.round(base.b * shade);
 
           return {
             ...p,
