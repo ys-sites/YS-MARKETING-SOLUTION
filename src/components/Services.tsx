@@ -6,6 +6,7 @@ import GlowDot from './GlowDot';
 import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
+import ScrollTextReveal from './ui/ScrollTextReveal';
 
 const serviceIcons = [Globe, Search, Megaphone, Users, PenTool, BarChart3];
 
@@ -13,6 +14,7 @@ export default function Services() {
   const { t } = useLanguage();
   const { isMobile, getDistance, getDuration, getEase, getStagger, viewportConfig } = useAnimationConfig();
   const services = t.services.items.map((item, index) => ({ ...item, icon: serviceIcons[index] }));
+
 
   return (
     <section id="services" className="py-28 bg-white bg-grid-pattern relative overflow-hidden gpu-accelerated">
@@ -25,8 +27,10 @@ export default function Services() {
             transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
-            <GlowDot />
-            {t.services.badge}
+            <ScrollTextReveal variant="blossom" delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
+              <GlowDot />
+              {t.services.badge}
+            </ScrollTextReveal>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: getDistance(20) }}
@@ -35,18 +39,22 @@ export default function Services() {
             transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6"
           >
-            <ShinyTitle
-              blackText={t.services.title.split(' ').slice(0, -1).join(' ') + ' '}
-              redText={t.services.title.split(' ').slice(-1).join(' ')}
-            />
+            <ScrollTextReveal variant="blossom" delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
+              <ShinyTitle
+                blackText={t.services.title.split(' ').slice(0, -1).join(' ') + ' '}
+                redText={t.services.title.split(' ').slice(-1).join(' ')}
+              />
+            </ScrollTextReveal>
           </motion.h2>
-          <BlurText
-            text={t.services.subtitle}
-            delay={60}
-            animateBy="words"
-            direction="top"
-            className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light justify-center text-center"
-          />
+          <ScrollTextReveal variant="blossom" delay={0.2} textColor="#52525B" wrapperClassName="block">
+            <BlurText
+              text={t.services.subtitle}
+              delay={60}
+              animateBy="words"
+              direction="top"
+              className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light justify-center text-center"
+            />
+          </ScrollTextReveal>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -80,11 +88,15 @@ export default function Services() {
                 <div className="w-14 h-14 rounded-2xl bg-brand-red-light flex items-center justify-center mb-6 group-hover:bg-brand-red group-hover:scale-110 transition-all duration-300 shadow-[0_4px_10px_rgba(225,29,46,0.1)]">
                   <service.icon className="w-6 h-6 text-brand-red group-hover:text-white transition-colors duration-300" />
                 </div>
-                <h3 className="text-xl font-bold text-ink mb-4 group-hover:text-brand-red transition-colors duration-200">
-                  {service.title}
+                 <h3 className="text-xl font-bold text-ink mb-4 group-hover:text-brand-red transition-colors duration-200">
+                  <ScrollTextReveal variant="blossom" delay={index * 0.05 + 0.1} textColor="#0A0A0A">
+                    {service.title}
+                  </ScrollTextReveal>
                 </h3>
                 <p className="text-muted text-sm leading-relaxed mb-4">
-                  {service.description}
+                  <ScrollTextReveal variant="blossom" delay={index * 0.05 + 0.15} textColor="#71717A">
+                    {service.description}
+                  </ScrollTextReveal>
                 </p>
               </div>
 

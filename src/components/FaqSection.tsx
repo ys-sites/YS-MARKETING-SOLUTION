@@ -5,6 +5,8 @@ import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
 import FaqAccordion, { type FaqItem } from './FaqAccordion';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
+import ScrollTextReveal from './ui/ScrollTextReveal';
+
 
 // ... painPoints and items ...
 
@@ -73,8 +75,10 @@ export default function FaqSection() {
             transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
-            <GlowDot />
-            FAQ
+            <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
+              <GlowDot />
+              FAQ
+            </ScrollTextReveal>
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: getDistance(20) }}
@@ -83,15 +87,19 @@ export default function FaqSection() {
             transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="text-4xl md:text-5xl font-extrabold tracking-tight text-ink mb-6"
           >
-            <ShinyTitle blackText="Questions, " redText="answered." />
+            <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
+              <ShinyTitle blackText="Questions, " redText="answered." />
+            </ScrollTextReveal>
           </motion.h2>
-          <BlurText
-            text="Everything business owners ask us before starting a project — search below or browse them all."
-            delay={40}
-            animateBy="words"
-            direction="top"
-            className="text-muted max-w-xl mx-auto text-lg font-light justify-center text-center"
-          />
+          <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
+            <BlurText
+              text="Everything business owners ask us before starting a project — search below or browse them all."
+              delay={40}
+              animateBy="words"
+              direction="top"
+              className="text-muted max-w-xl mx-auto text-lg font-light justify-center text-center"
+            />
+          </ScrollTextReveal>
         </div>
 
         <FaqAccordion items={faqItems} searchPlaceholder="Search pricing, SEO, timelines..." />

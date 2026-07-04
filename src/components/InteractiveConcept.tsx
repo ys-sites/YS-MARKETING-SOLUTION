@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Sparkles, HelpCircle, DollarSign, ArrowRight, Flame } from 'lucide-react';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
+import ScrollTextReveal from './ui/ScrollTextReveal';
+
 
 export default function InteractiveConcept() {
   const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
@@ -63,15 +65,21 @@ export default function InteractiveConcept() {
           transition={{ duration: getDuration(0.6), ease: getEase() }}
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-6">
-            <Flame className="w-3.5 h-3.5 text-brand-red fill-brand-red animate-bounce" />
-            Interactive Cash Burn Audit
+            <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
+              <Flame className="w-3.5 h-3.5 text-brand-red fill-brand-red animate-bounce" />
+              Interactive Cash Burn Audit
+            </ScrollTextReveal>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink mb-6 leading-tight">
-            Calculate How Much You're <br />
-            <span className="text-brand-red">Burning on Bad Design</span>
+            <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
+              Calculate How Much You're <br />
+              <span className="text-brand-red">Burning on Bad Design</span>
+            </ScrollTextReveal>
           </h2>
           <p className="text-muted text-lg md:text-xl font-light mb-8 leading-relaxed">
-            Most agencies sell you beautiful templates. We build **sales systems**. Toggle the sliders to see the exact value of your missed conversions, and see how simple tweaks can add tens of thousands to your bottom line.
+            <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
+              Most agencies sell you beautiful templates. We build **sales systems**. Toggle the sliders to see the exact value of your missed conversions, and see how simple tweaks can add tens of thousands to your bottom line.
+            </ScrollTextReveal>
           </p>
 
           <div className="space-y-6 mb-8">

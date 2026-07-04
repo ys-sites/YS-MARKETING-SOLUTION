@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useMotionValue, useTransform, useInView, animate } from 'framer-motion';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
+import ScrollTextReveal from './ui/ScrollTextReveal';
 
 interface CounterProps {
   value: number;
@@ -70,7 +71,9 @@ export default function StatsSection() {
                 />
               </div>
               <div className="text-xs font-bold text-muted tracking-wider uppercase">
-                {stat.label}
+                <ScrollTextReveal delay={index * 0.05} textColor="#71717A">
+                  {stat.label}
+                </ScrollTextReveal>
               </div>
             </motion.div>
           ))}

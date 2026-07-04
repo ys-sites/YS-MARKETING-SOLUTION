@@ -6,6 +6,7 @@ import GlowDot from './GlowDot';
 import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
+import ScrollTextReveal from './ui/ScrollTextReveal';
 
 export default function SocialProof() {
   const { t } = useLanguage();
@@ -28,8 +29,10 @@ export default function SocialProof() {
             transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
-            <GlowDot />
-            {t.testimonials.badge}
+            <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
+              <GlowDot />
+              {t.testimonials.badge}
+            </ScrollTextReveal>
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: getDistance(20) }}
@@ -38,18 +41,22 @@ export default function SocialProof() {
             transition={{ duration: getDuration(0.5), delay: getDuration(0.05), ease: getEase() }}
             className="text-4xl md:text-6xl font-black text-ink tracking-tight mb-6"
           >
-            <ShinyTitle
-              blackText={t.testimonials.title.split(' ').slice(0, -1).join(' ') + ' '}
-              redText={t.testimonials.title.split(' ').slice(-1).join(' ')}
-            />
+            <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
+              <ShinyTitle
+                blackText={t.testimonials.title.split(' ').slice(0, -1).join(' ') + ' '}
+                redText={t.testimonials.title.split(' ').slice(-1).join(' ')}
+              />
+            </ScrollTextReveal>
           </motion.h2>
-          <BlurText
-            text={t.testimonials.subtitle}
-            delay={40}
-            animateBy="words"
-            direction="top"
-            className="text-muted text-lg md:text-xl max-w-2xl font-light leading-relaxed justify-center text-center"
-          />
+          <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
+            <BlurText
+              text={t.testimonials.subtitle}
+              delay={40}
+              animateBy="words"
+              direction="top"
+              className="text-muted text-lg md:text-xl max-w-2xl font-light leading-relaxed justify-center text-center"
+            />
+          </ScrollTextReveal>
         </div>
 
 

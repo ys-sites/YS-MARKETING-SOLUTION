@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
 import BlurText from './BlurText';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
+import ScrollTextReveal from './ui/ScrollTextReveal';
 
 const WEBHOOK_URL = 'https://hook.us2.make.com/9z1ldu1b99eooozbpe3a4u99p5b19ji2';
 const REQUEST_TIMEOUT_MS = 10000;
@@ -126,19 +127,25 @@ export default function ContactSection() {
           className="flex flex-col justify-center"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-6 w-fit">
-            <GlowDot />
-            {t.contact.badge}
+            <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
+              <GlowDot />
+              {t.contact.badge}
+            </ScrollTextReveal>
           </div>
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6 leading-tight">
-            {t.contact.title}
+            <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
+              {t.contact.title}
+            </ScrollTextReveal>
           </h2>
-          <BlurText
-            text={t.contact.subtitle}
-            delay={50}
-            animateBy="words"
-            direction="top"
-            className="text-muted text-lg leading-relaxed mb-10 max-w-md font-light"
-          />
+          <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
+            <BlurText
+              text={t.contact.subtitle}
+              delay={50}
+              animateBy="words"
+              direction="top"
+              className="text-muted text-lg leading-relaxed mb-10 max-w-md font-light"
+            />
+          </ScrollTextReveal>
 
           <div className="space-y-4">
             <motion.div 
@@ -151,8 +158,16 @@ export default function ContactSection() {
                 <Heart className="w-6 h-6 text-brand-red" />
               </div>
               <div>
-                <h4 className="font-bold text-ink text-lg mb-0.5">{t.contact.trust.abandonmentTitle}</h4>
-                <p className="text-muted text-sm">{t.contact.trust.abandonmentDesc}</p>
+                <h4 className="font-bold text-ink text-lg mb-0.5">
+                  <ScrollTextReveal delay={0} textColor="#0A0A0A">
+                    {t.contact.trust.abandonmentTitle}
+                  </ScrollTextReveal>
+                </h4>
+                <p className="text-muted text-sm">
+                  <ScrollTextReveal delay={0.05} textColor="#71717A">
+                    {t.contact.trust.abandonmentDesc}
+                  </ScrollTextReveal>
+                </p>
               </div>
             </motion.div>
             <motion.div 
@@ -165,8 +180,16 @@ export default function ContactSection() {
                 <ShoppingCart className="w-6 h-6 text-brand-red" />
               </div>
               <div>
-                <h4 className="font-bold text-ink text-lg mb-0.5">{t.contact.trust.missedRevenueTitle}</h4>
-                <p className="text-muted text-sm">{t.contact.trust.missedRevenueDesc}</p>
+                <h4 className="font-bold text-ink text-lg mb-0.5">
+                  <ScrollTextReveal delay={0.1} textColor="#0A0A0A">
+                    {t.contact.trust.missedRevenueTitle}
+                  </ScrollTextReveal>
+                </h4>
+                <p className="text-muted text-sm">
+                  <ScrollTextReveal delay={0.15} textColor="#71717A">
+                    {t.contact.trust.missedRevenueDesc}
+                  </ScrollTextReveal>
+                </p>
               </div>
             </motion.div>
           </div>

@@ -7,6 +7,8 @@ import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
 import { ParallaxHeroImages } from './ParallaxHeroImages';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
+import ScrollTextReveal from './ui/ScrollTextReveal';
+
 
 const categories = [
   { id: 'All', key: 'all' },
@@ -210,8 +212,10 @@ export default function Portfolio() {
               transition={{ duration: getDuration(0.5), ease: getEase() }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
             >
-              <GlowDot />
-              {t.portfolio.badge}
+              <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
+                <GlowDot />
+                {t.portfolio.badge}
+              </ScrollTextReveal>
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: getDistance(20) }}
@@ -220,18 +224,22 @@ export default function Portfolio() {
               transition={{ duration: getDuration(0.5), ease: getEase() }}
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6"
             >
-              <ShinyTitle
-                blackText={t.portfolio.title.split(' ').slice(0, -1).join(' ') + ' '}
-                redText={t.portfolio.title.split(' ').slice(-1).join(' ')}
-              />
+              <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
+                <ShinyTitle
+                  blackText={t.portfolio.title.split(' ').slice(0, -1).join(' ') + ' '}
+                  redText={t.portfolio.title.split(' ').slice(-1).join(' ')}
+                />
+              </ScrollTextReveal>
             </motion.h2>
-            <BlurText
-              text={t.portfolio.subtitle}
-              delay={60}
-              animateBy="words"
-              direction="top"
-              className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light justify-center text-center"
-            />
+            <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
+              <BlurText
+                text={t.portfolio.subtitle}
+                delay={60}
+                animateBy="words"
+                direction="top"
+                className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light justify-center text-center"
+              />
+            </ScrollTextReveal>
           </div>
         </div>
 
@@ -254,7 +262,9 @@ export default function Portfolio() {
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               )}
-              {t.portfolio.categories[category.key]}
+              <ScrollTextReveal delay={0} textColor={selectedCategory === category.id ? "#ffffff" : "#71717A"}>
+                {t.portfolio.categories[category.key]}
+              </ScrollTextReveal>
             </button>
           ))}
         </div>

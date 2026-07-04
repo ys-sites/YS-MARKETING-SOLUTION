@@ -18,6 +18,8 @@ import GlowDot from './GlowDot';
 import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
+import ScrollTextReveal from './ui/ScrollTextReveal';
+
 
 function useReducedMotionPref() {
   const [reduced, setReduced] = useState(false);
@@ -581,8 +583,10 @@ export default function ImpactSection() {
             transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
-            <GlowDot />
-            Client Impact
+            <ScrollTextReveal delay={0} textColor="#E11D2E" wrapperClassName="flex items-center gap-2">
+              <GlowDot />
+              Client Impact
+            </ScrollTextReveal>
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: getDistance(20) }}
@@ -591,18 +595,22 @@ export default function ImpactSection() {
             transition={{ duration: getDuration(0.5), ease: getEase() }}
             className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6"
           >
-            <ShinyTitle
-              blackText="Real Clients. Real "
-              redText="Numbers."
-            />
+            <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
+              <ShinyTitle
+                blackText="Real Clients. Real "
+                redText="Numbers."
+              />
+            </ScrollTextReveal>
           </motion.h2>
-          <BlurText
-            text="No vanity promises — just the measurable growth these two campaigns actually produced."
-            delay={40}
-            animateBy="words"
-            direction="top"
-            className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light justify-center text-center"
-          />
+          <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
+            <BlurText
+              text="No vanity promises — just the measurable growth these two campaigns actually produced."
+              delay={40}
+              animateBy="words"
+              direction="top"
+              className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light justify-center text-center"
+            />
+          </ScrollTextReveal>
         </div>
 
         {/* Case Study 1: 1001 Nuits */}
@@ -615,16 +623,22 @@ export default function ImpactSection() {
                 <CountUp value={1000000} suffix="+" compact />
               </div>
               <p className="text-xs sm:text-sm font-semibold text-muted mt-3 leading-snug uppercase tracking-wide">
-                Combined views across Instagram &amp; TikTok
+                <ScrollTextReveal delay={0} textColor="#71717A">
+                  Combined views across Instagram &amp; TikTok
+                </ScrollTextReveal>
               </p>
             </div>
             <p className="text-zinc-600 leading-relaxed max-w-lg mb-2">
-              Started from zero — no followers, no content, no online presence at all. We built an organic
-              content strategy from scratch around viral reels that grew the account past 7,000 engaged followers.
+              <ScrollTextReveal delay={0.05} textColor="#52525B">
+                Started from zero — no followers, no content, no online presence at all. We built an organic
+                content strategy from scratch around viral reels that grew the account past 7,000 engaged followers.
+              </ScrollTextReveal>
             </p>
             <p className="text-zinc-600 leading-relaxed max-w-lg">
-              The impact has been huge: over 1,000,000 combined views across Instagram and TikTok, and a steady
-              stream of consistent new customers walking through the door every week.
+              <ScrollTextReveal delay={0.1} textColor="#52525B">
+                The impact has been huge: over 1,000,000 combined views across Instagram and TikTok, and a steady
+                stream of consistent new customers walking through the door every week.
+              </ScrollTextReveal>
             </p>
           </div>
           <div className="order-2">
@@ -636,23 +650,31 @@ export default function ImpactSection() {
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center mb-28 md:mb-36">
           <div className="order-1">
             <h4 className="text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
-              The progress, <span className="text-brand-red">so far.</span>
+              <ScrollTextReveal delay={0} textColor="#0A0A0A">
+                The progress, <span className="text-brand-red">so far.</span>
+              </ScrollTextReveal>
             </h4>
             <div className="mb-6">
               <div className="text-5xl sm:text-6xl font-extrabold tracking-tight text-brand-red">
                 <CountUp value={615600} suffix="+" compact />
               </div>
               <p className="text-xs sm:text-sm font-semibold text-muted mt-2 uppercase tracking-wide">
-                Views in the last 30 days alone
+                <ScrollTextReveal delay={0.05} textColor="#71717A">
+                  Views in the last 30 days alone
+                </ScrollTextReveal>
               </p>
             </div>
             <p className="text-zinc-600 leading-relaxed max-w-lg mb-2">
-              This isn't a one-off spike from a single viral post — it's a snapshot of where the account stands
-              today, and it's still climbing.
+              <ScrollTextReveal delay={0.1} textColor="#52525B">
+                This isn't a one-off spike from a single viral post — it's a snapshot of where the account stands
+                today, and it's still climbing.
+              </ScrollTextReveal>
             </p>
             <p className="text-zinc-600 leading-relaxed max-w-lg">
-              It's the result of a consistent content system: reels published on a regular schedule, tracked in
-              a live performance dashboard, and refined every month based on what's actually working.
+              <ScrollTextReveal delay={0.15} textColor="#52525B">
+                It's the result of a consistent content system: reels published on a regular schedule, tracked in
+                a live performance dashboard, and refined every month based on what's actually working.
+              </ScrollTextReveal>
             </p>
           </div>
           <div className="order-2">
@@ -672,15 +694,21 @@ export default function ImpactSection() {
             <div className="mb-6">
               <RankFlip />
               <p className="text-xs sm:text-sm font-semibold text-muted mt-3 leading-snug uppercase tracking-wide">
-                Ranks Top 3–10 in Google local search results
+                <ScrollTextReveal delay={0} textColor="#71717A">
+                  Ranks Top 3–10 in Google local search results
+                </ScrollTextReveal>
               </p>
             </div>
             <p className="text-zinc-600 leading-relaxed max-w-lg mb-2">
-              Google Business Profile built from scratch, plus a proper review &amp; ranking system.
+              <ScrollTextReveal delay={0.05} textColor="#52525B">
+                Google Business Profile built from scratch, plus a proper review &amp; ranking system.
+              </ScrollTextReveal>
             </p>
             <p className="text-zinc-600 leading-relaxed max-w-lg mb-8">
-              A real system — profile optimization, categories, reviews, posts — turned an invisible business into
-              one customers actually find.
+              <ScrollTextReveal delay={0.1} textColor="#52525B">
+                A real system — profile optimization, categories, reviews, posts — turned an invisible business into
+                one customers actually find.
+              </ScrollTextReveal>
             </p>
             <GoogleSearchMockup />
           </div>

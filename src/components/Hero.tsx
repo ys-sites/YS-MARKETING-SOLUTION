@@ -5,9 +5,10 @@ import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
 import ShinyText from './ShinyText';
 import BlurText from './BlurText';
+import ScrollTextReveal from './ui/ScrollTextReveal';
 
 export default function Hero() {
-  const { t } = useLanguage();
+  const t = useLanguage().t;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -76,25 +77,34 @@ export default function Hero() {
 
           {/* Headline */}
           <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight leading-[1.1] text-left">
-            <motion.span variants={itemVariants} className="block text-white">
-              {t.hero.title1}
-            </motion.span>
-            <motion.span variants={itemVariants} className="block text-white">
-              {t.hero.title2}
-            </motion.span>
-            <motion.span variants={itemVariants} className="block">
-              <ShinyText text={t.hero.title3} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
-            </motion.span>
+            <ScrollTextReveal delay={0} textColor="#ffffff" wrapperClassName="block">
+              <motion.span variants={itemVariants} className="block text-white">
+                {t.hero.title1}
+              </motion.span>
+            </ScrollTextReveal>
+            <ScrollTextReveal delay={0.1} textColor="#ffffff" wrapperClassName="block">
+              <motion.span variants={itemVariants} className="block text-white">
+                {t.hero.title2}
+              </motion.span>
+            </ScrollTextReveal>
+            <ScrollTextReveal delay={0.2} textColor="#E11D2E" wrapperClassName="block">
+              <motion.span variants={itemVariants} className="block">
+                <ShinyText text={t.hero.title3} color="#E11D2E" shineColor="#ffffff" speed={2.5} className="font-extrabold" />
+              </motion.span>
+            </ScrollTextReveal>
           </h1>
 
           {/* Subheadline */}
-          <BlurText
-            text={t.hero.subtitle}
-            delay={50}
-            animateBy="words"
-            direction="top"
-            className="text-lg md:text-xl text-zinc-300 max-w-xl text-left leading-relaxed font-light"
-          />
+          <ScrollTextReveal delay={0.3} textColor="#d1d5db" wrapperClassName="block">
+            <BlurText
+              text={t.hero.subtitle}
+              delay={50}
+              animateBy="words"
+              direction="top"
+              className="text-lg md:text-xl text-zinc-300 max-w-xl text-left leading-relaxed font-light"
+            />
+          </ScrollTextReveal>
+
 
           {/* Action CTAs */}
           <motion.div
