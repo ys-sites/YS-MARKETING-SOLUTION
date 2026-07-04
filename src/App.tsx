@@ -2,10 +2,8 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import StatsSection from './components/StatsSection';
-import ProblemAgitate from './components/ProblemAgitate';
 import Services from './components/Services';
 import InteractiveConcept from './components/InteractiveConcept';
-import ScannerSection from './components/ScannerSection';
 import Portfolio from './components/Portfolio';
 import Process from './components/Process';
 import SocialProof from './components/SocialProof';
@@ -21,10 +19,8 @@ export default function App() {
       <main>
         <Hero />
         <StatsSection />
-        <ProblemAgitate />
         <Services />
         <InteractiveConcept />
-        <ScannerSection />
         <Portfolio />
         <Process />
         <SocialProof />
