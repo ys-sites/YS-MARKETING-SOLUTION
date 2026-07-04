@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ArrowDown } from 'lucide-react';
+import { ArrowRight, ArrowDown, Instagram } from 'lucide-react';
 
 export default function Hero() {
   const containerVariants = {
@@ -111,6 +111,17 @@ export default function Hero() {
               className="flex items-center justify-center gap-2 px-8 py-4 border border-white/20 hover:border-white/40 bg-white/5 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300 w-full sm:w-auto backdrop-blur-sm cursor-pointer"
             >
               See Our Work
+            </a>
+
+            {/* Instagram Social Icon Link */}
+            <a
+              href="https://www.instagram.com/ys.sites/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-14 h-14 rounded-full border border-white/20 hover:border-white/40 bg-white/5 flex items-center justify-center text-white hover:bg-white/10 hover:text-brand-red hover:scale-105 transition-all duration-300 backdrop-blur-sm cursor-pointer"
+              aria-label="Instagram Profile"
+            >
+              <Instagram className="w-6 h-6" />
             </a>
           </motion.div>
         </motion.div>

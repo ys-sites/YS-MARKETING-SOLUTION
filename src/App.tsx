@@ -5,7 +5,6 @@ import StatsSection from './components/StatsSection';
 import Services from './components/Services';
 import ScannerSection from './components/ScannerSection';
 import Portfolio from './components/Portfolio';
-import Process from './components/Process';
 import SocialProof from './components/SocialProof';
 import CTA from './components/CTA';
 import ContactSection from './components/ContactSection';
@@ -24,7 +23,6 @@ export default function App() {
           <StatsSection />
           <Services />
           <Portfolio />
-          <Process />
           <SocialProof />
           <CTA />
           <ScannerSection />

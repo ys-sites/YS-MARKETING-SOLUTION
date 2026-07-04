@@ -18,7 +18,6 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Services', href: '#services' },
     { name: 'Portfolio', href: '#portfolio' },
-    { name: 'Process', href: '#process' },
     { name: 'Testimonials', href: '#testimonials' },
   ];
 
@@ -36,9 +35,11 @@ export default function Navbar() {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
           className="flex items-center gap-3 cursor-pointer hover:opacity-90 transition-opacity"
         >
-          {/* Logo asset kept exactly as-is */}
-          <img src="/YS.png" alt="YS Marketing Solutions" className="h-12 w-auto" />
-          <span className="text-xl font-extrabold tracking-tight text-white">
+          {/* Logo asset in a padded circle */}
+          <div className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center p-2.5 backdrop-blur-sm">
+            <img src="/YS.png" alt="YS Marketing Solutions" className="h-full w-auto object-contain" />
+          </div>
+          <span className="text-lg font-black tracking-wider text-white uppercase">
             YS Marketing Solutions
           </span>
         </button>

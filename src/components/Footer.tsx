@@ -5,7 +5,6 @@ export default function Footer() {
   const quickLinks = [
     { name: 'Services', href: '#services' },
     { name: 'Portfolio', href: '#portfolio' },
-    { name: 'Process', href: '#process' },
     { name: 'Testimonials', href: '#testimonials' },
   ];
 
@@ -20,8 +19,11 @@ export default function Footer() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="flex items-center gap-3 cursor-pointer hover:opacity-90 transition-opacity self-start"
             >
-              <img src="/YS.png" alt="YS Marketing Solutions" className="h-12 w-auto" />
-              <span className="text-xl font-extrabold tracking-tight text-white">YS Marketing Solutions</span>
+              {/* Logo asset in a padded circle */}
+              <div className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center p-2.5 backdrop-blur-sm">
+                <img src="/YS.png" alt="YS Marketing Solutions" className="h-full w-auto object-contain" />
+              </div>
+              <span className="text-lg font-black tracking-wider text-white uppercase">YS Marketing Solutions</span>
             </button>
             <p className="text-zinc-400 text-sm leading-relaxed">
               We design and build high-performance websites and strategic digital systems that help your business scale conversions and dominate its local market.

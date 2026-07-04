@@ -4,6 +4,11 @@ import { Search, Megaphone, Users, PenTool, BookOpen, BarChart3, Globe, ArrowRig
 
 const services = [
   {
+    title: 'Website Development',
+    description: 'We design and build custom, high-performance websites optimized for speed, search visibility, and maximum conversion rates.',
+    icon: Globe,
+  },
+  {
     title: 'Google Ranking (SEO)',
     description: "Get discovered by high-intent customers who are actively searching for what you offer. Real rankings, real traffic.",
     icon: Search,
@@ -22,11 +27,6 @@ const services = [
     title: 'Content Creation',
     description: "Copywriting, graphic design, and custom brand assets designed to tell your story and optimize conversion rate.",
     icon: PenTool,
-  },
-  {
-    title: 'Blogs & PR',
-    description: "Authoritative authority-building articles that drive organic keyword coverage and build your domain ranking power.",
-    icon: BookOpen,
   },
   {
     title: 'Digital Strategy',
