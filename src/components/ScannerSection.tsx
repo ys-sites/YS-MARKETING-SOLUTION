@@ -432,12 +432,10 @@ export default function ScannerSection() {
         transition={{ duration: 1, ease: "easeOut" }}
       >
         <div className="absolute top-16 left-1/2 -translate-x-1/2 text-center z-50 w-full px-4">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink mb-4 tracking-tight">
-            Our Automated <span className="text-brand-red">Conversion Analysis</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-ink mb-4 tracking-tight leading-tight">
+            Stop Burning Cash on <br />
+            <span className="text-zinc-900">Bad <span className="bg-gradient-to-r from-brand-red to-brand-red-dark text-white px-3 py-1 rounded-xl inline-block transform -rotate-2 shadow-lg shadow-brand-red/20">Web</span><span className="text-brand-red font-black">sites</span></span>
           </h2>
-          <p className="text-muted text-sm md:text-base max-w-lg mx-auto">
-            Swipe or drag the card stream below to simulate our scanner analyzing layout rendering, speed performance, and code logic.
-          </p>
         </div>
 
         <div className="container">
