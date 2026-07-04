@@ -37,7 +37,7 @@ export default function Services() {
             transition={{ delay: 0.1 }}
             className="text-muted max-w-2xl mx-auto text-lg md:text-xl font-light"
           >
-            With <strong>Web Design &amp; Development</strong> as our primary production powerhouse, we weave these high-performance organic and paid marketing strategies into every screen we build.
+            {t.services.subtitle}
           </motion.p>
         </div>
 

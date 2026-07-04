@@ -142,6 +142,45 @@ function PhoneMockup({ src, rotate, fromSide, delay, viewBadge }: PhoneMockupPro
   );
 }
 
+interface PhoneVideoMockupProps {
+  src: string;
+  rotate: number;
+  delay: number;
+  badge: string;
+  raised?: boolean;
+}
+
+function PhoneVideoMockup({ src, rotate, delay, badge, raised = false }: PhoneVideoMockupProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 60, rotate: 0 }}
+      whileInView={{ opacity: 1, y: 0, rotate }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.7, ease: 'easeOut', delay }}
+      whileHover={{ rotate: 0, scale: 1.06, zIndex: 20 }}
+      className={`relative w-28 sm:w-36 md:w-44 aspect-[9/19] rounded-[2rem] border-[6px] border-zinc-900 bg-zinc-900 shadow-2xl overflow-hidden cursor-pointer select-none z-10 ${
+        raised ? '-translate-y-4 md:-translate-y-6' : ''
+      }`}
+    >
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-4 bg-zinc-900 rounded-b-xl z-20" />
+      <div className="relative w-full h-full bg-zinc-100">
+        <video
+          src={src}
+          muted
+          loop
+          playsInline
+          autoPlay
+          preload="metadata"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold whitespace-nowrap">
+          <Play className="w-2.5 h-2.5 fill-white" /> {badge}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 function FloatingChip({
   icon: Icon,
   label,
@@ -180,9 +219,10 @@ function ViralPhonesVisual() {
     <div className="relative flex items-center justify-center min-h-[360px] sm:min-h-[400px] py-10">
       <div className="absolute w-64 h-64 md:w-80 md:h-80 bg-brand-red/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative flex items-center -space-x-6 sm:-space-x-8">
-        <PhoneMockup src="/results/1001nuits-viral-1.jpg" rotate={-6} fromSide="left" delay={0} viewBadge="487K" />
-        <PhoneMockup src="/results/1001nuits-viral-2.jpg" rotate={6} fromSide="right" delay={0.15} viewBadge="1.2M" />
+      <div className="relative flex items-end -space-x-8 sm:-space-x-10 md:-space-x-12">
+        <PhoneMockup src="/results/1001nuits-viral-1.jpg" rotate={-10} fromSide="left" delay={0} viewBadge="487K" />
+        <PhoneVideoMockup src="/feedback.mp4" rotate={0} delay={0.15} badge="Client Feedback" raised />
+        <PhoneMockup src="/results/1001nuits-viral-2.jpg" rotate={10} fromSide="right" delay={0.3} viewBadge="1.2M" />
       </div>
 
       <FloatingChip

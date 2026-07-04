@@ -15,7 +15,7 @@ export default function WhatsAppButton() {
       transition={{ delay: 1, type: 'spring', stiffness: 260, damping: 20 }}
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
-      className="group fixed bottom-24 right-5 md:bottom-8 md:right-8 z-[60] flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#25D366] shadow-[0_8px_24px_rgba(37,211,102,0.45)] cursor-pointer"
+      className="group fixed bottom-5 right-5 md:bottom-8 md:right-8 z-[60] flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#25D366] shadow-[0_8px_24px_rgba(37,211,102,0.45)] cursor-pointer"
     >
       {/* Subtle pulse ring — using pulse instead of ping to avoid the sharp opacity flash */}
       <span className="absolute inset-0 rounded-full bg-[#25D366] animate-pulse opacity-30" />
