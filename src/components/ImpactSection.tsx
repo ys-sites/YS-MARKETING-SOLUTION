@@ -622,24 +622,24 @@ export default function ImpactSection() {
               <div className="text-6xl sm:text-7xl font-extrabold tracking-tight text-brand-red">
                 <CountUp value={1000000} suffix="+" compact />
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-muted mt-3 leading-snug uppercase tracking-wide">
+              <div className="text-xs sm:text-sm font-semibold text-muted mt-3 leading-snug uppercase tracking-wide">
                 <ScrollTextReveal delay={0} textColor="#71717A">
                   Combined views across Instagram &amp; TikTok
                 </ScrollTextReveal>
-              </p>
+              </div>
             </div>
-            <p className="text-zinc-600 leading-relaxed max-w-lg mb-2">
+            <div className="text-zinc-600 leading-relaxed max-w-lg mb-2">
               <ScrollTextReveal delay={0.05} textColor="#52525B">
                 Started from zero — no followers, no content, no online presence at all. We built an organic
                 content strategy from scratch around viral reels that grew the account past 7,000 engaged followers.
               </ScrollTextReveal>
-            </p>
-            <p className="text-zinc-600 leading-relaxed max-w-lg">
+            </div>
+            <div className="text-zinc-600 leading-relaxed max-w-lg">
               <ScrollTextReveal delay={0.1} textColor="#52525B">
                 The impact has been huge: over 1,000,000 combined views across Instagram and TikTok, and a steady
                 stream of consistent new customers walking through the door every week.
               </ScrollTextReveal>
-            </p>
+            </div>
           </div>
           <div className="order-2">
             <TwoPhoneVisual />
@@ -658,24 +658,24 @@ export default function ImpactSection() {
               <div className="text-5xl sm:text-6xl font-extrabold tracking-tight text-brand-red">
                 <CountUp value={615600} suffix="+" compact />
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-muted mt-2 uppercase tracking-wide">
+              <div className="text-xs sm:text-sm font-semibold text-muted mt-2 uppercase tracking-wide">
                 <ScrollTextReveal delay={0.05} textColor="#71717A">
                   Views in the last 30 days alone
                 </ScrollTextReveal>
-              </p>
+              </div>
             </div>
-            <p className="text-zinc-600 leading-relaxed max-w-lg mb-2">
+            <div className="text-zinc-600 leading-relaxed max-w-lg mb-2">
               <ScrollTextReveal delay={0.1} textColor="#52525B">
                 This isn't a one-off spike from a single viral post — it's a snapshot of where the account stands
                 today, and it's still climbing.
               </ScrollTextReveal>
-            </p>
-            <p className="text-zinc-600 leading-relaxed max-w-lg">
+            </div>
+            <div className="text-zinc-600 leading-relaxed max-w-lg">
               <ScrollTextReveal delay={0.15} textColor="#52525B">
                 It's the result of a consistent content system: reels published on a regular schedule, tracked in
                 a live performance dashboard, and refined every month based on what's actually working.
               </ScrollTextReveal>
-            </p>
+            </div>
           </div>
           <div className="order-2">
             <InstagramPostCard
@@ -693,23 +693,23 @@ export default function ImpactSection() {
             <ProgressRule />
             <div className="mb-6">
               <RankFlip />
-              <p className="text-xs sm:text-sm font-semibold text-muted mt-3 leading-snug uppercase tracking-wide">
+              <div className="text-xs sm:text-sm font-semibold text-muted mt-3 leading-snug uppercase tracking-wide">
                 <ScrollTextReveal delay={0} textColor="#71717A">
                   Ranks Top 3–10 in Google local search results
                 </ScrollTextReveal>
-              </p>
+              </div>
             </div>
-            <p className="text-zinc-600 leading-relaxed max-w-lg mb-2">
+            <div className="text-zinc-600 leading-relaxed max-w-lg mb-2">
               <ScrollTextReveal delay={0.05} textColor="#52525B">
                 Google Business Profile built from scratch, plus a proper review &amp; ranking system.
               </ScrollTextReveal>
-            </p>
-            <p className="text-zinc-600 leading-relaxed max-w-lg mb-8">
+            </div>
+            <div className="text-zinc-600 leading-relaxed max-w-lg mb-8">
               <ScrollTextReveal delay={0.1} textColor="#52525B">
                 A real system — profile optimization, categories, reviews, posts — turned an invisible business into
                 one customers actually find.
               </ScrollTextReveal>
-            </p>
+            </div>
             <GoogleSearchMockup />
           </div>
           <div className="order-2 md:order-1">

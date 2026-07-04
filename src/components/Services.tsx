@@ -93,11 +93,11 @@ export default function Services() {
                     {service.title}
                   </ScrollTextReveal>
                 </h3>
-                <p className="text-muted text-sm leading-relaxed mb-4">
+                <div className="text-muted text-sm leading-relaxed mb-4">
                   <ScrollTextReveal variant="blossom" delay={index * 0.05 + 0.15} textColor="#71717A">
                     {service.description}
                   </ScrollTextReveal>
-                </p>
+                </div>
               </div>
 
               <div className="flex items-center gap-2 text-brand-red font-semibold text-xs tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-[-10px] group-hover:translate-x-0 mt-4">

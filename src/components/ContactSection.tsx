@@ -163,11 +163,11 @@ export default function ContactSection() {
                     {t.contact.trust.abandonmentTitle}
                   </ScrollTextReveal>
                 </h4>
-                <p className="text-muted text-sm">
+                <div className="text-muted text-sm">
                   <ScrollTextReveal delay={0.05} textColor="#71717A">
                     {t.contact.trust.abandonmentDesc}
                   </ScrollTextReveal>
-                </p>
+                </div>
               </div>
             </motion.div>
             <motion.div 
@@ -185,11 +185,11 @@ export default function ContactSection() {
                     {t.contact.trust.missedRevenueTitle}
                   </ScrollTextReveal>
                 </h4>
-                <p className="text-muted text-sm">
+                <div className="text-muted text-sm">
                   <ScrollTextReveal delay={0.15} textColor="#71717A">
                     {t.contact.trust.missedRevenueDesc}
                   </ScrollTextReveal>
-                </p>
+                </div>
               </div>
             </motion.div>
           </div>
