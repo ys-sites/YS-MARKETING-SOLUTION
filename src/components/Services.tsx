@@ -14,7 +14,7 @@ const services = [
     icon: Search,
   },
   {
-    title: 'Google Ads',
+    title: 'Meta Ads',
     description: "Laser-targeted paid campaign management that bypasses search organic timeframes to capture immediate buying leads.",
     icon: Megaphone,
   },

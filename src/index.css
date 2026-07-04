@@ -9,6 +9,23 @@
   --color-muted: #52525B;            /* secondary text */
   --color-surface: #FFFFFF;
   --color-surface-alt: #FAFAFA;      /* alternating section background */
+
+  --animate-marquee-vertical: marquee-vertical 30s linear infinite;
+  --animate-marquee-vertical-slow: marquee-vertical 40s linear infinite;
+  --animate-marquee-vertical-fast: marquee-vertical 25s linear infinite;
+
+  @keyframes marquee-vertical {
+    0% {
+      transform: translateY(0%);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
 }
 
 body {

@@ -261,11 +261,12 @@ export default function ContactSection() {
                   className="w-full bg-zinc-50 border border-zinc-200 text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:border-brand-red focus:bg-white focus:shadow-[0_0_20px_rgba(225,29,46,0.1)] transition-all duration-200 appearance-none cursor-pointer text-sm"
                 >
                   <option value="" disabled className="text-zinc-400">Select a service...</option>
-                  <option value="Landing-Page">Conversion-Optimized Website</option>
-                  <option value="Lead-Generation">Strategic Lead Generation</option>
-                  <option value="SEO-Campaign">Google Ranking & SEO Campaign</option>
-                  <option value="Google-Ads">Google Ads Campaign</option>
-                  <option value="Content-Strategy">Content & Blog Strategy</option>
+                  <option value="Website-Development">Website Development</option>
+                  <option value="SEO">Google Ranking (SEO)</option>
+                  <option value="Meta-Ads">Meta Ads</option>
+                  <option value="Social-Media">Social Media</option>
+                  <option value="Content-Creation">Content Creation</option>
+                  <option value="Digital-Strategy">Digital Strategy</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-5 pointer-events-none">
                   <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
