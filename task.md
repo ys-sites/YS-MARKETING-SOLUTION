@@ -5,5 +5,6 @@
 - [x] Restore click-to-play with sound for `feedback.mp4`
 - [x] Replace `<motion.h2>` with standard `<h2>` tags in `Services`, `Portfolio`, `ImpactSection`, `SocialProof`, and `FaqSection`
 - [x] Remove card rise up animation for the website section on mobile ratio in `Portfolio.tsx`
+- [x] Wrap portfolio category tabs in multiple rows on mobile
 - [x] Verify build and typechecks
 - [/] Push changes to GitHub

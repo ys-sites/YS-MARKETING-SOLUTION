@@ -230,7 +230,7 @@ export default function Portfolio() {
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="flex flex-nowrap overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory gap-2 md:gap-3 mb-12 max-w-full pb-4 px-4 -mx-4 justify-start md:justify-center">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12 max-w-full px-4">
           {categories.map((category) => (
             <button
               key={category.id}
