@@ -142,10 +142,26 @@ export default function Hero() {
                 href="https://www.instagram.com/ys.sites/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="shrink-0 w-14 h-14 rounded-full border border-white/20 hover:border-white/40 bg-white/5 flex items-center justify-center text-white hover:bg-white/10 hover:text-brand-red hover:scale-105 transition-all duration-300 backdrop-blur-sm cursor-pointer"
+                className="shrink-0 relative w-14 h-14 rounded-full flex items-center justify-center text-white hover:scale-110 transition-all duration-300 cursor-pointer group"
+                style={{
+                  background: 'linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)',
+                  boxShadow: '0 0 20px rgba(253, 29, 29, 0.5), 0 0 40px rgba(131, 58, 180, 0.3)',
+                }}
                 aria-label="Instagram Profile"
               >
-                <Instagram className="w-6 h-6" />
+                {/* Pulsing glow ring */}
+                <span
+                  className="absolute inset-0 rounded-full animate-ping opacity-30"
+                  style={{ background: 'linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)' }}
+                  aria-hidden="true"
+                />
+                {/* Inner highlight */}
+                <span
+                  className="absolute inset-[2px] rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  style={{ background: 'radial-gradient(circle at 30% 30%, white, transparent)' }}
+                  aria-hidden="true"
+                />
+                <Instagram className="w-6 h-6 relative z-10 drop-shadow-md" />
               </a>
             </div>
           </motion.div>
