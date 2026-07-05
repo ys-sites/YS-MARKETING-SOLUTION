@@ -173,14 +173,23 @@ function ProjectCard({ project, index }: ProjectCardProps) {
   );
 }
 
-export default function Portfolio() {
-  const { t } = useLanguage();
+interface PortfolioProps {
+  limit?: number;
+  isSubpage?: boolean;
+  onBack?: () => void;
+  onViewAll?: () => void;
+}
+
+export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll }: PortfolioProps) {
+  const { language, t } = useLanguage();
   const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const filteredProjects = selectedCategory === 'All'
     ? projects
     : projects.filter(p => p.category === selectedCategory);
+
+  const displayedProjects = (!isSubpage && limit) ? filteredProjects.slice(0, limit) : filteredProjects;
 
   const renderCategoryButton = (category: typeof categories[number]) => (
     <button
@@ -206,8 +215,19 @@ export default function Portfolio() {
   );
 
   return (
-    <section id="portfolio" className="py-24 bg-surface-alt relative overflow-hidden border-y border-zinc-100 gpu-accelerated">
+    <section id="portfolio" className={`relative overflow-hidden border-y border-zinc-100 gpu-accelerated ${isSubpage ? 'py-12 bg-white' : 'py-24 bg-surface-alt'}`}>
       <div className="max-w-7xl mx-auto px-6">
+        {isSubpage && (
+          <div className="mb-10">
+            <button
+              onClick={onBack}
+              className="inline-flex items-center gap-2 px-5 py-2.5 border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 rounded-full text-sm font-bold text-zinc-600 hover:text-ink cursor-pointer transition-all duration-200"
+            >
+              ← {language === 'en' ? 'Back to Home' : 'Retour à l\'accueil'}
+            </button>
+          </div>
+        )}
+
         <div className="relative text-center mb-16 min-h-[420px] md:min-h-[480px] flex flex-col items-center justify-center">
           <ParallaxHeroImages
             images={[
@@ -277,7 +297,7 @@ export default function Portfolio() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
+            {displayedProjects.map((project, index) => (
               <ProjectCard 
                 key={project.id}
                 project={project}
@@ -287,17 +307,30 @@ export default function Portfolio() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Secondary CTA */}
-        <div className="mt-20 text-center">
-          <h4 className="text-xl md:text-2xl font-bold text-ink mb-4">Want results like these?</h4>
-          <a
-            href="#contact"
-            className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-brand-red text-white rounded-full font-bold text-lg hover:bg-brand-red-dark transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(225,29,46,0.2)] hover:shadow-[0_0_40px_-8px_rgba(225,29,46,0.5)] cursor-pointer"
-          >
-            Start Your Project
-            <ArrowUpRight className="w-5 h-5" />
-          </a>
-        </div>
+        {/* Home page "View more of our work" button OR subpage project CTA */}
+        {!isSubpage && limit && filteredProjects.length > limit ? (
+          <div className="mt-16 text-center">
+            <button
+              onClick={onViewAll}
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-brand-red text-white hover:bg-brand-red-dark rounded-full font-bold text-lg hover:bg-brand-red-dark transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(225,29,46,0.2)] hover:shadow-[0_0_40px_-8px_rgba(225,29,46,0.5)] cursor-pointer"
+            >
+              {language === 'en' ? 'View more of our work' : 'Voir plus de nos réalisations'}
+              <ArrowUpRight className="w-5 h-5 animate-pulse" />
+            </button>
+          </div>
+        ) : (
+          /* Secondary CTA — only show when viewing all work */
+          <div className="mt-20 text-center">
+            <h4 className="text-xl md:text-2xl font-bold text-ink mb-4">Want results like these?</h4>
+            <a
+              href="#contact"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-brand-red text-white rounded-full font-bold text-lg hover:bg-brand-red-dark transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(225,29,46,0.2)] hover:shadow-[0_0_40px_-8px_rgba(225,29,46,0.5)] cursor-pointer"
+            >
+              Start Your Project
+              <ArrowUpRight className="w-5 h-5" />
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );

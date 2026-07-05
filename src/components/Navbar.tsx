@@ -4,7 +4,12 @@ import { Menu, X, ArrowRight } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../context/LanguageContext';
 
-export default function Navbar() {
+interface NavbarProps {
+  currentView: 'home' | 'portfolio-all';
+  setView: (v: 'home' | 'portfolio-all') => void;
+}
+
+export default function Navbar({ currentView, setView }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { language, t, toggleLanguage } = useLanguage();
@@ -40,7 +45,14 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between gap-3">
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => {
+              if (currentView !== 'home') {
+                setView('home');
+                setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+              } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
             className="flex items-center gap-2 sm:gap-3 cursor-pointer hover:opacity-90 transition-opacity min-w-0 shrink-0"
           >
             {/* Logo asset kept exactly as-is without circle padding */}
@@ -56,6 +68,16 @@ export default function Navbar() {
               <a
                 key={link.name}
                 href={link.href}
+                onClick={(e) => {
+                  if (currentView !== 'home') {
+                    e.preventDefault();
+                    setView('home');
+                    setTimeout(() => {
+                      const el = document.querySelector(link.href);
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }
+                }}
                 className={cn(
                   "text-sm font-semibold transition-colors duration-200 cursor-pointer",
                   isScrolled
@@ -79,6 +101,16 @@ export default function Navbar() {
 
             <a
               href="#contact"
+              onClick={(e) => {
+                if (currentView !== 'home') {
+                  e.preventDefault();
+                  setView('home');
+                  setTimeout(() => {
+                    const el = document.querySelector('#contact');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }, 100);
+                }
+              }}
               className="bg-brand-red text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-brand-red-dark transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-md hover:shadow-lg transform hover:scale-102 whitespace-nowrap shrink-0"
             >
               {t.nav.proposalBtn}
@@ -121,7 +153,17 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   className="text-lg font-bold text-muted hover:text-brand-red transition-colors duration-200 cursor-pointer py-1"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    setIsMobileMenuOpen(false);
+                    if (currentView !== 'home') {
+                      e.preventDefault();
+                      setView('home');
+                      setTimeout(() => {
+                        const el = document.querySelector(link.href);
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }, 100);
+                    }
+                  }}
                 >
                   {link.name}
                 </a>
@@ -130,7 +172,17 @@ export default function Navbar() {
               <a
                 href="#contact"
                 className="bg-brand-red text-white px-5 py-3 rounded-2xl text-center font-bold hover:bg-brand-red-dark transition-colors duration-200 cursor-pointer mt-2 shadow-md"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => {
+                  setIsMobileMenuOpen(false);
+                  if (currentView !== 'home') {
+                    e.preventDefault();
+                    setView('home');
+                    setTimeout(() => {
+                      const el = document.querySelector('#contact');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }
+                }}
               >
                 {t.nav.proposalBtn}
               </a>

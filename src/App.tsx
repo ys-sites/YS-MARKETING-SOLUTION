@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import StatsSection from './components/StatsSection';
@@ -16,45 +16,61 @@ const ContactSection = React.lazy(() => import('./components/ContactSection'));
 const FaqSection = React.lazy(() => import('./components/FaqSection'));
 
 export default function App() {
+  const [view, setView] = useState<'home' | 'portfolio-all'>('home');
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [view]);
+
   return (
     <LanguageProvider>
       <div className="min-h-screen selection:bg-brand-red-light selection:text-brand-red bg-surface text-ink antialiased">
-        <Navbar />
+        <Navbar currentView={view} setView={setView} />
         <main className="relative">
-          <Hero />
-          
-          {/* Curved Content Overlay — paint containment isolates shadow repaint from scroll events */}
-          <div 
-            className="relative z-30 -mt-8 md:-mt-12 bg-white rounded-t-[40px] md:rounded-t-[80px] shadow-[0_-30px_60px_-15px_rgba(0,0,0,0.35)] overflow-hidden"
-            style={{ isolation: 'isolate' }}
-          >
-            <StatsSection />
-            <Services />
-            
-            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
-              <Portfolio />
-            </Suspense>
-            
-            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
-              <ImpactSection />
-            </Suspense>
-            
-            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
-              <SocialProof />
-            </Suspense>
-            
-            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
-              <ScannerSection />
-            </Suspense>
-            
-            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
-              <ContactSection />
-            </Suspense>
-            
-            <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
-              <FaqSection />
-            </Suspense>
-          </div>
+          {view === 'home' ? (
+            <>
+              <Hero />
+              
+              {/* Curved Content Overlay — paint containment isolates shadow repaint from scroll events */}
+              <div 
+                className="relative z-30 -mt-8 md:-mt-12 bg-white rounded-t-[40px] md:rounded-t-[80px] shadow-[0_-30px_60px_-15px_rgba(0,0,0,0.35)] overflow-hidden"
+                style={{ isolation: 'isolate' }}
+              >
+                <StatsSection />
+                <Services />
+                
+                <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+                  <Portfolio limit={6} onViewAll={() => setView('portfolio-all')} />
+                </Suspense>
+                
+                <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+                  <ImpactSection />
+                </Suspense>
+                
+                <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+                  <SocialProof />
+                </Suspense>
+                
+                <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+                  <ScannerSection />
+                </Suspense>
+                
+                <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+                  <ContactSection />
+                </Suspense>
+                
+                <Suspense fallback={<div className="min-h-[400px] w-full bg-white" />}>
+                  <FaqSection />
+                </Suspense>
+              </div>
+            </>
+          ) : (
+            <div className="pt-24 sm:pt-28 md:pt-32 bg-white min-h-screen pb-16">
+              <Suspense fallback={<div className="min-h-[600px] w-full bg-white" />}>
+                <Portfolio isSubpage={true} onBack={() => setView('home')} />
+              </Suspense>
+            </div>
+          )}
         </main>
         <Footer />
         <StickyCTA />
