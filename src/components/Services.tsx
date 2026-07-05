@@ -28,19 +28,19 @@ export default function Services() {
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-red-light text-brand-red text-xs font-semibold uppercase tracking-wider mb-4"
           >
             <GlowDot />
-            <ScrollTextReveal delay={0} textColor="#E11D2E">
+            <ScrollTextReveal variant="blossom" delay={0} textColor="#E11D2E">
               {t.services.badge}
             </ScrollTextReveal>
           </motion.div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-            <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
+            <ScrollTextReveal variant="blossom" delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
               <ShinyTitle
                 blackText={t.services.title.split(' ').slice(0, -1).join(' ') + ' '}
                 redText={t.services.title.split(' ').slice(-1).join(' ')}
               />
             </ScrollTextReveal>
           </h2>
-          <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
+          <ScrollTextReveal variant="blossom" delay={0.2} textColor="#52525B" wrapperClassName="block">
             <BlurText
               text={t.services.subtitle}
               delay={60}
@@ -83,12 +83,12 @@ export default function Services() {
                   <service.icon className="w-6 h-6 text-brand-red group-hover:text-white transition-colors duration-300" />
                 </div>
                  <h3 className="text-xl font-bold text-ink mb-4 group-hover:text-brand-red transition-colors duration-200">
-                  <ScrollTextReveal delay={index * 0.05 + 0.1} textColor="#0A0A0A">
+                  <ScrollTextReveal variant="blossom" delay={index * 0.05 + 0.1} textColor="#0A0A0A">
                     {service.title}
                   </ScrollTextReveal>
                 </h3>
                 <div className="text-muted text-sm leading-relaxed mb-4">
-                  <ScrollTextReveal delay={index * 0.05 + 0.15} textColor="#71717A">
+                  <ScrollTextReveal variant="blossom" delay={index * 0.05 + 0.15} textColor="#71717A">
                     {service.description}
                   </ScrollTextReveal>
                 </div>
