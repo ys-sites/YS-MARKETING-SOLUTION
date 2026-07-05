@@ -198,7 +198,7 @@ export default function ScrollTextReveal({
   wrapperClassName = "",
   delay = 0,
   textColor = "#1a1c19",
-  variant = "blossom",
+  variant = "pixel",
 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
