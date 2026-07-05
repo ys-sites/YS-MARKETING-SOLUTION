@@ -71,7 +71,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10 z-10 pointer-events-none" />
 
       {/* Hero Content Area */}
-      <div className="max-w-7xl w-full mx-auto px-6 text-left text-white relative z-20">
+      <div className="max-w-7xl w-full mx-auto px-6 pt-16 md:pt-12 text-left text-white relative z-20">
         <motion.div
           variants={containerVariants}
           initial="hidden"
