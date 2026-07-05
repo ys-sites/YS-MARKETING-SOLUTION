@@ -44,7 +44,7 @@ interface ProjectCardProps {
 
 function ProjectCard({ project, index }: ProjectCardProps) {
   const { t } = useLanguage();
-  const { getDistance, getDuration, getEase, getStagger, viewportConfig } = useAnimationConfig();
+  const { isMobile, getDistance, getDuration, getEase, getStagger, viewportConfig } = useAnimationConfig();
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-10% 0px" });
   const imgRef = useRef<HTMLImageElement>(null);
@@ -96,10 +96,10 @@ function ProjectCard({ project, index }: ProjectCardProps) {
   return (
     <motion.div
       ref={containerRef}
-      initial={{ opacity: 0, y: getDistance(40) }}
+      initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: getDistance(40) }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={viewportConfig}
-      transition={{ duration: getDuration(0.5), delay: index * getStagger(0.05, 9), ease: getEase() }}
+      transition={isMobile ? { duration: 0 } : { duration: getDuration(0.5), delay: index * getStagger(0.05, 9), ease: getEase() }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => window.open(project.url, '_blank', 'noopener,noreferrer')}
