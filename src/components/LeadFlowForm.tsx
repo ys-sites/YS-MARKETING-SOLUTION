@@ -11,11 +11,13 @@ const TOTAL_STEPS = 4;
 // ─── Step option data ─────────────────────────────────────────────────────────
 
 const STEP1_OPTIONS = [
-  { value: 'New Website',      label: 'New Website',       icon: '🚀' },
-  { value: 'Website Redesign', label: 'Website Redesign',  icon: '✏️' },
-  { value: 'SEO & Marketing',  label: 'SEO & Marketing',   icon: '📈' },
-  { value: 'Meta Ads',         label: 'Meta Ads',          icon: '🎯' },
-  { value: 'Something Else',   label: 'Something Else',    icon: '💬' },
+  { value: 'Website Development',  label: 'Website Development',  icon: '🌐' },
+  { value: 'Google Ranking (SEO)', label: 'Google Ranking (SEO)', icon: '🔍' },
+  { value: 'Meta Ads',             label: 'Meta Ads',             icon: '🎯' },
+  { value: 'Social Media',         label: 'Social Media',         icon: '📱' },
+  { value: 'Content Creation',     label: 'Content Creation',     icon: '✏️' },
+  { value: 'Digital Strategy',     label: 'Digital Strategy',     icon: '📊' },
+  { value: 'Something Else',       label: 'Something Else',       icon: '💬' },
 ];
 
 const STEP2_OPTIONS = [
