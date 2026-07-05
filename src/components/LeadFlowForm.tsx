@@ -184,17 +184,28 @@ export default function LeadFlowForm() {
     if (partialFiredRef.current || !lead.serviceType || status === 'success') return;
     partialFiredRef.current = true;
     try {
+      const partialBizType = lead.businessType === 'Other'
+        ? (lead.businessTypeOther || 'Other')
+        : lead.businessType;
       navigator.sendBeacon(WEBHOOK_URL, JSON.stringify({
-        submissionId: crypto.randomUUID(),
-        submittedAt:  new Date().toISOString(),
-        serviceType:  lead.serviceType,
-        businessType: lead.businessType === 'Other'
-          ? (lead.businessTypeOther || 'Other')
-          : lead.businessType,
-        timeline: lead.timeline,
-        source:   'Website Lead Flow',
-        form_name:'Lead Flow Form',
-        tags:     ['partial_lead'],
+        submissionId:  crypto.randomUUID(),
+        submittedAt:   new Date().toISOString(),
+        // ── Make.com / Twilio template aliases ──────────────────────────
+        name:          lead.name.trim() || '(not yet provided)',
+        email:         lead.email.trim() || '(not yet provided)',
+        phone:         lead.phone.trim() || '(not yet provided)',
+        companyName:   partialBizType,   // {{1.companyName}}
+        company_name:  partialBizType,
+        website:       '',               // {{1.website}} — field removed from form
+        service:       lead.serviceType, // {{1.service}}
+        // ── New fields ───────────────────────────────────────────────────
+        serviceType:   lead.serviceType,
+        businessType:  partialBizType,
+        timeline:      lead.timeline,
+        // ── Meta ─────────────────────────────────────────────────────────
+        source:        'Website Lead Flow',
+        form_name:     'Lead Flow Form',
+        tags:          ['partial_lead'],
       }));
     } catch { /* silently skip */ }
   }, [lead, status]);
@@ -274,21 +285,28 @@ export default function LeadFlowForm() {
         method: 'POST', mode: 'cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          submissionId: crypto.randomUUID(),
-          submittedAt:  new Date().toISOString(),
-          name:         lead.name.trim(),
+          submissionId:  crypto.randomUUID(),
+          submittedAt:   new Date().toISOString(),
+          // ── Make.com / Twilio template fields ───────────────────────────
+          // These match {{1.X}} variables in your notification template:
+          name:          lead.name.trim(),       // {{1.name}}
+          email:         lead.email.trim(),      // {{1.email}}
+          phone:         lead.phone.trim(),      // {{1.phone}}
+          companyName:   bizType,                // {{1.companyName}}
+          company_name:  bizType,
+          website:       '',                     // {{1.website}} — removed from form
+          service:       lead.serviceType,       // {{1.service}}
+          // ── First / last name aliases (GHL / CRM) ──────────────────────
           first_name: firstName, firstName,
           last_name:  lastName,  lastName,
-          email:      lead.email.trim(),
-          phone:      lead.phone.trim(),
-          serviceType: lead.serviceType,
-          businessType: bizType,
-          timeline:    lead.timeline,
-          // legacy alias for GHL mapping
-          service:  lead.serviceType,
-          source:   'Website Lead Flow',
-          form_name:'Lead Flow Form',
-          tags:     ['lead-flow'],
+          // ── New multi-step fields ────────────────────────────────────────
+          serviceType:   lead.serviceType,
+          businessType:  bizType,
+          timeline:      lead.timeline,
+          // ── Meta ─────────────────────────────────────────────────────────
+          source:        'Website Lead Flow',
+          form_name:     'Lead Flow Form',
+          tags:          ['lead-flow'],
         }),
         signal: ctrl.signal,
         keepalive: true,
