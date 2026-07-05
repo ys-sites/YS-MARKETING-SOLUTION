@@ -19,6 +19,7 @@ import ShinyTitle from './ShinyTitle';
 import BlurText from './BlurText';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
 import ScrollTextReveal from './ui/ScrollTextReveal';
+import { useVideoAutoplay } from '../hooks/useVideoAutoplay';
 
 
 function useReducedMotionPref() {
@@ -180,6 +181,8 @@ function PhoneVideoMockup({ src, rotate, delay, badge, href, raised = false, zIn
   const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   const videoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(videoRef, { margin: "200px" });
+
+  useVideoAutoplay(videoRef);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -384,32 +387,20 @@ const FEEDBACK_REEL_URL = 'https://www.instagram.com/reel/DZQMOA0x60C/?utm_sourc
 
 function InstagramVideoPostCard({ src, href, caption }: { src: string; href: string; caption: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   const isInView = useInView(videoRef, { margin: "200px" });
 
-  useEffect(() => {
-    if (!isInView && isPlaying) {
-      const video = videoRef.current;
-      if (video) {
-        video.pause();
-        setIsPlaying(false);
-      }
-    }
-  }, [isInView, isPlaying]);
+  useVideoAutoplay(videoRef);
 
-  const togglePlay = () => {
+  useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    if (video.paused) {
-      video.muted = false;
-      video.play();
-      setIsPlaying(true);
+    if (isInView) {
+      video.play().catch(() => {});
     } else {
       video.pause();
-      setIsPlaying(false);
     }
-  };
+  }, [isInView]);
 
   return (
     <motion.div
@@ -433,23 +424,10 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
           playsInline
           loop
           muted
-          preload="metadata"
-          className="w-full h-full object-cover cursor-pointer"
+          preload="auto"
+          className="w-full h-full object-cover"
           style={{ transform: "translate3d(0,0,0)" }}
-          onClick={togglePlay}
-          onPause={() => setIsPlaying(false)}
         />
-        {!isPlaying && (
-          <button
-            onClick={togglePlay}
-            aria-label="Play client feedback video with sound"
-            className="absolute inset-0 flex items-center justify-center bg-black/20 cursor-pointer"
-          >
-            <span className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-              <Play className="w-6 h-6 md:w-8 md:h-8 text-brand-red fill-brand-red ml-1" />
-            </span>
-          </button>
-        )}
       </div>
       <div className="px-3.5 md:px-5 py-3 md:py-4 flex items-center justify-between gap-3">
         <p className="text-xs md:text-sm text-zinc-600 leading-relaxed">{caption}</p>
@@ -615,20 +593,14 @@ export default function ImpactSection() {
               Client Impact
             </ScrollTextReveal>
           </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: getDistance(20) }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={viewportConfig}
-            transition={{ duration: getDuration(0.5), ease: getEase() }}
-            className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6"
-          >
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-6">
             <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
               <ShinyTitle
                 blackText="Real Clients. Real "
                 redText="Numbers."
               />
             </ScrollTextReveal>
-          </motion.h2>
+          </h2>
           <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
             <BlurText
               text="No vanity promises — just the measurable growth these two campaigns actually produced."

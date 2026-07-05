@@ -1,16 +1,7 @@
-- [x] Create `useIsMobile` and `useAnimationConfig` hooks
-- [x] Add `.gpu-accelerated` helper in `index.css`
-- [x] Update components with new animation configuration:
-  - [x] `StatsSection.tsx`
-  - [x] `SocialProof.tsx`
-  - [x] `Services.tsx`
-  - [x] `Portfolio.tsx`
-  - [x] `ImpactSection.tsx`
-  - [x] `ProblemAgitate.tsx`
-  - [x] `ParallaxHeroImages.tsx`
-  - [x] `InteractiveConcept.tsx`
-  - [x] `ContactSection.tsx`
-  - [x] `FaqSection.tsx`
-  - [x] `Navbar.tsx`, `WhatsAppButton.tsx`, `StickyCTA.tsx`
-  - [x] `BlurText.tsx`
-- [x] Verify that TypeScript builds and run checks
+- [x] Create `useVideoAutoplay.ts` hook
+- [x] Update `ShinyTitle.tsx` to use the hero's text clip shine animation
+- [x] Update `Hero.tsx` video references, autoplay hook, and restore local mobile video source
+- [x] Update `ImpactSection.tsx` videos to remove play overlays and apply autoplay hook
+- [x] Replace `<motion.h2>` with standard `<h2>` tags in `Services`, `Portfolio`, `ImpactSection`, `SocialProof`, and `FaqSection`
+- [x] Verify build and typechecks
+- [/] Push changes to GitHub

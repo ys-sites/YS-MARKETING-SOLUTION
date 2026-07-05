@@ -10,13 +10,10 @@ interface ShinyTitleProps {
 
 export default function ShinyTitle({ blackText, redText, className = '' }: ShinyTitleProps) {
   const containerRef = useRef<HTMLSpanElement>(null);
-  const blackRef = useRef<HTMLSpanElement>(null);
-  const redRef = useRef<HTMLSpanElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  const [offsets, setOffsets] = useState({ containerWidth: 0, blackLeft: 0, redLeft: 0 });
-  const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [isAnimating, setIsAnimating] = useState(true);
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
 
   // Monitor font loading to prevent layout shifts/stutters on font swaps
   useEffect(() => {
@@ -29,33 +26,9 @@ export default function ShinyTitle({ blackText, redText, className = '' }: Shiny
     };
   }, []);
 
-  useEffect(() => {
-    const updateOffsets = () => {
-      if (containerRef.current && blackRef.current && redRef.current) {
-        const containerRect = containerRef.current.getBoundingClientRect();
-        const blackRect = blackRef.current.getBoundingClientRect();
-        const redRect = redRef.current.getBoundingClientRect();
-        setOffsets({
-          containerWidth: containerRect.width,
-          blackLeft: blackRect.left - containerRect.left,
-          redLeft: redRect.left - containerRect.left,
-        });
-      }
-    };
-
-    updateOffsets();
-    
-    window.addEventListener('resize', updateOffsets);
-    const observer = new ResizeObserver(updateOffsets);
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-    
-    return () => {
-      window.removeEventListener('resize', updateOffsets);
-      observer.disconnect();
-    };
-  }, [blackText, redText]);
+  const progress = useMotionValue(0);
+  const elapsedRef = useRef(0);
+  const lastTimeRef = useRef<number | null>(null);
 
   // Viewport checking to freeze rAF when offscreen
   const isInView = useInView(containerRef, { margin: "100px" });
@@ -79,9 +52,9 @@ export default function ShinyTitle({ blackText, redText, className = '' }: Shiny
     return () => clearInterval(interval);
   }, [isInView]);
 
-  const progress = useMotionValue(0);
-  const elapsedRef = useRef(0);
-  const lastTimeRef = useRef<number | null>(null);
+  // Timing: 2.5s sweep + 2.0s pause = 4.5s total cycle
+  const animationDuration = 2500;
+  const delayDuration = 2000;
 
   useAnimationFrame((time) => {
     if (!isAnimating || !isFontLoaded || prefersReducedMotion) {
@@ -96,115 +69,53 @@ export default function ShinyTitle({ blackText, redText, className = '' }: Shiny
     lastTimeRef.current = time;
     elapsedRef.current += delta;
 
-    // Timing config: 2.5s sweep + 2.0s pause = 4.5s total cycle
-    const cycleDuration = 4500;
-    const sweepDuration = 2500;
+    const cycleDuration = animationDuration + delayDuration;
     const cycleTime = elapsedRef.current % cycleDuration;
 
-    if (cycleTime < sweepDuration) {
-      const normalTime = cycleTime / sweepDuration;
-      // Cubic ease-in-out curve
-      const easedTime = normalTime < 0.5 
-        ? 4 * normalTime * normalTime * normalTime 
-        : 1 - Math.pow(-2 * normalTime + 2, 3) / 2;
-      progress.set(easedTime);
+    if (cycleTime < animationDuration) {
+      const p = (cycleTime / animationDuration) * 100;
+      progress.set(p);
     } else {
-      progress.set(1.5); // Park offscreen during the 2s pause
+      progress.set(100); // Hold off-screen during the pause
     }
   });
 
-  const W = offsets.containerWidth || 500;
+  const backgroundPosition = useTransform(progress, (p) => `${150 - p * 2}% center`);
 
-  // Compute translateX coordinates for compositor layers
-  const blackShineX = useTransform(progress, (p) => {
-    const globalX = -1.2 * W + p * (3.4 * W);
-    return globalX - offsets.blackLeft;
-  });
+  const blackStyle: React.CSSProperties = {
+    backgroundImage: `linear-gradient(120deg, #0A0A0A 0%, #0A0A0A 35%, #E11D2E 50%, #0A0A0A 65%, #0A0A0A 100%)`,
+    backgroundSize: '200% auto',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    display: 'inline',
+  };
 
-  const redShineX = useTransform(progress, (p) => {
-    const globalX = -1.2 * W + p * (3.4 * W);
-    return globalX - offsets.redLeft;
-  });
+  const redStyle: React.CSSProperties = {
+    backgroundImage: `linear-gradient(120deg, #E11D2E 0%, #E11D2E 35%, #ffffff 50%, #E11D2E 65%, #E11D2E 100%)`,
+    backgroundSize: '200% auto',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    display: 'inline',
+  };
 
   return (
     <span 
       ref={containerRef} 
-      className={`relative inline-block ${className}`}
+      className={`inline-block ${className}`}
       style={{ display: 'inline-block' }}
     >
-      {/* ==========================================
-          LAYER 1: Static Base Text (No repaints)
-         ========================================== */}
-      <span ref={blackRef} className="text-[#0A0A0A] inline">
+      <motion.span
+        style={{ ...blackStyle, backgroundPosition }}
+      >
         {blackText}
-      </span>
-      <span ref={redRef} className="text-[#E11D2E] inline">
+      </motion.span>
+      <motion.span
+        style={{ ...redStyle, backgroundPosition }}
+      >
         {redText}
-      </span>
-
-      {/* ==========================================
-          LAYER 2: Hardware-Accelerated Overlay Shine
-         ========================================== */}
-      {isFontLoaded && (
-        <span 
-          className="absolute inset-0 pointer-events-none select-none overflow-hidden text-transparent"
-          style={{ display: 'inline-block' }}
-        >
-          {/* Black span overlay with RED shine */}
-          <span 
-            className="absolute top-0 text-transparent bg-clip-text -webkit-background-clip: text"
-            style={{ 
-              left: offsets.blackLeft,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              overflow: 'hidden',
-              display: 'inline-block',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            {blackText}
-            <motion.span
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '180%',
-                height: '100%',
-                backgroundImage: 'linear-gradient(120deg, transparent 35%, rgba(225,29,46,0.95) 50%, transparent 65%)',
-                x: blackShineX,
-                willChange: 'transform',
-              }}
-            />
-          </span>
-
-          {/* Red span overlay with WHITE shine */}
-          <span 
-            className="absolute top-0 text-transparent bg-clip-text -webkit-background-clip: text"
-            style={{ 
-              left: offsets.redLeft,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              overflow: 'hidden',
-              display: 'inline-block',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            {redText}
-            <motion.span
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '180%',
-                height: '100%',
-                backgroundImage: 'linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.95) 50%, transparent 65%)',
-                x: redShineX,
-                willChange: 'transform',
-              }}
-            />
-          </span>
-        </span>
-      )}
+      </motion.span>
     </span>
   );
 }

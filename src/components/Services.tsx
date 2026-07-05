@@ -32,20 +32,14 @@ export default function Services() {
               {t.services.badge}
             </ScrollTextReveal>
           </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: getDistance(20) }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={viewportConfig}
-            transition={{ duration: getDuration(0.5), ease: getEase() }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6"
-          >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
             <ScrollTextReveal variant="blossom" delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
               <ShinyTitle
                 blackText={t.services.title.split(' ').slice(0, -1).join(' ') + ' '}
                 redText={t.services.title.split(' ').slice(-1).join(' ')}
               />
             </ScrollTextReveal>
-          </motion.h2>
+          </h2>
           <ScrollTextReveal variant="blossom" delay={0.2} textColor="#52525B" wrapperClassName="block">
             <BlurText
               text={t.services.subtitle}

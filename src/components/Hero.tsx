@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ArrowDown, Instagram } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
@@ -8,10 +8,14 @@ import BlurText from './BlurText';
 import ScrollTextReveal from './ui/ScrollTextReveal';
 
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
+import { useVideoAutoplay } from '../hooks/useVideoAutoplay';
 
 export default function Hero() {
   const t = useLanguage().t;
   const { isMobile } = useAnimationConfig();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useVideoAutoplay(videoRef);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -42,33 +46,18 @@ export default function Hero() {
       {/* Background Video */}
       <div className="absolute inset-0 w-full h-full object-cover z-0">
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
-          poster={
-            isMobile
-              ? "https://res.cloudinary.com/dmnoikwb9/video/upload/f_auto,q_auto,so_0,w_768/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.jpg"
-              : "https://res.cloudinary.com/dmnoikwb9/video/upload/f_auto,q_auto,so_0,w_1920/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.jpg"
-          }
           className="w-full h-full object-cover"
           style={{ transform: "translate3d(0,0,0)" }}
         >
+          <source media="(max-width: 767px)" src="/hero%20vidoe.mp4" type="video/mp4" />
           <source
-            src={
-              isMobile
-                ? "https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_webm,w_768/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.webm"
-                : "https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_webm,w_1920/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.webm"
-            }
-            type="video/webm"
-          />
-          <source
-            src={
-              isMobile
-                ? "https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_mp4,w_768/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.mp4"
-                : "https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_mp4,w_1920/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.mp4"
-            }
+            src="https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_mp4,w_1920,c_limit/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.mp4"
             type="video/mp4"
           />
         </video>

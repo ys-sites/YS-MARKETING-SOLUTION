@@ -80,17 +80,11 @@ export default function FaqSection() {
               FAQ
             </ScrollTextReveal>
           </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: getDistance(20) }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={viewportConfig}
-            transition={{ duration: getDuration(0.5), ease: getEase() }}
-            className="text-4xl md:text-5xl font-extrabold tracking-tight text-ink mb-6"
-          >
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-ink mb-6">
             <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
               <ShinyTitle blackText="Questions, " redText="answered." />
             </ScrollTextReveal>
-          </motion.h2>
+          </h2>
           <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
             <BlurText
               text="Everything business owners ask us before starting a project — search below or browse them all."
