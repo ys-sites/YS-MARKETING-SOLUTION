@@ -175,52 +175,105 @@ export default function LeadFlowForm() {
 
   const isSubmittingRef  = useRef(false);
   const partialFiredRef  = useRef(false);
+  const mountTimeRef     = useRef(Date.now());
+  const step4EnterTimeRef = useRef<number | null>(null);
+  const honeypotRef      = useRef<HTMLInputElement>(null);
+  const visibilityTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Track step 4 entry time
+  useEffect(() => {
+    if (step === 4) {
+      step4EnterTimeRef.current = Date.now();
+    } else {
+      step4EnterTimeRef.current = null;
+    }
+  }, [step]);
 
   // ── Navigation ────────────────────────────────────────────────────────────
 
   const goForward = useCallback((n: number) => { setDirection(1);  setStep(n); }, []);
   const goBack    = useCallback(()           => { setDirection(-1); setStep(s => s - 1); }, []);
 
-  // ── Partial lead (beacon on abandon at step 4) ────────────────────────────
-
   const firePartialLead = useCallback(() => {
     if (partialFiredRef.current || !lead.serviceType || status === 'success') return;
+    
+    // Honeypot check
+    if (honeypotRef.current?.value) return;
+
+    // Must be on step 4 for at least 3 seconds before any partial can fire
+    if (!step4EnterTimeRef.current || (Date.now() - step4EnterTimeRef.current) < 3000) return;
+
     partialFiredRef.current = true;
     try {
       const partialBizType = lead.businessType === 'Other'
         ? (lead.businessTypeOther || 'Other')
         : lead.businessType;
-      navigator.sendBeacon(WEBHOOK_URL, JSON.stringify({
-        submissionId:  crypto.randomUUID(),
-        submittedAt:   new Date().toISOString(),
-        // ── Make.com / Twilio template aliases ──────────────────────────
-        name:          lead.name.trim() || '(not yet provided)',
-        email:         lead.email.trim() || '(not yet provided)',
-        phone:         lead.phone.trim() || '(not yet provided)',
-        companyName:   partialBizType,   // {{1.companyName}}
-        company_name:  partialBizType,
-        website:       '',               // {{1.website}} — field removed from form
-        service:       lead.serviceType, // {{1.service}}
-        // ── New fields ───────────────────────────────────────────────────
-        serviceType:   lead.serviceType,
-        businessType:  partialBizType,
-        timeline:      lead.timeline,
-        // ── Meta ─────────────────────────────────────────────────────────
-        source:        'Website Lead Flow',
-        form_name:     'Lead Flow Form',
-        tags:          ['partial_lead'],
-      }));
+        
+      const isSuspectedBot = (Date.now() - mountTimeRef.current) < 3000;
+      const tags = ['partial_lead'];
+      if (isSuspectedBot) {
+        tags.push('suspected_bot');
+      }
+
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          submissionId:  crypto.randomUUID(),
+          submittedAt:   new Date().toISOString(),
+          // ── Make.com / Twilio template aliases ──────────────────────────
+          name:          lead.name.trim() || '(not yet provided)',
+          email:         lead.email.trim() || '(not yet provided)',
+          phone:         lead.phone.trim() || '(not yet provided)',
+          companyName:   partialBizType,   // {{1.companyName}}
+          company_name:  partialBizType,
+          website:       '',               // {{1.website}} — field removed from form
+          service:       lead.serviceType, // {{1.service}}
+          // ── New fields ───────────────────────────────────────────────────
+          serviceType:   lead.serviceType,
+          businessType:  partialBizType,
+          timeline:      lead.timeline,
+          // ── Meta ─────────────────────────────────────────────────────────
+          source:        'Website Lead Flow',
+          form_name:     'Lead Flow — PARTIAL (abandoned at contact step)',
+          isPartial:     true,
+          tags,
+        }),
+        keepalive: true,
+      }).catch(() => {});
     } catch { /* silently skip */ }
   }, [lead, status]);
 
   useEffect(() => {
     if (step < 4) return;
-    const onHide = () => { if (document.visibilityState === 'hidden') firePartialLead(); };
+    
+    const onHide = () => {
+      if (document.visibilityState === 'hidden') {
+        if (visibilityTimerRef.current) clearTimeout(visibilityTimerRef.current);
+        visibilityTimerRef.current = setTimeout(() => {
+          if (document.visibilityState === 'hidden') {
+            firePartialLead();
+          }
+        }, 2000);
+      } else {
+        if (visibilityTimerRef.current) {
+          clearTimeout(visibilityTimerRef.current);
+          visibilityTimerRef.current = null;
+        }
+      }
+    };
+
+    const onBeforeUnload = () => {
+      firePartialLead();
+    };
+
     document.addEventListener('visibilitychange', onHide);
-    window.addEventListener('beforeunload', firePartialLead);
+    window.addEventListener('beforeunload', onBeforeUnload);
     return () => {
       document.removeEventListener('visibilitychange', onHide);
-      window.removeEventListener('beforeunload', firePartialLead);
+      window.removeEventListener('beforeunload', onBeforeUnload);
+      if (visibilityTimerRef.current) clearTimeout(visibilityTimerRef.current);
     };
   }, [step, firePartialLead]);
 
@@ -270,6 +323,14 @@ export default function LeadFlowForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmittingRef.current || status === 'submitting') return;
+
+    // Honeypot check
+    if (honeypotRef.current?.value) {
+      partialFiredRef.current = true;
+      setStatus('success');
+      return;
+    }
+
     if (!validate()) return;
 
     isSubmittingRef.current = true;
@@ -283,6 +344,12 @@ export default function LeadFlowForm() {
       ? (lead.businessTypeOther.trim() || 'Other')
       : lead.businessType;
 
+    const isSuspectedBot = (Date.now() - mountTimeRef.current) < 3000;
+    const tags = ['lead-flow'];
+    if (isSuspectedBot) {
+      tags.push('suspected_bot');
+    }
+
     try {
       const res = await fetch(WEBHOOK_URL, {
         method: 'POST', mode: 'cors',
@@ -291,7 +358,6 @@ export default function LeadFlowForm() {
           submissionId:  crypto.randomUUID(),
           submittedAt:   new Date().toISOString(),
           // ── Make.com / Twilio template fields ───────────────────────────
-          // These match {{1.X}} variables in your notification template:
           name:          lead.name.trim(),       // {{1.name}}
           email:         lead.email.trim(),      // {{1.email}}
           phone:         lead.phone.trim(),      // {{1.phone}}
@@ -309,7 +375,8 @@ export default function LeadFlowForm() {
           // ── Meta ─────────────────────────────────────────────────────────
           source:        'Website Lead Flow',
           form_name:     'Lead Flow Form',
-          tags:          ['lead-flow'],
+          isPartial:     false,
+          tags,
         }),
         signal: ctrl.signal,
         keepalive: true,
@@ -473,6 +540,17 @@ export default function LeadFlowForm() {
 
         return (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {/* Honeypot field for bot protection */}
+            <div style={{ position: 'absolute', left: '-9999px', top: '-9999px', opacity: 0, pointerEvents: 'none' }} aria-hidden="true">
+              <input
+                ref={honeypotRef}
+                type="text"
+                name="lf-website-verify"
+                autoComplete="off"
+                tabIndex={-1}
+              />
+            </div>
+
             <div className="text-center mb-1">
               <h3 className="text-2xl font-extrabold text-ink leading-snug">
                 Where do we send your quote?
