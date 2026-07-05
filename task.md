@@ -2,6 +2,7 @@
 - [x] Update `ShinyTitle.tsx` to use the hero's text clip shine animation
 - [x] Update `Hero.tsx` video references, autoplay hook, and restore local mobile video source
 - [x] Update `ImpactSection.tsx` videos to remove play overlays and apply autoplay hook
+- [x] Restore click-to-play with sound for `feedback.mp4`
 - [x] Replace `<motion.h2>` with standard `<h2>` tags in `Services`, `Portfolio`, `ImpactSection`, `SocialProof`, and `FaqSection`
 - [x] Remove card rise up animation for the website section on mobile ratio in `Portfolio.tsx`
 - [x] Verify build and typechecks
