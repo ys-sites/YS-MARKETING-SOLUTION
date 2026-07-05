@@ -71,12 +71,12 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10 z-10 pointer-events-none" />
 
       {/* Hero Content Area */}
-      <div className="max-w-7xl w-full mx-auto px-6 pt-16 md:pt-12 text-left text-white relative z-20">
+      <div className="max-w-7xl w-full mx-auto px-6 pt-12 md:pt-12 text-left text-white relative z-20">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="space-y-8 max-w-2xl"
+          className="space-y-4 sm:space-y-6 md:space-y-8 max-w-2xl"
         >
           {/* Top Pill Accent */}
           <motion.div
@@ -88,7 +88,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Headline */}
-          <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-8xl font-extrabold tracking-tight leading-[1.1] text-left">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] text-left">
             <ScrollTextReveal delay={0} textColor="#ffffff" wrapperClassName="block">
               <motion.span variants={itemVariants} className="block text-white">
                 {t.hero.title1}
