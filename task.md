@@ -8,4 +8,4 @@
 - [x] Wrap portfolio category tabs in multiple rows on mobile
 - [x] Enforce exactly 3 rows of category tabs on mobile ratio (with Travel, Automotive, Restaurants in one line)
 - [x] Verify build and typechecks
-- [/] Push changes to GitHub
+- [x] Push changes to GitHub
