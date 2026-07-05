@@ -14,6 +14,7 @@ const STEP1_OPTIONS = [
   { value: 'New Website',      label: 'New Website',       icon: '🚀' },
   { value: 'Website Redesign', label: 'Website Redesign',  icon: '✏️' },
   { value: 'SEO & Marketing',  label: 'SEO & Marketing',   icon: '📈' },
+  { value: 'Meta Ads',         label: 'Meta Ads',          icon: '🎯' },
   { value: 'Something Else',   label: 'Something Else',    icon: '💬' },
 ];
 
