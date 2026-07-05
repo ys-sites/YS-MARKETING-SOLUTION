@@ -84,7 +84,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Headline */}
-          <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight leading-[1.1] text-left">
+          <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-8xl font-extrabold tracking-tight leading-[1.1] text-left">
             <ScrollTextReveal delay={0} textColor="#ffffff" wrapperClassName="block">
               <motion.span variants={itemVariants} className="block text-white">
                 {t.hero.title1}

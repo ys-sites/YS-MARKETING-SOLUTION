@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const WHATSAPP_LINK = 'https://wa.me/message/O4RDTWJDWFEDG1';
 
-// Official WhatsApp SVG logo (full brand mark, no clipping)
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -25,9 +24,14 @@ function WhatsAppIcon({ className }: { className?: string }) {
 
 export default function WhatsAppButton() {
   const [autoOpen, setAutoOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     if (!window.matchMedia('(max-width: 767px)').matches) return;
 
     let closeTimeout: ReturnType<typeof setTimeout>;
@@ -48,9 +52,7 @@ export default function WhatsAppButton() {
       clearTimeout(closeTimeout);
       clearInterval(interval);
     };
-  }, []);
-
-  const isExpanded = isHovered || autoOpen;
+  }, [mounted]);
 
   return (
     <motion.a
@@ -58,58 +60,39 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with us on WhatsApp"
-      initial={{ opacity: 0, scale: 0.5, y: 20 }}
-      animate={{
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        width: isExpanded ? 'auto' : undefined,
-      }}
-      transition={{ delay: 1, type: 'spring', stiffness: 260, damping: 20 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1, duration: 0.3 }}
       whileTap={{ scale: 0.94 }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      className="group fixed bottom-3 right-5 md:bottom-8 md:right-8 z-[60] flex items-center rounded-full cursor-pointer overflow-hidden"
+      className={[
+        'group fixed bottom-3 right-5 md:bottom-8 md:right-8 z-[60]',
+        'flex items-center rounded-full cursor-pointer overflow-hidden',
+        // Half-size: h-7 (28px) mobile, h-8 (32px) desktop
+        'h-7 md:h-8',
+        // Width: collapsed = square, expanded = auto pill — duration-0 = instantaneous
+        autoOpen ? 'w-auto' : 'w-7 md:w-8 md:hover:w-auto',
+        'transition-[width] duration-0',
+      ].join(' ')}
       style={{
         background: 'linear-gradient(135deg, #25D366 0%, #1ebe5e 100%)',
-        boxShadow: isExpanded
-          ? '0 8px 32px rgba(37, 211, 102, 0.6), 0 2px 8px rgba(0,0,0,0.2)'
-          : '0 4px 20px rgba(37, 211, 102, 0.4), 0 2px 8px rgba(0,0,0,0.15)',
-        transition: 'box-shadow 0.3s ease',
+        boxShadow: '0 3px 12px rgba(37, 211, 102, 0.45)',
       }}
     >
-      {/* Pulse ring — desktop only, idle state */}
-      {!isExpanded && (
-        <motion.span
-          className="absolute inset-0 rounded-full pointer-events-none hidden md:block"
-          style={{ background: 'rgba(37, 211, 102, 0.4)' }}
-          animate={{ scale: [1, 1.35, 1], opacity: [0.6, 0, 0.6] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Icon slot — always visible, fixed size */}
-      <span className="relative flex items-center justify-center w-14 h-14 md:w-16 md:h-16 shrink-0">
-        <WhatsAppIcon className="w-7 h-7 md:w-8 md:h-8 drop-shadow-sm" />
+      {/* Icon — fixed-size slot, never shifts */}
+      <span className="relative flex items-center justify-center w-7 h-7 md:w-8 md:h-8 shrink-0">
+        <WhatsAppIcon className="w-4 h-4 md:w-[18px] md:h-[18px] drop-shadow-sm" />
       </span>
 
-      {/* Label — slides + fades in on hover (desktop) or auto-open (mobile) */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.span
-            key="label"
-            initial={{ opacity: 0, x: -8, width: 0 }}
-            animate={{ opacity: 1, x: 0, width: 'auto' }}
-            exit={{ opacity: 0, x: -8, width: 0 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="whitespace-nowrap pr-5 text-white font-semibold text-sm md:text-base overflow-hidden"
-            style={{ display: 'block' }}
-          >
-            Message us
-          </motion.span>
-        )}
-      </AnimatePresence>
+      {/* Label — visible only when expanded */}
+      <span
+        className={[
+          'whitespace-nowrap pr-3 text-white font-semibold text-xs',
+          'opacity-0 group-hover:opacity-100',
+          autoOpen ? 'block opacity-100' : 'hidden md:block',
+        ].join(' ')}
+      >
+        Message us
+      </span>
     </motion.a>
   );
 }

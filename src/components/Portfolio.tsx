@@ -68,6 +68,9 @@ function ProjectCard({ project, index }: ProjectCardProps) {
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
+  // Disable rise-up on mobile AND tablet (only animate y on large desktop ≥1024px)
+  const isTabletOrSmaller = typeof window !== 'undefined' && window.innerWidth < 1024;
+
   useEffect(() => {
     if (!imgRef.current) return;
     const observer = new ResizeObserver((entries) => {
@@ -96,10 +99,10 @@ function ProjectCard({ project, index }: ProjectCardProps) {
   return (
     <motion.div
       ref={containerRef}
-      initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: getDistance(40) }}
+      initial={isTabletOrSmaller ? { opacity: 0, y: 0 } : { opacity: 0, y: getDistance(40) }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={viewportConfig}
-      transition={isMobile ? { duration: 0 } : { duration: getDuration(0.5), delay: index * getStagger(0.05, 9), ease: getEase() }}
+      transition={isTabletOrSmaller ? { duration: getDuration(0.4), ease: getEase() } : { duration: getDuration(0.5), delay: index * getStagger(0.05, 9), ease: getEase() }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => window.open(project.url, '_blank', 'noopener,noreferrer')}
