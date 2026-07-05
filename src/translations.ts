@@ -10,11 +10,11 @@ export const translations = {
       proposalBtn: "Free Proposal"
     },
     hero: {
-      badge: "High-Performance Marketing",
-      title1: "Digital",
-      title2: "Marketing",
-      title3: "Services",
-      subtitle: "Most websites look fine and convert nothing. We build sites engineered to bring in calls and customers — not just compliments.",
+      badge: "Montreal Web Design & SEO",
+      title1: "Montreal",
+      title2: "Web Design &",
+      title3: "SEO Services",
+      subtitle: "Most websites look fine and convert nothing. We build custom websites and local marketing systems in Montreal engineered to bring in calls and customers.",
       ctaPrimary: "Book a Free Audit",
       ctaSecondary: "See Our Work"
     },
@@ -184,11 +184,11 @@ export const translations = {
       proposalBtn: "Proposition Gratuite"
     },
     hero: {
-      badge: "Marketing Haute Performance",
-      title1: "Services de",
-      title2: "Marketing",
-      title3: "Numérique",
-      subtitle: "Votre site web devrait vendre pendant que vous dormez. Nous créons des sites rapides, conçus pour la conversion—sans modèles, sans superflu—qui transforment vos visiteurs en appels réservés et en clients payants, dès la première semaine.",
+      badge: "Conception Web & SEO Montréal",
+      title1: "Conception Web",
+      title2: "et SEO à",
+      title3: "Montréal",
+      subtitle: "Votre site web devrait vendre pendant que vous dormez. Nous créons des sites web haut de gamme et des stratégies SEO à Montréal conçus pour générer des appels et des clients payants.",
       ctaPrimary: "Obtenir une proposition gratuite",
       ctaSecondary: "Voir nos réalisations"
     },

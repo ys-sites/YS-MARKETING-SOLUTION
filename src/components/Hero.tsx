@@ -55,7 +55,11 @@ export default function Hero() {
           className="w-full h-full object-cover"
           style={{ transform: "translate3d(0,0,0)" }}
         >
-          <source media="(max-width: 767px)" src="/hero%20vidoe.mp4" type="video/mp4" />
+          <source
+            media="(max-width: 767px)"
+            src="https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_mp4,w_768,c_limit/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.mp4"
+            type="video/mp4"
+          />
           <source
             src="https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_mp4,w_1920,c_limit/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.mp4"
             type="video/mp4"
