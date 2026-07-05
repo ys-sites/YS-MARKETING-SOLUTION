@@ -179,6 +179,29 @@ export default function Portfolio() {
     ? projects
     : projects.filter(p => p.category === selectedCategory);
 
+  const renderCategoryButton = (category: typeof categories[number]) => (
+    <button
+      key={category.id}
+      onClick={() => setSelectedCategory(category.id)}
+      className={`px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium tracking-tight transition-all duration-300 relative cursor-pointer shrink-0 ${
+        selectedCategory === category.id
+          ? 'text-white'
+          : 'text-muted hover:text-ink hover:bg-zinc-100'
+      }`}
+    >
+      {selectedCategory === category.id && (
+        <motion.div
+          layoutId="activeCategory"
+          className="absolute inset-0 bg-brand-red rounded-full -z-10"
+          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+        />
+      )}
+      <ScrollTextReveal delay={0} textColor={selectedCategory === category.id ? "#ffffff" : "#71717A"}>
+        {t.portfolio.categories[category.key]}
+      </ScrollTextReveal>
+    </button>
+  );
+
   return (
     <section id="portfolio" className="py-24 bg-surface-alt relative overflow-hidden border-y border-zinc-100 gpu-accelerated">
       <div className="max-w-7xl mx-auto px-6">
@@ -230,29 +253,19 @@ export default function Portfolio() {
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12 max-w-full px-4">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium tracking-tight transition-all duration-300 relative cursor-pointer snap-start shrink-0 ${
-                selectedCategory === category.id
-                  ? 'text-white'
-                  : 'text-muted hover:text-ink hover:bg-zinc-100'
-              }`}
-            >
-              {selectedCategory === category.id && (
-                <motion.div
-                  layoutId="activeCategory"
-                  className="absolute inset-0 bg-brand-red rounded-full -z-10"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-              <ScrollTextReveal delay={0} textColor={selectedCategory === category.id ? "#ffffff" : "#71717A"}>
-                {t.portfolio.categories[category.key]}
-              </ScrollTextReveal>
-            </button>
-          ))}
+        <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-2 md:gap-3 mb-12 max-w-full px-4">
+          {/* Row 1: All, E-commerce, Home Services */}
+          <div className="flex flex-row justify-center gap-2 md:contents">
+            {categories.filter(c => ['All', 'E-commerce', 'Home Services'].includes(c.id)).map(renderCategoryButton)}
+          </div>
+          {/* Row 2: Travel, Automotive, Restaurants */}
+          <div className="flex flex-row justify-center gap-2 md:contents">
+            {categories.filter(c => ['Travel', 'Automotive', 'Restaurants'].includes(c.id)).map(renderCategoryButton)}
+          </div>
+          {/* Row 3: Luxury Services, Sports & Recreation */}
+          <div className="flex flex-row justify-center gap-2 md:contents">
+            {categories.filter(c => ['Luxury Services', 'Sports & Recreation'].includes(c.id)).map(renderCategoryButton)}
+          </div>
         </div>
 
         {/* Portfolio Cards Grid */}
