@@ -25,7 +25,7 @@ export default function App() {
           
           {/* Curved Content Overlay — paint containment isolates shadow repaint from scroll events */}
           <div 
-            className="relative z-30 -mt-20 md:-mt-28 bg-white rounded-t-[40px] md:rounded-t-[80px] shadow-[0_-30px_60px_-15px_rgba(0,0,0,0.35)] overflow-hidden"
+            className="relative z-30 -mt-8 md:-mt-12 bg-white rounded-t-[40px] md:rounded-t-[80px] shadow-[0_-30px_60px_-15px_rgba(0,0,0,0.35)] overflow-hidden"
             style={{ isolation: 'isolate' }}
           >
             <StatsSection />

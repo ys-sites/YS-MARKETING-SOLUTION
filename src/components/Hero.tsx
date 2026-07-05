@@ -76,12 +76,12 @@ export default function Hero() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="space-y-4 sm:space-y-6 md:space-y-8 max-w-2xl"
+          className="flex flex-col items-start max-w-2xl"
         >
           {/* Top Pill Accent */}
           <motion.div
             variants={itemVariants}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-zinc-300 uppercase tracking-widest backdrop-blur-sm"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-zinc-300 uppercase tracking-widest backdrop-blur-sm mb-1.5 md:mb-3"
           >
             <GlowDot />
             <span>{t.hero.badge}</span>
@@ -107,15 +107,17 @@ export default function Hero() {
           </h1>
 
           {/* Subheadline */}
-          <ScrollTextReveal delay={0.3} textColor="#d1d5db" wrapperClassName="block">
-            <BlurText
-              text={t.hero.subtitle}
-              delay={50}
-              animateBy="words"
-              direction="top"
-              className="text-lg md:text-xl text-zinc-300 max-w-xl text-left leading-relaxed font-light"
-            />
-          </ScrollTextReveal>
+          <div className="mt-2 md:mt-3 mb-6 md:mb-8">
+            <ScrollTextReveal delay={0.3} textColor="#d1d5db" wrapperClassName="block">
+              <BlurText
+                text={t.hero.subtitle}
+                delay={50}
+                animateBy="words"
+                direction="top"
+                className="text-lg md:text-xl text-zinc-300 max-w-xl text-left leading-relaxed font-light"
+              />
+            </ScrollTextReveal>
+          </div>
 
 
           {/* Action CTAs */}
