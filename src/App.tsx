@@ -67,7 +67,17 @@ export default function App() {
           ) : (
             <div className="pt-24 sm:pt-28 md:pt-32 bg-white min-h-screen pb-16">
               <Suspense fallback={<div className="min-h-[600px] w-full bg-white" />}>
-                <Portfolio isSubpage={true} onBack={() => setView('home')} />
+                <Portfolio 
+                  isSubpage={true} 
+                  onBack={() => setView('home')} 
+                  onStartProject={() => {
+                    setView('home');
+                    setTimeout(() => {
+                      const el = document.querySelector('#contact');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }}
+                />
               </Suspense>
             </div>
           )}

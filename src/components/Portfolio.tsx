@@ -178,9 +178,10 @@ interface PortfolioProps {
   isSubpage?: boolean;
   onBack?: () => void;
   onViewAll?: () => void;
+  onStartProject?: () => void;
 }
 
-export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll }: PortfolioProps) {
+export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll, onStartProject }: PortfolioProps) {
   const { language, t } = useLanguage();
   const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -324,6 +325,12 @@ export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll 
             <h4 className="text-xl md:text-2xl font-bold text-ink mb-4">Want results like these?</h4>
             <a
               href="#contact"
+              onClick={(e) => {
+                if (isSubpage && onStartProject) {
+                  e.preventDefault();
+                  onStartProject();
+                }
+              }}
               className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-brand-red text-white rounded-full font-bold text-lg hover:bg-brand-red-dark transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(225,29,46,0.2)] hover:shadow-[0_0_40px_-8px_rgba(225,29,46,0.5)] cursor-pointer"
             >
               Start Your Project
