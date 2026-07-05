@@ -432,11 +432,11 @@ function InstagramVideoPostCard({ src, href, caption }: { src: string; href: str
       <div className="relative aspect-[9/16] bg-zinc-900 overflow-hidden">
         <video
           ref={videoRef}
-          src={src}
+          src={`${src}#t=0.001`}
           playsInline
           loop
           muted
-          preload="metadata"
+          preload="auto"
           className="w-full h-full object-cover cursor-pointer"
           style={{ transform: "translate3d(0,0,0)" }}
           onClick={togglePlay}
