@@ -1,16 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+/**
+ * WhatsAppButton — compositor-only animation, zero layout/paint triggers.
+ *
+ * Architecture: two absolutely-positioned <a> elements rendered at all times.
+ * – State A (circle):  opacity/scale → collapsed look
+ * – State B (pill):    opacity/scale → expanded look
+ * Crossfade is 100% transform + opacity — no width, no box-shadow, no filter animation.
+ *
+ * Glow: a static radial-gradient div whose ONLY animating property is opacity.
+ * Pulse: border-only keyframe using transform:scale + opacity — compositor-safe.
+ */
+
+import React, { useEffect, useRef, useState } from 'react';
 
 const WHATSAPP_LINK = 'https://wa.me/message/O4RDTWJDWFEDG1';
 
-function WhatsAppIcon({ className }: { className?: string }) {
+// ─── Icon (plain SVG, no Framer Motion wrapper needed) ────────────────────────
+
+function WhatsAppIcon() {
   return (
     <svg
+      width="24"
+      height="24"
       viewBox="0 0 48 48"
-      className={className}
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
+      style={{ display: 'block', flexShrink: 0 }}
     >
       <path
         fillRule="evenodd"
@@ -22,31 +36,61 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
+// ─── Shared constants ─────────────────────────────────────────────────────────
+
+const SIZE    = 52;   // height of both states (px)
+const BG      = 'linear-gradient(135deg, #25D366 0%, #1ebe5e 100%)';
+// Static shadow — never animated; paint cost is zero at steady state
+const SHADOW  = '0 4px 20px rgba(37,211,102,0.42), 0 2px 6px rgba(0,0,0,0.10)';
+
+// Transition strings — only compositor properties
+const T_SPRING = 'transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1)';
+const T_FADE   = 'opacity 0.18s ease';
+const T_ENTER  = `${T_SPRING}, ${T_FADE}`;
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
 export default function WhatsAppButton() {
-  const [autoOpen, setAutoOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [mounted,   setMounted]   = useState(false);
+  const [entered,   setEntered]   = useState(false);  // entrance slide-up
+  const [expanded,  setExpanded]  = useState(false);  // desktop hover
+  const [autoOpen,  setAutoOpen]  = useState(false);  // mobile auto-pulse
+
+  // Guard against hover state sticking on touch devices
+  const supportsHoverRef = useRef<boolean | null>(null);
+  const getSupportsHover = () => {
+    if (supportsHoverRef.current === null) {
+      supportsHoverRef.current =
+        typeof window !== 'undefined' &&
+        window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    }
+    return supportsHoverRef.current;
+  };
 
   useEffect(() => {
     setMounted(true);
+    // Entrance: slight delay so the page content loads first
+    const t = setTimeout(() => setEntered(true), 900);
+    return () => clearTimeout(t);
   }, []);
 
+  // Mobile: auto-expand after 15 s, repeat every 45 s for 10 s each
   useEffect(() => {
     if (!mounted) return;
     if (!window.matchMedia('(max-width: 767px)').matches) return;
 
     let closeTimeout: ReturnType<typeof setTimeout>;
-    let interval: ReturnType<typeof setInterval>;
+    let interval:     ReturnType<typeof setInterval>;
 
     const openThenClose = () => {
       setAutoOpen(true);
-      closeTimeout = setTimeout(() => setAutoOpen(false), 10000);
+      closeTimeout = setTimeout(() => setAutoOpen(false), 10_000);
     };
 
     const openTimeout = setTimeout(() => {
       openThenClose();
-      interval = setInterval(openThenClose, 45000);
-    }, 15000);
+      interval = setInterval(openThenClose, 45_000);
+    }, 15_000);
 
     return () => {
       clearTimeout(openTimeout);
@@ -55,70 +99,184 @@ export default function WhatsAppButton() {
     };
   }, [mounted]);
 
-  const showLabel = autoOpen || isHovered;
+  const isExpanded = expanded || autoOpen;
+
+  const handleMouseEnter = () => { if (getSupportsHover()) setExpanded(true); };
+  const handleMouseLeave = () => setExpanded(false);
+
+  // ── Common link props (both states share same destination) ──────────────────
+  const linkProps = {
+    href:   WHATSAPP_LINK,
+    target: '_blank' as const,
+    rel:    'noopener noreferrer',
+    onMouseEnter: handleMouseEnter,
+    onMouseLeave: handleMouseLeave,
+  };
 
   return (
-    <motion.a
-      href={WHATSAPP_LINK}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Chat with us on WhatsApp"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1, duration: 0.4, ease: 'easeOut' }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      className="group fixed bottom-5 right-5 md:bottom-8 md:right-8 z-[60] flex items-center rounded-full cursor-pointer overflow-hidden"
-      style={{
-        background: 'linear-gradient(135deg, #25D366 0%, #1ebe5e 100%)',
-        boxShadow: showLabel
-          ? '0 6px 24px rgba(37, 211, 102, 0.55), 0 2px 8px rgba(0,0,0,0.12)'
-          : '0 4px 16px rgba(37, 211, 102, 0.45)',
-        transition: 'box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-        height: '52px',
-      }}
-    >
-      {/* Pulse ring — only when collapsed */}
-      {!showLabel && (
-        <span
-          className="absolute inset-0 rounded-full animate-ping opacity-25 pointer-events-none"
-          style={{ background: 'linear-gradient(135deg, #25D366, #1ebe5e)' }}
-          aria-hidden="true"
-        />
-      )}
+    <>
+      {/* Keyframes + responsive position injected once — no JS needed */}
+      <style>{`
+        #wa-root {
+          position: fixed;
+          bottom: 20px;
+          right:  20px;
+          z-index: 60;
+          width: ${SIZE}px;
+          height: ${SIZE}px;
+          will-change: transform;
+        }
+        @media (min-width: 768px) {
+          #wa-root { bottom: 32px; right: 32px; }
+        }
+        @keyframes wa-pulse {
+          0%   { transform: scale(1);   opacity: 0.55; }
+          70%  { transform: scale(1.65); opacity: 0; }
+          100% { transform: scale(1.65); opacity: 0; }
+        }
+      `}</style>
 
-      {/* Inner highlight on hover */}
-      <span
-        className="absolute inset-0 rounded-full pointer-events-none transition-opacity duration-300"
+      {/*
+        Wrapper: position:fixed via injected CSS (#wa-root), 52×52 (circle size).
+        The expanded pill overflows leftward — overflow:visible.
+        will-change:transform is set in the injected CSS.
+        No ancestor has transform/filter, so fixed positioning is never broken.
+      */}
+      <div
+        id="wa-root"
         style={{
-          background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), transparent 70%)',
-          opacity: showLabel ? 1 : 0,
+          // Entrance animation — transform+opacity only
+          opacity:   entered ? 1 : 0,
+          transform: entered ? 'translateY(0)' : 'translateY(28px)',
+          transition: T_ENTER,
         }}
-        aria-hidden="true"
-      />
+      >
+        {/* ── Pre-rendered glow — static radial gradient, ONLY opacity animates ── */}
+        <div
+          aria-hidden="true"
+          style={{
+            position:    'absolute',
+            top:         '50%',
+            left:        '50%',
+            width:        96,
+            height:       96,
+            borderRadius: '50%',
+            // Static gradient — no animation, no repaint
+            background:  'radial-gradient(circle, rgba(37,211,102,0.55) 0%, transparent 68%)',
+            // translateZ(0) ensures it's on the GPU layer
+            transform:   'translate(-50%,-50%) translateZ(0)',
+            // Only opacity transitions — not the gradient, not box-shadow
+            opacity:      isExpanded ? 1 : 0.5,
+            transition:  T_FADE,
+            pointerEvents: 'none',
+          }}
+        />
 
-      {/* Icon — fixed-size slot */}
-      <span className="relative flex items-center justify-center w-[52px] h-[52px] shrink-0">
-        <WhatsAppIcon className="w-6 h-6 drop-shadow-sm" />
-      </span>
+        {/* ── Pulse ring — compositor-only keyframe (scale+opacity) ── */}
+        {!isExpanded && (
+          <div
+            aria-hidden="true"
+            style={{
+              position:    'absolute',
+              inset:        0,
+              borderRadius: '50%',
+              border:       '2px solid rgba(37,211,102,0.65)',
+              animation:    'wa-pulse 2.6s cubic-bezier(0,0,0.2,1) infinite',
+              pointerEvents:'none',
+              // Isolate repaint from the rest of the page
+              willChange:  'transform, opacity',
+            }}
+          />
+        )}
 
-      {/* Label — animated in/out */}
-      <AnimatePresence>
-        {showLabel && (
-          <motion.span
-            key="label"
-            initial={{ opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: 'auto' }}
-            exit={{ opacity: 0, width: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="whitespace-nowrap overflow-hidden text-white font-bold text-sm pr-5 pl-1"
+        {/* ══ STATE A — CIRCLE (collapsed) ══════════════════════════════════
+            Hidden when expanded: opacity→0, scale→0.85
+            Active (pointerEvents:auto) only when collapsed.                  */}
+        <a
+          {...linkProps}
+          aria-label="Chat with us on WhatsApp"
+          style={{
+            position:      'absolute',
+            inset:          0,
+            borderRadius:  '50%',
+            display:       'flex',
+            alignItems:    'center',
+            justifyContent:'center',
+            background:     BG,
+            boxShadow:      SHADOW,  // static — never animated
+            cursor:        'pointer',
+            textDecoration:'none',
+            willChange:    'transform, opacity',
+            // Compositor-only transitions
+            opacity:        isExpanded ? 0 : 1,
+            transform:      isExpanded ? 'scale(0.82)' : 'scale(1)',
+            transition:     T_ENTER,
+            pointerEvents:  isExpanded ? 'none' : 'auto',
+          }}
+        >
+          <WhatsAppIcon />
+        </a>
+
+        {/* ══ STATE B — PILL (expanded) ══════════════════════════════════════
+            Anchored right-edge to wrapper's right edge (right:0, absolute).
+            Grows leftward — no layout disruption to the page.
+            Hidden when collapsed: opacity→0, scale→0.88 from right origin.  */}
+        <a
+          {...linkProps}
+          aria-label="Chat with us on WhatsApp — Message us"
+          style={{
+            position:      'absolute',
+            top:            0,
+            right:          0,
+            height:         SIZE,
+            paddingRight:  20,
+            display:       'flex',
+            alignItems:    'center',
+            borderRadius:  9999,
+            background:     BG,
+            boxShadow:      SHADOW,  // static — never animated
+            cursor:        'pointer',
+            textDecoration:'none',
+            whiteSpace:    'nowrap',
+            willChange:    'transform, opacity',
+            transformOrigin:'right center',
+            // Compositor-only transitions
+            opacity:        isExpanded ? 1 : 0,
+            transform:      isExpanded
+              ? 'scale(1) translateX(0)'
+              : 'scale(0.88) translateX(6px)',
+            transition:     T_ENTER,
+            pointerEvents:  isExpanded ? 'auto' : 'none',
+          }}
+        >
+          {/* Icon slot — same size as circle state for visual continuity */}
+          <span
+            style={{
+              width:          SIZE,
+              height:         SIZE,
+              display:       'flex',
+              alignItems:    'center',
+              justifyContent:'center',
+              flexShrink:     0,
+            }}
+          >
+            <WhatsAppIcon />
+          </span>
+
+          {/* Text — always rendered in the DOM, zero layout animation */}
+          <span
+            style={{
+              color:        'white',
+              fontWeight:    700,
+              fontSize:      14,
+              letterSpacing:'0.01em',
+              lineHeight:    1,
+            }}
           >
             Message us
-          </motion.span>
-        )}
-      </AnimatePresence>
-    </motion.a>
+          </span>
+        </a>
+      </div>
+    </>
   );
 }
