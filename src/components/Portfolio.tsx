@@ -199,13 +199,9 @@ export default function Portfolio() {
           transition={{ type: "spring", stiffness: 380, damping: 30 }}
         />
       )}
-      <span 
-        className={`relative z-10 transition-colors duration-200 ${
-          selectedCategory === category.id ? 'text-white' : 'text-zinc-500'
-        }`}
-      >
+      <ScrollTextReveal delay={0} textColor={selectedCategory === category.id ? "#ffffff" : "#71717A"}>
         {t.portfolio.categories[category.key]}
-      </span>
+      </ScrollTextReveal>
     </button>
   );
 
