@@ -105,8 +105,8 @@ function ProjectCard({ project, index }: ProjectCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={viewportConfig}
       transition={isTabletOrSmaller ? { duration: getDuration(0.4), ease: getEase() } : { duration: getDuration(0.5), delay: index * getStagger(0.05, 9), ease: getEase() }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={isTabletOrSmaller ? undefined : () => setIsHovered(true)}
+      onMouseLeave={isTabletOrSmaller ? undefined : () => setIsHovered(false)}
       onClick={() => window.open(project.url, '_blank', 'noopener,noreferrer')}
       className="group relative flex flex-col rounded-2xl overflow-hidden border border-zinc-200 bg-white shadow-sm hover:shadow-2xl hover:border-brand-red/30 transition-all duration-300 cursor-pointer h-[350px] transform lg:hover:-translate-y-2 select-none"
     >
@@ -156,8 +156,8 @@ function ProjectCard({ project, index }: ProjectCardProps) {
         )}
 
         {/* Hover overlay details */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 z-10 pointer-events-none">
-          <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 space-y-2">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 z-10 pointer-events-none">
+          <div className="transform lg:translate-y-4 lg:group-hover:translate-y-0 transition-transform duration-300 space-y-2">
             <span className="px-3 py-1 rounded-full bg-brand-red text-[10px] font-bold uppercase tracking-wider text-white w-fit inline-block">
               {t.portfolio.categories[categoryKeyMap[project.category]]}
             </span>
