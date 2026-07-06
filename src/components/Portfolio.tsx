@@ -313,7 +313,7 @@ export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll,
         </motion.div>
 
         {/* Home page "View more of our work" button OR subpage project CTA */}
-        {!isSubpage && limit && filteredProjects.length > limit ? (
+        {!isSubpage ? (
           <div className="mt-16 text-center">
             <button
               onClick={onViewAll}
