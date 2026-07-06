@@ -15,7 +15,7 @@ export const translations = {
       title2: "Marketing",
       title3: "Services",
       subtitle: "Most websites look fine and convert nothing. We build sites engineered to bring in calls and customers — not just compliments.",
-      ctaPrimary: "Book a Free Audit",
+      ctaPrimary: "Get Free Proposal",
       ctaSecondary: "See Our Work"
     },
     services: {
