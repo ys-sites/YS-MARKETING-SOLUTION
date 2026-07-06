@@ -35,6 +35,8 @@ const projects = [
   { id: 7, slug: "tierexotics",  name: "A-Tier Exotics",           category: "Luxury Services",     url: "https://a-tier-exotics.vercel.app" },
   { id: 8, slug: "pressurewash", name: "Pressure Wash Pro Elite",  category: "Home Services",       url: "https://pressure-wash-pro-elite.vercel.app" },
   { id: 9, slug: "autoruby",     name: "Auto Ruby",                category: "Automotive",          url: "https://auto-ruby.vercel.app" },
+  { id: 10, slug: "villagrecque", name: "Villa Grecque",            category: "Restaurants",         url: "https://villa-gercque.vercel.app" },
+  { id: 11, slug: "kingpeinture", name: "King Painting",            category: "Home Services",       url: "https://kingpeinture.vercel.app" },
 ];
 
 interface ProjectCardProps {
@@ -106,7 +108,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => window.open(project.url, '_blank', 'noopener,noreferrer')}
-      className="group relative flex flex-col rounded-2xl overflow-hidden border border-zinc-200 bg-white shadow-sm hover:shadow-2xl hover:border-brand-red/30 transition-all duration-300 cursor-pointer h-[350px] transform hover:-translate-y-2 select-none"
+      className="group relative flex flex-col rounded-2xl overflow-hidden border border-zinc-200 bg-white shadow-sm hover:shadow-2xl hover:border-brand-red/30 transition-all duration-300 cursor-pointer h-[350px] transform lg:hover:-translate-y-2 select-none"
     >
       {/* Minimal Browser Bar */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-50 border-b border-zinc-200/80">
@@ -240,6 +242,8 @@ export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll,
               '/portfolio/mannypainter.jpg',
               '/portfolio/tierexotics.jpg',
               '/portfolio/pressurewash.jpg',
+              '/portfolio/villagrecque.jpg',
+              '/portfolio/kingpeinture.jpg',
             ]}
             imageClassName="h-12 w-16 sm:h-16 sm:w-24 md:h-20 md:w-28 opacity-20"
           />

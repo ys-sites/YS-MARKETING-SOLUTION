@@ -43,28 +43,40 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen flex items-center justify-start overflow-hidden bg-black">
-      {/* Background Video */}
+      {/* Background Media */}
       <div className="absolute inset-0 w-full h-full object-cover z-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover"
-          style={{ transform: "translate3d(0,0,0)" }}
-        >
-          <source
-            media="(max-width: 767px)"
-            src="https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_mp4,w_768,c_limit/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.mp4"
-            type="video/mp4"
+        {isMobile ? (
+          <img
+            src="/hero-mobile.jpg"
+            alt="High-Performance Marketing"
+            className="w-full h-full object-cover"
+            loading="eager"
+            // @ts-ignore
+            fetchpriority="high"
           />
-          <source
-            src="https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_mp4,w_1920,c_limit/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.mp4"
-            type="video/mp4"
-          />
-        </video>
+        ) : (
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster="/hero-mobile.jpg"
+            className="w-full h-full object-cover"
+            style={{ transform: "translate3d(0,0,0)" }}
+          >
+            <source
+              media="(max-width: 767px)"
+              src="https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_mp4,w_768,c_limit/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.mp4"
+              type="video/mp4"
+            />
+            <source
+              src="https://res.cloudinary.com/dmnoikwb9/video/upload/q_auto:good,f_mp4,w_1920,c_limit/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.mp4"
+              type="video/mp4"
+            />
+          </video>
+        )}
       </div>
 
       {/* Dark Legibility Overlay — single gradient layer for fewer composited layers */}

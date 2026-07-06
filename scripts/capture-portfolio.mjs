@@ -8,9 +8,11 @@ const sites = [
   { slug: 'ironfuellab',  url: 'https://www.ironfuellab.com' },
   { slug: 'jannette',     url: 'https://www.jannettecaribbean.ca' },
   { slug: 'mannypainter', url: 'https://www.mannypainter.ca' },
-  { slug: 'tierexotics',  url: 'https://a-tier-exotics.vercel.app' },
+  { slug: 'atierexotics',  url: 'https://a-tier-exotics.vercel.app' },
   { slug: 'pressurewash', url: 'https://pressure-wash-pro-elite.vercel.app' },
   { slug: 'autoruby',     url: 'https://auto-ruby.vercel.app' },
+  { slug: 'villagrecque', url: 'https://villa-gercque.vercel.app' },
+  { slug: 'kingpeinture', url: 'https://kingpeinture.vercel.app' },
 ];
 
 mkdirSync('public/portfolio', { recursive: true });
