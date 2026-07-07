@@ -3,7 +3,7 @@ import { Instagram, Mail, Phone, MapPin } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const quickLinks = [
     { name: t.nav.services, href: '#services' },
     { name: t.nav.portfolio, href: '#portfolio' },
@@ -25,7 +25,7 @@ export default function Footer() {
             >
               {/* Logo asset in a padded circle */}
               <div className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center p-2 backdrop-blur-sm shrink-0">
-                <img src="/YS.png" alt="YS Marketing Solutions" className="h-full w-auto object-contain" />
+                <img src="/YS.png" alt="YS Marketing Solutions logo" width={36} height={36} className="h-full w-auto object-contain" />
               </div>
               <span className="text-sm md:text-base font-black tracking-wider text-white uppercase whitespace-nowrap">YS Marketing Solutions</span>
             </button>
@@ -47,12 +47,12 @@ export default function Footer() {
 
           {/* Col 3: Quick Links */}
           <div className="flex flex-col gap-4">
-            <h4 className="text-white font-bold text-base uppercase tracking-wider">{t.footer.quickLinksTitle}</h4>
+            <h3 className="text-white font-bold text-base uppercase tracking-wider">{t.footer.quickLinksTitle}</h3>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <a
-                    href={link.href}
+                    href={language === 'fr' ? `/fr${link.href}` : `/${link.href}`}
                     className="text-zinc-400 hover:text-brand-red transition-colors duration-200 text-sm font-semibold"
                   >
                     {link.name}
@@ -64,7 +64,7 @@ export default function Footer() {
 
           {/* Col 4: Contact */}
           <div className="flex flex-col gap-4">
-            <h4 className="text-white font-bold text-base uppercase tracking-wider">{t.footer.contactTitle}</h4>
+            <h3 className="text-white font-bold text-base uppercase tracking-wider">{t.footer.contactTitle}</h3>
             <ul className="space-y-4">
               <li>
                 <a

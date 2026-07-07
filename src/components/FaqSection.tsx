@@ -61,9 +61,22 @@ const faqItems: FaqItem[] = [
       "We're based in Montreal and love working with local businesses, but the majority of what we deliver — design, development, SEO, ad management — works just as well for clients anywhere. Distance has never been a blocker for a project.",
   },
 ];
-
 export default function FaqSection() {
   const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
+
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map((item) => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer,
+      },
+    })),
+  };
+
   return (
     <section id="faq" className="py-24 md:py-28 bg-surface-alt relative overflow-hidden border-t border-zinc-100 gpu-accelerated">
       <div className="max-w-4xl mx-auto px-6">
@@ -96,6 +109,10 @@ export default function FaqSection() {
           </ScrollTextReveal>
         </div>
 
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+        />
         <FaqAccordion items={faqItems} searchPlaceholder="Search pricing, SEO, timelines..." />
       </div>
     </section>

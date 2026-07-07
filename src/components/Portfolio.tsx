@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import GlowDot from './GlowDot';
 import ShinyTitle from './ShinyTitle';
@@ -26,18 +27,18 @@ const categoryKeyMap: Record<string, typeof categories[number]['key']> = Object.
 );
 
 const projects = [
-  { id: 1, slug: "allball",      name: "Centre AllBall",           category: "Sports & Recreation", url: "https://www.centreallball.com" },
-  { id: 2, slug: "mevoyages",    name: "Majestic Experiences Voyages", category: "Travel",          url: "https://www.mevoyages.com" },
-  { id: 3, slug: "1001nuits",    name: "1001 Nuits",               category: "Restaurants",         url: "https://www.1001nuit.com" },
-  { id: 4, slug: "ironfuellab",  name: "IronFuel Lab",             category: "E-commerce",          url: "https://www.ironfuellab.com" },
-  { id: 5, slug: "jannette",     name: "Jannette Caribbean",       category: "Restaurants",         url: "https://www.jannettecaribbean.ca" },
-  { id: 6, slug: "mannypainter", name: "Manny Painter",            category: "Home Services",       url: "https://www.mannypainter.ca" },
-  { id: 7, slug: "tierexotics",  name: "A-Tier Exotics",           category: "Luxury Services",     url: "https://a-tier-exotics.vercel.app" },
-  { id: 8, slug: "pressurewash", name: "Pressure Wash Pro Elite",  category: "Home Services",       url: "https://pressure-wash-pro-elite.vercel.app" },
-  { id: 9, slug: "autoruby",     name: "Auto Ruby",                category: "Automotive",          url: "https://auto-ruby.vercel.app" },
-  { id: 10, slug: "villagrecque", name: "Villa Grecque",            category: "Restaurants",         url: "https://villa-gercque.vercel.app" },
-  { id: 11, slug: "kingpeinture", name: "King Painting",            category: "Home Services",       url: "https://kingpeinture.vercel.app" },
-  { id: 12, slug: "marchesaveurs", name: "Marché Saveurs",          category: "Restaurants",         url: "https://marchesaveurs.vercel.app" },
+  { id: 1, slug: "allball",      name: "Centre AllBall",           category: "Sports & Recreation", url: "https://www.centreallball.com", altEn: "Centre AllBall sports complex website design — Montreal", altFr: "Conception de site web pour le complexe sportif Centre AllBall — Montréal" },
+  { id: 2, slug: "mevoyages",    name: "Majestic Experiences Voyages", category: "Travel",          url: "https://www.mevoyages.com", altEn: "Majestic Experiences Voyages luxury travel website design — Montreal", altFr: "Conception de site web de voyage de luxe pour Majestic Experiences Voyages — Montréal" },
+  { id: 3, slug: "1001nuits",    name: "1001 Nuits",               category: "Restaurants",         url: "https://www.1001nuit.com", altEn: "1001 Nuits halal restaurant website design — Montreal", altFr: "Conception de site web pour le restaurant halal 1001 Nuits — Montréal" },
+  { id: 4, slug: "ironfuellab",  name: "IronFuel Lab",             category: "E-commerce",          url: "https://www.ironfuellab.com", altEn: "IronFuel Lab fitness e-commerce website design — Montreal", altFr: "Conception de site e-commerce de fitness pour IronFuel Lab — Montréal" },
+  { id: 5, slug: "jannette",     name: "Jannette Caribbean",       category: "Restaurants",         url: "https://www.jannettecaribbean.ca", altEn: "Jannette Caribbean restaurant and catering website design — Montreal", altFr: "Conception de site web pour le restaurant caribéen Jannette — Montréal" },
+  { id: 6, slug: "mannypainter", name: "Manny Painter",            category: "Home Services",       url: "https://www.mannypainter.ca", altEn: "Manny Painter home services painting website design — Montreal", altFr: "Conception de site web de services de peinture pour Manny Painter — Montréal" },
+  { id: 7, slug: "tierexotics",  name: "A-Tier Exotics",           category: "Luxury Services",     url: "https://a-tier-exotics.vercel.app", altEn: "A-Tier Exotics luxury car rental website design — Montreal", altFr: "Conception de site web de location de voitures de luxe pour A-Tier Exotics — Montréal" },
+  { id: 8, slug: "pressurewash", name: "Pressure Wash Pro Elite",  category: "Home Services",       url: "https://pressure-wash-pro-elite.vercel.app", altEn: "Pressure Wash Pro Elite exterior cleaning website design — Montreal", altFr: "Conception de site web de lavage à pression pour Pressure Wash Pro Elite — Montréal" },
+  { id: 9, slug: "autoruby",     name: "Auto Ruby",                category: "Automotive",          url: "https://auto-ruby.vercel.app", altEn: "Auto Ruby automotive inventory showcase website design — Montreal", altFr: "Conception de site web de vitrine d'inventaire auto pour Auto Ruby — Montréal" },
+  { id: 10, slug: "villagrecque", name: "Villa Grecque",            category: "Restaurants",         url: "https://villa-gercque.vercel.app", altEn: "Villa Grecque greek restaurant website design — Montreal", altFr: "Conception de site web pour le restaurant grec Villa Grecque — Montréal" },
+  { id: 11, slug: "kingpeinture", name: "King Painting",            category: "Home Services",       url: "https://kingpeinture.vercel.app", altEn: "King Painting professional home painting website design — Montreal", altFr: "Conception de site web de peinture professionnelle pour King Peinture — Montréal" },
+  { id: 12, slug: "marchesaveurs", name: "Marché Saveurs",          category: "Restaurants",         url: "https://marchesaveurs.vercel.app", altEn: "Marché Saveurs local grocery market website design — Montreal", altFr: "Conception de site web de marché d'alimentation pour Marché Saveurs — Montréal" },
 ];
 
 interface ProjectCardProps {
@@ -46,7 +47,7 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project, index }: ProjectCardProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const { isMobile, getDistance, getDuration, getEase, getStagger, viewportConfig } = useAnimationConfig();
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-10% 0px" });
@@ -139,7 +140,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
           <img
             ref={imgRef}
             src={`/portfolio/${project.slug}.jpg`}
-            alt={project.name}
+            alt={language === 'en' ? project.altEn : project.altFr}
             width={350}
             height={314}
             decoding="async"
@@ -262,14 +263,50 @@ export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll,
                 {t.portfolio.badge}
               </ScrollTextReveal>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-              <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
-                <ShinyTitle
-                  blackText={t.portfolio.title.split(' ').slice(0, -1).join(' ') + ' '}
-                  redText={t.portfolio.title.split(' ').slice(-1).join(' ')}
-                />
-              </ScrollTextReveal>
-            </h2>
+            {isSubpage ? (
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
+                <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
+                  <ShinyTitle
+                    blackText={t.portfolio.title.split(' ').slice(0, -1).join(' ') + ' '}
+                    redText={t.portfolio.title.split(' ').slice(-1).join(' ')}
+                  />
+                </ScrollTextReveal>
+              </h1>
+            ) : (
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
+                <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
+                  <ShinyTitle
+                    blackText={t.portfolio.title.split(' ').slice(0, -1).join(' ') + ' '}
+                    redText={t.portfolio.title.split(' ').slice(-1).join(' ')}
+                  />
+                </ScrollTextReveal>
+              </h2>
+            )}
+            {isSubpage && (
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                  __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                      {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": language === 'fr' ? "Accueil" : "Home",
+                        "item": language === 'fr' ? "https://www.ysdev.ca/fr" : "https://www.ysdev.ca/"
+                      },
+                      {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": language === 'fr' ? "Réalisations" : "Portfolio",
+                        "item": language === 'fr' ? "https://www.ysdev.ca/fr/portfolio" : "https://www.ysdev.ca/portfolio"
+                      }
+                    ]
+                  })
+                }}
+              />
+            )}
             <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
               <BlurText
                 text={t.portfolio.subtitle}
@@ -317,13 +354,13 @@ export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll,
         {/* Home page "View more of our work" button OR subpage project CTA */}
         {!isSubpage ? (
           <div className="mt-16 text-center">
-            <button
-              onClick={onViewAll}
+            <Link
+              to={language === 'fr' ? '/fr/portfolio' : '/portfolio'}
               className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-brand-red text-white hover:bg-brand-red-dark rounded-full font-bold text-lg hover:bg-brand-red-dark transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(225,29,46,0.2)] hover:shadow-[0_0_40px_-8px_rgba(225,29,46,0.5)] cursor-pointer"
             >
               {language === 'en' ? 'View more of our work' : 'Voir plus de nos réalisations'}
               <ArrowUpRight className="w-5 h-5 animate-pulse" />
-            </button>
+            </Link>
           </div>
         ) : (
           /* Secondary CTA — only show when viewing all work */

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useMotionValue, useTransform, useInView, animate } from 'framer-motion';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
+import { useLanguage } from '../context/LanguageContext';
 import ScrollTextReveal from './ui/ScrollTextReveal';
 
 interface CounterProps {
@@ -41,11 +42,12 @@ function Counter({ value, suffix = '', prefix = '', decimals = 0, compact = fals
 
 export default function StatsSection() {
   const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
+  const { t } = useLanguage();
   const stats = [
-    { label: 'SITES LAUNCHED', value: 10, suffix: '+', prefix: '', decimals: 0, compact: false },
-    { label: 'SOCIAL VIEWS GENERATED', value: 1000000, suffix: '+', prefix: '', decimals: 0, compact: true },
-    { label: 'AVG. CONVERSION LIFT', value: 35, suffix: '%', prefix: '', decimals: 0, compact: false },
-    { label: 'CLIENT REVENUE GENERATED', value: 150, suffix: 'K+', prefix: '$', decimals: 0, compact: false },
+    { label: t.stats.sites.toUpperCase(), value: 10, suffix: '+', prefix: '', decimals: 0, compact: false },
+    { label: t.stats.views.toUpperCase(), value: 1000000, suffix: '+', prefix: '', decimals: 0, compact: true },
+    { label: t.stats.conversion.toUpperCase(), value: 35, suffix: '%', prefix: '', decimals: 0, compact: false },
+    { label: t.stats.revenue.toUpperCase(), value: 150, suffix: 'K+', prefix: '$', decimals: 0, compact: false },
   ];
 
   return (

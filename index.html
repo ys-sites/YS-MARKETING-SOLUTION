@@ -9,11 +9,11 @@
     <meta property="og:description" content="Premium, high-performance websites and local SEO that turn visitors into paying customers in Montreal." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.ysdev.ca/" />
-    <meta property="og:image" content="https://www.ysdev.ca/YS.png" />
+    <meta property="og:image" content="https://www.ysdev.ca/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://www.ysdev.ca/YS.png" />
+    <meta name="twitter:image" content="https://www.ysdev.ca/og-image.jpg" />
     <link rel="canonical" href="https://www.ysdev.ca/" />
     <title>Web Design Montreal | YS Marketing Solutions | SEO & Web Development</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -58,6 +58,60 @@
       "areaServed": {
         "@type": "AdministrativeArea",
         "name": "Montreal"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Digital Marketing & Web Design Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Website Development",
+              "description": "Custom, high-performance websites built for speed and conversions."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Google Ranking (SEO)",
+              "description": "Rank higher on Google and get found by customers searching for you."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Meta Ads",
+              "description": "Targeted Facebook and Instagram ads that bring in leads fast."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Social Media",
+              "description": "Consistent, on-brand content that grows a real, engaged following."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Content Creation",
+              "description": "Copy, graphics, and brand assets that look professional and convert."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Digital Strategy",
+              "description": "A clear growth plan built around your numbers, not guesswork."
+            }
+          }
+        ]
       }
     }
     </script>
@@ -68,19 +122,13 @@
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
     <link rel="dns-prefetch" href="https://cdn.prod.website-files.com" />
 
-    <!-- Preload responsive hero video poster frames -->
-    <link
-      rel="preload"
-      href="https://res.cloudinary.com/dmnoikwb9/video/upload/f_auto,q_auto,so_0,w_1920/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.jpg"
-      as="image"
-      media="(min-width: 768px)"
-    />
-    <link
-      rel="preload"
-      href="https://res.cloudinary.com/dmnoikwb9/video/upload/f_auto,q_auto,so_0,w_768/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.jpg"
-      as="image"
-      media="(max-width: 767px)"
-    />
+    <!-- 
+      PENDING R2 MIGRATION: Cloudinary video background assets below will be migrated to cdn.mevoyages.com pattern for ysdev.
+      Cloudinary URLs for reference:
+      - Desktop Poster: https://res.cloudinary.com/dmnoikwb9/video/upload/f_auto,q_auto,so_0,w_1920/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.jpg
+      - Mobile Poster: https://res.cloudinary.com/dmnoikwb9/video/upload/f_auto,q_auto,so_0,w_768/v1783121626/CLIENT__Website_Background_Video_for_kwELITE_Keller_Williams_Real_Estate_-_DayCloud_Studios_efqnap.jpg
+    -->
+    <link rel="preload" href="/hero-mobile.jpg" as="image" />
 
     <!-- Preload Inter font subset for instant text render (no FOIT) -->
     <link

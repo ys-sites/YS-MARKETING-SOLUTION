@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { translations, Language, TranslationKey } from '../translations';
 
 interface LanguageContextType {
@@ -11,25 +12,45 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem('ys_lang');
-    if (saved === 'en' || saved === 'fr') return saved;
-    // Fallback to browser language if it is French, else English
-    const browserLang = navigator.language.split('-')[0];
-    return browserLang === 'fr' ? 'fr' : 'en';
-  });
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Determine language based on the URL path
+  const getLanguageFromPath = (pathname: string): Language => {
+    return pathname.startsWith('/fr') ? 'fr' : 'en';
+  };
+
+  const [language, setLanguageState] = useState<Language>(() => getLanguageFromPath(location.pathname));
+
+  // Keep language state in sync with URL changes (back button, direct links, etc.)
+  useEffect(() => {
+    const targetLang = getLanguageFromPath(location.pathname);
+    if (targetLang !== language) {
+      setLanguageState(targetLang);
+    }
+  }, [location.pathname, language]);
 
   useEffect(() => {
-    localStorage.setItem('ys_lang', language);
     document.documentElement.lang = language;
   }, [language]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
+    const isFrench = location.pathname.startsWith('/fr');
+    if (lang === 'fr' && !isFrench) {
+      navigate('/fr' + (location.pathname === '/' ? '' : location.pathname));
+    } else if (lang === 'en' && isFrench) {
+      navigate(location.pathname.substring(3) || '/');
+    }
   };
 
   const toggleLanguage = () => {
-    setLanguageState((prev) => (prev === 'en' ? 'fr' : 'en'));
+    const isFrench = location.pathname.startsWith('/fr');
+    if (isFrench) {
+      navigate(location.pathname.substring(3) || '/');
+    } else {
+      navigate('/fr' + (location.pathname === '/' ? '' : location.pathname));
+    }
   };
 
   const t = translations[language];

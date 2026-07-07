@@ -120,6 +120,26 @@ const ParallaxImage = memo(function ParallaxImage({
 
   const posStyle = positionStyles[position];
 
+  const getAltText = (src: string) => {
+    const filename = src.split('/').pop()?.replace('.jpg', '') || '';
+    const names: Record<string, string> = {
+      allball: "Centre AllBall sports complex",
+      mevoyages: "Majestic Experiences Voyages luxury travel",
+      "1001nuits": "1001 Nuits halal restaurant",
+      ironfuellab: "IronFuel Lab fitness e-commerce",
+      jannette: "Jannette Caribbean restaurant",
+      mannypainter: "Manny Painter home services",
+      tierexotics: "A-Tier Exotics luxury car rental",
+      pressurewash: "Pressure Wash Pro Elite exterior cleaning",
+      villagrecque: "Villa Grecque restaurant",
+      kingpeinture: "King Painting home painting",
+      marchesaveurs: "Marché Saveurs local food market",
+      autoruby: "Auto Ruby automotive dealer"
+    };
+    const name = names[filename] || filename;
+    return `${name} website design — Montreal`;
+  };
+
   return (
     <motion.div
       className="absolute"
@@ -138,7 +158,9 @@ const ParallaxImage = memo(function ParallaxImage({
     >
       <img
         src={src}
-        alt=""
+        alt={getAltText(src)}
+        width={320}
+        height={240}
         loading="lazy"
         decoding="async"
         className={cn(

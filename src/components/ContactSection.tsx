@@ -69,11 +69,11 @@ export default function ContactSection() {
                 <Heart className="w-6 h-6 text-brand-red" />
               </div>
               <div>
-                <h4 className="font-bold text-ink text-lg mb-0.5">
+                <h3 className="font-bold text-ink text-lg mb-0.5">
                   <ScrollTextReveal delay={0} textColor="#0A0A0A">
                     {t.contact.trust.abandonmentTitle}
                   </ScrollTextReveal>
-                </h4>
+                </h3>
                 <div className="text-muted text-sm">
                   <ScrollTextReveal delay={0.05} textColor="#71717A">
                     {t.contact.trust.abandonmentDesc}
@@ -92,11 +92,11 @@ export default function ContactSection() {
                 <ShoppingCart className="w-6 h-6 text-brand-red" />
               </div>
               <div>
-                <h4 className="font-bold text-ink text-lg mb-0.5">
+                <h3 className="font-bold text-ink text-lg mb-0.5">
                   <ScrollTextReveal delay={0.1} textColor="#0A0A0A">
                     {t.contact.trust.missedRevenueTitle}
                   </ScrollTextReveal>
-                </h4>
+                </h3>
                 <div className="text-muted text-sm">
                   <ScrollTextReveal delay={0.15} textColor="#71717A">
                     {t.contact.trust.missedRevenueDesc}

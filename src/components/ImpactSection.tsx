@@ -138,6 +138,8 @@ function PhoneMockup({ src, rotate, fromSide, delay, badge, href, alt, zIndex = 
           <img
             src={src}
             alt={alt ?? 'Social media content for 1001 Nuits'}
+            width={208}
+            height={440}
             loading="lazy"
             onError={() => setError(true)}
             className="w-full h-full object-cover"
@@ -259,7 +261,7 @@ function FloatingChip({
   const content = (
     <>
       {image ? (
-        <img src={image} alt="" className="w-3.5 h-3.5 object-contain shrink-0" />
+        <img src={image} alt="Niche icon" width={14} height={14} className="w-3.5 h-3.5 object-contain shrink-0" />
       ) : Icon ? (
         <Icon className="w-3.5 h-3.5 text-brand-red shrink-0" />
       ) : null}
@@ -355,7 +357,7 @@ function InstagramPostCard({ src, href, caption }: { src: string; href: string; 
       <div className="flex items-center gap-2.5 px-3.5 py-3 border-b border-zinc-100">
         <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-400 via-brand-red to-purple-600 p-[2px] shrink-0">
           <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden p-1">
-            <img src="/YS.png" alt="" className="w-full h-full object-contain" />
+            <img src="/YS.png" alt="YS Marketing Solutions logo" width={28} height={28} className="w-full h-full object-contain" />
           </div>
         </div>
         <span className="text-xs font-bold text-ink">ys.sites</span>
@@ -366,6 +368,8 @@ function InstagramPostCard({ src, href, caption }: { src: string; href: string; 
           <img
             src={src}
             alt={caption}
+            width={320}
+            height={320}
             loading="lazy"
             onError={() => setError(true)}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -675,11 +679,11 @@ export default function ImpactSection() {
         {/* Progress Recap: 1001 Nuits Growth */}
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center mb-28 md:mb-36">
           <div className="order-1">
-            <h4 className="text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
+            <h3 className="text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
               <ScrollTextReveal delay={0} textColor="#0A0A0A">
                 The progress, <span className="text-brand-red">so far.</span>
               </ScrollTextReveal>
-            </h4>
+            </h3>
             <div className="mb-6">
               <div className="text-5xl sm:text-6xl font-extrabold tracking-tight text-brand-red">
                 <ScrollTextReveal delay={0.05} textColor="#E11D2E" wrapperClassName="block">

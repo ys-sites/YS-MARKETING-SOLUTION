@@ -49,6 +49,8 @@ export default function Hero() {
           <img
             src="/hero-mobile.jpg"
             alt="High-Performance Marketing"
+            width={1024}
+            height={1024}
             className="w-full h-full object-cover"
             loading="eager"
             // @ts-ignore

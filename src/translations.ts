@@ -11,9 +11,9 @@ export const translations = {
     },
     hero: {
       badge: "High-Performance Marketing",
-      title1: "Digital",
-      title2: "Marketing",
-      title3: "Services",
+      title1: "Web Design &",
+      title2: "Digital Marketing",
+      title3: "in Montreal",
       subtitle: "Most websites look fine and convert nothing. We build sites engineered to bring in calls and customers — not just compliments.",
       ctaPrimary: "Get Free Proposal",
       ctaSecondary: "See Our Work"
@@ -21,7 +21,7 @@ export const translations = {
     services: {
       badge: "Services",
       title: "Pillars of Growth",
-      subtitle: "Custom-engineered marketing and design solutions that turn your visitors into customers.",
+      subtitle: "Custom-engineered Montreal marketing and web design solutions that turn your local visitors into paying customers.",
       items: [
         {
           title: "Website Development",
@@ -163,8 +163,14 @@ export const translations = {
         missedRevenueDesc: "Turn cold search queries and ads traffic into immediate booked calls."
       }
     },
+    stats: {
+      sites: "Montreal Sites Launched",
+      views: "Social Views Generated",
+      conversion: "Avg. Conversion Lift",
+      revenue: "Client Revenue Generated"
+    },
     footer: {
-      desc: "We design and build high-performance websites and strategic digital systems that help your business scale conversions and dominate its local market.",
+      desc: "We design and build high-performance websites and strategic digital systems that help your business scale conversions and dominate its local market. Proudly serving Montreal, Laval, and the South Shore.",
       missionTitle: "Our Mission",
       contactTitle: "Contact",
       quickLinksTitle: "Quick Links",
@@ -185,9 +191,9 @@ export const translations = {
     },
     hero: {
       badge: "Marketing Haute Performance",
-      title1: "Services de",
-      title2: "Marketing",
-      title3: "Numérique",
+      title1: "Conception Web &",
+      title2: "Marketing Numérique",
+      title3: "à Montréal",
       subtitle: "Votre site web devrait vendre pendant que vous dormez. Nous créons des sites rapides, conçus pour la conversion—sans modèles, sans superflu—qui transforment vos visiteurs en appels réservés et en clients payants, dès la première semaine.",
       ctaPrimary: "Obtenir une proposition gratuite",
       ctaSecondary: "Voir nos réalisations"
@@ -195,7 +201,7 @@ export const translations = {
     services: {
       badge: "Services",
       title: "Piliers de Croissance",
-      subtitle: "Solutions de marketing et de conception sur mesure qui transforment vos visiteurs en clients.",
+      subtitle: "Solutions de marketing et conception web sur mesure à Montréal qui transforment vos visiteurs locaux en clients payants.",
       items: [
         {
           title: "Développement de Sites Web",
@@ -337,8 +343,14 @@ export const translations = {
         missedRevenueDesc: "Transformez les recherches et le trafic publicitaire en appels réservés immédiats."
       }
     },
+    stats: {
+      sites: "Sites Lancés à Montréal",
+      views: "Vues Sociales Générées",
+      conversion: "Hausse Moyenne de Conv.",
+      revenue: "Revenus Clients Générés"
+    },
     footer: {
-      desc: "Nous concevons et développons des sites web haute performance et des systèmes marketing stratégiques pour aider votre entreprise à convertir ses prospects et dominer son marché local.",
+      desc: "Nous concevons et développons des sites web haute performance et des systèmes marketing stratégiques pour aider votre entreprise à convertir ses prospects et dominer son marché local. Fiers de desservir Montréal, Laval et la Rive-Sud.",
       missionTitle: "Notre Mission",
       contactTitle: "Contact",
       quickLinksTitle: "Liens Rapides",

@@ -56,7 +56,7 @@ export default function Navbar({ currentView, setView }: NavbarProps) {
             className="flex items-center gap-2 sm:gap-3 cursor-pointer hover:opacity-90 transition-opacity min-w-0 shrink-0"
           >
             {/* Logo asset kept exactly as-is without circle padding */}
-            <img src="/YS.png" alt="YS Marketing Solutions" className="h-8 sm:h-9 md:h-11 w-auto shrink-0" />
+            <img src="/YS.png" alt="YS Marketing Solutions logo" width={44} height={44} className="h-8 sm:h-9 md:h-11 w-auto shrink-0" />
             <span className="text-[11px] sm:text-sm md:text-lg font-black tracking-wider text-white uppercase whitespace-nowrap">
               YS Marketing Solutions
             </span>
@@ -67,7 +67,7 @@ export default function Navbar({ currentView, setView }: NavbarProps) {
             {navLinks.map((link) => (
               <a
                 key={link.name}
-                href={link.href}
+                href={language === 'fr' ? `/fr${link.href}` : link.href}
                 onClick={(e) => {
                   if (currentView !== 'home') {
                     e.preventDefault();
@@ -100,7 +100,7 @@ export default function Navbar({ currentView, setView }: NavbarProps) {
             </button>
 
             <a
-              href="#contact"
+              href={language === 'fr' ? '/fr#contact' : '#contact'}
               onClick={(e) => {
                 if (currentView !== 'home') {
                   e.preventDefault();
@@ -151,7 +151,7 @@ export default function Navbar({ currentView, setView }: NavbarProps) {
               {navLinks.map((link) => (
                 <a
                   key={link.name}
-                  href={link.href}
+                  href={language === 'fr' ? `/fr${link.href}` : link.href}
                   className="text-lg font-bold text-muted hover:text-brand-red transition-colors duration-200 cursor-pointer py-1"
                   onClick={(e) => {
                     setIsMobileMenuOpen(false);
@@ -170,7 +170,7 @@ export default function Navbar({ currentView, setView }: NavbarProps) {
               ))}
 
               <a
-                href="#contact"
+                href={language === 'fr' ? '/fr#contact' : '#contact'}
                 className="bg-brand-red text-white px-5 py-3 rounded-2xl text-center font-bold hover:bg-brand-red-dark transition-colors duration-200 cursor-pointer mt-2 shadow-md"
                 onClick={(e) => {
                   setIsMobileMenuOpen(false);
