@@ -13,6 +13,7 @@ const sites = [
   { slug: 'autoruby',     url: 'https://auto-ruby.vercel.app' },
   { slug: 'villagrecque', url: 'https://villa-gercque.vercel.app' },
   { slug: 'kingpeinture', url: 'https://kingpeinture.vercel.app' },
+  { slug: 'marchesaveurs', url: 'https://marchesaveurs.vercel.app' },
 ];
 
 mkdirSync('public/portfolio', { recursive: true });

@@ -37,6 +37,7 @@ const projects = [
   { id: 9, slug: "autoruby",     name: "Auto Ruby",                category: "Automotive",          url: "https://auto-ruby.vercel.app" },
   { id: 10, slug: "villagrecque", name: "Villa Grecque",            category: "Restaurants",         url: "https://villa-gercque.vercel.app" },
   { id: 11, slug: "kingpeinture", name: "King Painting",            category: "Home Services",       url: "https://kingpeinture.vercel.app" },
+  { id: 12, slug: "marchesaveurs", name: "Marché Saveurs",          category: "Restaurants",         url: "https://marchesaveurs.vercel.app" },
 ];
 
 interface ProjectCardProps {
@@ -244,6 +245,7 @@ export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll,
               '/portfolio/pressurewash.jpg',
               '/portfolio/villagrecque.jpg',
               '/portfolio/kingpeinture.jpg',
+              '/portfolio/marchesaveurs.jpg',
             ]}
             imageClassName="h-12 w-16 sm:h-16 sm:w-24 md:h-20 md:w-28 opacity-20"
           />

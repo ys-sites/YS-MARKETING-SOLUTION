@@ -55,7 +55,7 @@ export const translations = {
       subtitle: "A selection of live client websites. Hover to explore, click to visit the live site.",
       categories: {
         all: "All",
-        restaurants: "Restaurants",
+        restaurants: "Restaurants & Food",
         ecommerce: "E-commerce",
         travel: "Travel",
         homeServices: "Home Services",
@@ -229,7 +229,7 @@ export const translations = {
       subtitle: "Une sélection de sites clients en ligne. Survolez pour explorer, cliquez pour visiter le site en direct.",
       categories: {
         all: "Tous",
-        restaurants: "Restaurants",
+        restaurants: "Restaurants & Alimentation",
         ecommerce: "E-commerce",
         travel: "Voyage",
         homeServices: "Services à domicile",
