@@ -6,33 +6,15 @@ import { ChevronLeft, CheckCircle2, Loader2 } from 'lucide-react';
 
 const WEBHOOK_URL = 'https://hook.us2.make.com/9z1ldu1b99eooozbpe3a4u99p5b19ji2';
 const REQUEST_TIMEOUT_MS = 10000;
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 3;
 
 // ─── Step option data ─────────────────────────────────────────────────────────
 
 const STEP1_OPTIONS = [
-  { value: 'Website Development',  label: 'Website Development',  icon: '🌐' },
-  { value: 'Google Ranking (SEO)', label: 'Google Ranking (SEO)', icon: '🔍' },
-  { value: 'Meta Ads',             label: 'Meta Ads',             icon: '🎯' },
-  { value: 'Social Media',         label: 'Social Media',         icon: '📱' },
-  { value: 'Content Creation',     label: 'Content Creation',     icon: '✏️' },
-  { value: 'Digital Strategy',     label: 'Digital Strategy',     icon: '📊' },
-  { value: 'Something Else',       label: 'Something Else',       icon: '💬' },
-];
-
-const STEP2_OPTIONS = [
-  { value: 'Restaurant',        label: 'Restaurant',         icon: '🍽️' },
-  { value: 'Food & Drink',      label: 'Food & Drink',       icon: '☕' },
-  { value: 'Trades & Services', label: 'Trades & Services',  icon: '🔧' },
-  { value: 'E-commerce',        label: 'E-commerce',         icon: '🛒' },
-  { value: 'Other',             label: 'Other',              icon: '🏢' },
-];
-
-const STEP3_OPTIONS = [
-  { value: 'ASAP',           label: 'ASAP',            icon: '⚡' },
-  { value: 'Within a month', label: 'Within a month',  icon: '📅' },
-  { value: '1–3 months',     label: '1–3 months',      icon: '🗓️' },
-  { value: 'Just exploring', label: 'Just exploring',  icon: '👀' },
+  { value: 'Website Development', label: 'Website Development', icon: '🌐' },
+  { value: 'Google Business',     label: 'Google Business',     icon: '🔍' },
+  { value: 'Meta Ads',            label: 'Meta Ads',            icon: '🎯' },
+  { value: 'Something Else',      label: 'Something Else',      icon: '💬' },
 ];
 
 // ─── Analytics ────────────────────────────────────────────────────────────────
@@ -147,13 +129,12 @@ function OptionBtn({ icon, label, selected, onClick }: OptionBtnProps) {
 // ─── Lead data shape ──────────────────────────────────────────────────────────
 
 interface LeadData {
-  serviceType:       string;
-  businessType:      string;
-  businessTypeOther: string;
-  timeline:          string;
-  name:              string;
-  email:             string;
-  phone:             string;
+  serviceType:      string;
+  serviceTypeOther: string;
+  businessName:     string;
+  name:             string;
+  email:            string;
+  phone:            string;
 }
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
@@ -165,8 +146,8 @@ export default function LeadFlowForm() {
   const [direction, setDirection] = useState(1);  // 1 = forward, -1 = back
 
   const [lead, setLead] = useState<LeadData>({
-    serviceType: '', businessType: '', businessTypeOther: '',
-    timeline: '', name: '', email: '', phone: '',
+    serviceType: '', serviceTypeOther: '', businessName: '',
+    name: '', email: '', phone: '',
   });
 
   const [errors,  setErrors]  = useState<Partial<Record<keyof LeadData, string>>>({});
@@ -176,16 +157,16 @@ export default function LeadFlowForm() {
   const isSubmittingRef  = useRef(false);
   const partialFiredRef  = useRef(false);
   const mountTimeRef     = useRef(Date.now());
-  const step4EnterTimeRef = useRef<number | null>(null);
+  const finalStepEnterTimeRef = useRef<number | null>(null);
   const honeypotRef      = useRef<HTMLInputElement>(null);
   const visibilityTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Track step 4 entry time
+  // Track final (contact) step entry time
   useEffect(() => {
-    if (step === 4) {
-      step4EnterTimeRef.current = Date.now();
+    if (step === TOTAL_STEPS) {
+      finalStepEnterTimeRef.current = Date.now();
     } else {
-      step4EnterTimeRef.current = null;
+      finalStepEnterTimeRef.current = null;
     }
   }, [step]);
 
@@ -200,15 +181,15 @@ export default function LeadFlowForm() {
     // Honeypot check
     if (honeypotRef.current?.value) return;
 
-    // Must be on step 4 for at least 3 seconds before any partial can fire
-    if (!step4EnterTimeRef.current || (Date.now() - step4EnterTimeRef.current) < 3000) return;
+    // Must be on the final step for at least 3 seconds before any partial can fire
+    if (!finalStepEnterTimeRef.current || (Date.now() - finalStepEnterTimeRef.current) < 3000) return;
 
     partialFiredRef.current = true;
     try {
-      const partialBizType = lead.businessType === 'Other'
-        ? (lead.businessTypeOther || 'Other')
-        : lead.businessType;
-        
+      const finalServiceType = lead.serviceType === 'Something Else'
+        ? (lead.serviceTypeOther || 'Something Else')
+        : lead.serviceType;
+
       const isSuspectedBot = (Date.now() - mountTimeRef.current) < 3000;
       const tags = ['partial_lead'];
       if (isSuspectedBot) {
@@ -226,14 +207,13 @@ export default function LeadFlowForm() {
           name:          lead.name.trim() || '(not yet provided)',
           email:         lead.email.trim() || '(not yet provided)',
           phone:         lead.phone.trim() || '(not yet provided)',
-          companyName:   partialBizType,   // {{1.companyName}}
-          company_name:  partialBizType,
+          companyName:   lead.businessName.trim() || '(not yet provided)', // {{1.companyName}}
+          company_name:  lead.businessName.trim() || '(not yet provided)',
           website:       '',               // {{1.website}} — field removed from form
-          service:       lead.serviceType, // {{1.service}}
+          service:       finalServiceType, // {{1.service}}
           // ── New fields ───────────────────────────────────────────────────
-          serviceType:   lead.serviceType,
-          businessType:  partialBizType,
-          timeline:      lead.timeline,
+          serviceType:   finalServiceType,
+          businessName:  lead.businessName.trim(),
           // ── Meta ─────────────────────────────────────────────────────────
           source:        'Website Lead Flow',
           form_name:     'Lead Flow — PARTIAL (abandoned at contact step)',
@@ -246,8 +226,8 @@ export default function LeadFlowForm() {
   }, [lead, status]);
 
   useEffect(() => {
-    if (step < 4) return;
-    
+    if (step < TOTAL_STEPS) return;
+
     const onHide = () => {
       if (document.visibilityState === 'hidden') {
         if (visibilityTimerRef.current) clearTimeout(visibilityTimerRef.current);
@@ -281,29 +261,24 @@ export default function LeadFlowForm() {
 
   const onStep1 = (v: string) => {
     setLead(l => ({ ...l, serviceType: v }));
-    pushEvent('leadflow_step_1', { service_type: v });
-    goForward(2);
-  };
-
-  const onStep2 = (v: string) => {
-    setLead(l => ({ ...l, businessType: v }));
-    if (v !== 'Other') {
-      pushEvent('leadflow_step_2', { business_type: v });
-      goForward(3);
+    if (v !== 'Something Else') {
+      pushEvent('leadflow_step_1', { service_type: v });
+      goForward(2);
     }
   };
 
-  const onStep2OtherNext = () => {
-    const val = lead.businessTypeOther.trim();
-    if (!val) { setErrors(e => ({ ...e, businessTypeOther: 'Please describe your business.' })); return; }
-    pushEvent('leadflow_step_2', { business_type: `Other: ${val}` });
-    goForward(3);
+  const onStep1OtherNext = () => {
+    const val = lead.serviceTypeOther.trim();
+    if (!val) { setErrors(e => ({ ...e, serviceTypeOther: 'Please tell us what you need.' })); return; }
+    pushEvent('leadflow_step_1', { service_type: `Something Else: ${val}` });
+    goForward(2);
   };
 
-  const onStep3 = (v: string) => {
-    setLead(l => ({ ...l, timeline: v }));
-    pushEvent('leadflow_step_3', { timeline: v });
-    goForward(4);
+  const onStep2Next = () => {
+    const val = lead.businessName.trim();
+    if (!val) { setErrors(e => ({ ...e, businessName: 'Please enter your business name.' })); return; }
+    pushEvent('leadflow_step_2', { business_name: val });
+    goForward(3);
   };
 
   // ── Validation ────────────────────────────────────────────────────────────
@@ -340,9 +315,9 @@ export default function LeadFlowForm() {
     const tId      = setTimeout(() => ctrl.abort(), REQUEST_TIMEOUT_MS);
     const firstName = lead.name.trim().split(' ')[0] ?? '';
     const lastName  = lead.name.trim().split(' ').slice(1).join(' ');
-    const bizType   = lead.businessType === 'Other'
-      ? (lead.businessTypeOther.trim() || 'Other')
-      : lead.businessType;
+    const finalServiceType = lead.serviceType === 'Something Else'
+      ? (lead.serviceTypeOther.trim() || 'Something Else')
+      : lead.serviceType;
 
     const isSuspectedBot = (Date.now() - mountTimeRef.current) < 3000;
     const tags = ['lead-flow'];
@@ -361,17 +336,16 @@ export default function LeadFlowForm() {
           name:          lead.name.trim(),       // {{1.name}}
           email:         lead.email.trim(),      // {{1.email}}
           phone:         lead.phone.trim(),      // {{1.phone}}
-          companyName:   bizType,                // {{1.companyName}}
-          company_name:  bizType,
+          companyName:   lead.businessName.trim(), // {{1.companyName}}
+          company_name:  lead.businessName.trim(),
           website:       '',                     // {{1.website}} — removed from form
-          service:       lead.serviceType,       // {{1.service}}
+          service:       finalServiceType,       // {{1.service}}
           // ── First / last name aliases (GHL / CRM) ──────────────────────
           first_name: firstName, firstName,
           last_name:  lastName,  lastName,
           // ── New multi-step fields ────────────────────────────────────────
-          serviceType:   lead.serviceType,
-          businessType:  bizType,
-          timeline:      lead.timeline,
+          serviceType:   finalServiceType,
+          businessName:  lead.businessName.trim(),
           // ── Meta ─────────────────────────────────────────────────────────
           source:        'Website Lead Flow',
           form_name:     'Lead Flow Form',
@@ -385,9 +359,8 @@ export default function LeadFlowForm() {
       if (!res.ok) throw new Error(`Webhook responded with ${res.status}`);
 
       pushEvent('leadflow_submit', {
-        service_type: lead.serviceType,
-        business_type: bizType,
-        timeline: lead.timeline,
+        service_type: finalServiceType,
+        business_name: lead.businessName.trim(),
       });
 
       partialFiredRef.current = true;
@@ -427,31 +400,9 @@ export default function LeadFlowForm() {
                 onClick={() => onStep1(o.value)}
               />
             ))}
-          </div>
-        );
-
-      // ── STEP 2 ────────────────────────────────────────────────────────────
-      case 2:
-        return (
-          <div className="flex flex-col gap-2.5">
-            <h3 className="text-2xl font-extrabold text-ink text-center mb-1 leading-snug">
-              What's your business?
-            </h3>
-            <p className="text-sm text-muted text-center mb-3">
-              We'll tailor your proposal to your industry.
-            </p>
-            {STEP2_OPTIONS.map(o => (
-              <OptionBtn
-                key={o.value}
-                icon={o.icon}
-                label={o.label}
-                selected={lead.businessType === o.value}
-                onClick={() => onStep2(o.value)}
-              />
-            ))}
-            {/* Other text input */}
+            {/* Something Else text input */}
             <AnimatePresence>
-              {lead.businessType === 'Other' && (
+              {lead.serviceType === 'Something Else' && (
                 <motion.div
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -462,21 +413,21 @@ export default function LeadFlowForm() {
                   <input
                     autoFocus
                     type="text"
-                    value={lead.businessTypeOther}
+                    value={lead.serviceTypeOther}
                     onChange={e => {
-                      setLead(l => ({ ...l, businessTypeOther: e.target.value }));
-                      setErrors(er => ({ ...er, businessTypeOther: undefined }));
+                      setLead(l => ({ ...l, serviceTypeOther: e.target.value }));
+                      setErrors(er => ({ ...er, serviceTypeOther: undefined }));
                     }}
-                    onKeyDown={e => e.key === 'Enter' && onStep2OtherNext()}
-                    placeholder="Describe your business…"
+                    onKeyDown={e => e.key === 'Enter' && onStep1OtherNext()}
+                    placeholder="Tell us what you need…"
                     className="w-full bg-zinc-50 border border-zinc-200 text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:border-brand-red focus:bg-white focus:shadow-[0_0_20px_rgba(225,29,46,0.10)] transition-all duration-200 text-sm"
                   />
-                  {errors.businessTypeOther && (
-                    <p className="text-xs text-brand-red">{errors.businessTypeOther}</p>
+                  {errors.serviceTypeOther && (
+                    <p className="text-xs text-brand-red">{errors.serviceTypeOther}</p>
                   )}
                   <button
                     type="button"
-                    onClick={onStep2OtherNext}
+                    onClick={onStep1OtherNext}
                     className="w-full bg-brand-red hover:bg-brand-red-dark text-white font-bold py-3.5 rounded-full transition-all duration-200 text-sm cursor-pointer"
                   >
                     Continue →
@@ -487,30 +438,50 @@ export default function LeadFlowForm() {
           </div>
         );
 
-      // ── STEP 3 ────────────────────────────────────────────────────────────
-      case 3:
+      // ── STEP 2 ────────────────────────────────────────────────────────────
+      case 2:
         return (
           <div className="flex flex-col gap-2.5">
             <h3 className="text-2xl font-extrabold text-ink text-center mb-1 leading-snug">
-              When do you want to launch?
+              What's your business name?
             </h3>
             <p className="text-sm text-muted text-center mb-3">
-              No pressure — just helps us prioritise.
+              We'll tailor your proposal to your business.
             </p>
-            {STEP3_OPTIONS.map(o => (
-              <OptionBtn
-                key={o.value}
-                icon={o.icon}
-                label={o.label}
-                selected={lead.timeline === o.value}
-                onClick={() => onStep3(o.value)}
-              />
-            ))}
+            <input
+              autoFocus
+              id="lf-business-name"
+              type="text"
+              autoComplete="organization"
+              value={lead.businessName}
+              onChange={e => {
+                setLead(l => ({ ...l, businessName: e.target.value }));
+                setErrors(er => ({ ...er, businessName: undefined }));
+              }}
+              onKeyDown={e => e.key === 'Enter' && onStep2Next()}
+              placeholder="Acme Co."
+              className={[
+                'w-full bg-zinc-50 border text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:bg-white transition-all duration-200 text-sm',
+                errors.businessName
+                  ? 'border-brand-red focus:border-brand-red focus:shadow-[0_0_20px_rgba(225,29,46,0.10)]'
+                  : 'border-zinc-200 focus:border-brand-red focus:shadow-[0_0_20px_rgba(225,29,46,0.10)]',
+              ].join(' ')}
+            />
+            {errors.businessName && (
+              <p className="text-xs text-brand-red">{errors.businessName}</p>
+            )}
+            <button
+              type="button"
+              onClick={onStep2Next}
+              className="w-full bg-brand-red hover:bg-brand-red-dark text-white font-bold py-3.5 rounded-full transition-all duration-200 text-sm cursor-pointer mt-1"
+            >
+              Continue →
+            </button>
           </div>
         );
 
-      // ── STEP 4 ────────────────────────────────────────────────────────────
-      case 4:
+      // ── STEP 3 ────────────────────────────────────────────────────────────
+      case 3:
         if (status === 'success') {
           return (
             <motion.div
@@ -531,7 +502,7 @@ export default function LeadFlowForm() {
               <div className="w-full bg-zinc-50 rounded-2xl border border-zinc-200 px-5 py-4 text-left">
                 <p className="text-[11px] font-bold uppercase tracking-wider text-muted mb-1">Your request</p>
                 <p className="text-sm font-semibold text-ink">
-                  {lead.serviceType} · {lead.businessType} · {lead.timeline}
+                  {lead.serviceType === 'Something Else' ? (lead.serviceTypeOther || 'Something Else') : lead.serviceType} · {lead.businessName}
                 </p>
               </div>
             </motion.div>
