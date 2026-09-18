@@ -17,11 +17,11 @@ export const translations = {
       subtitle: "Most websites look fine and convert nothing. We build sites engineered to bring in calls and customers — not just compliments.",
       ctaPrimary: "Get Free Proposal",
       ctaSecondary: "See Our Work",
-      trust: "No commitment • Response within 2h • 100% Free Audit"
+      trust: "No commitment • Fast Response • 100% Free Audit"
     },
     stickyCta: {
       button: "Get Free Proposal",
-      badge: "Instant 2-Min Audit",
+      badge: "Free Instant Audit",
       callText: "Book Free Call"
     },
     services: {
@@ -166,7 +166,7 @@ export const translations = {
         submitBtn: "Request Free Website Proposal",
         submitting: "Sending Request...",
         successTitle: "You're all set! 🎉",
-        successSubtitle: "We'll reach out within a few hours with your custom proposal.",
+        successSubtitle: "We'll reach out promptly with your custom proposal.",
         yourRequest: "Your request",
         options: {
           webDev: "Website Development",
@@ -248,11 +248,11 @@ export const translations = {
       subtitle: "Votre site web devrait vendre pendant que vous dormez. Nous créons des sites rapides, conçus pour la conversion—sans modèles, sans superflu—qui transforment vos visiteurs en appels réservés et en clients payants, dès la première semaine.",
       ctaPrimary: "Obtenir une proposition gratuite",
       ctaSecondary: "Voir nos réalisations",
-      trust: "Sans engagement • Réponse en 2h • Audit 100% gratuit"
+      trust: "Sans engagement • Réponse rapide • Audit 100% gratuit"
     },
     stickyCta: {
       button: "Demander une proposition",
-      badge: "Audit gratuit en 2 min",
+      badge: "Audit instantané gratuit",
       callText: "Réserver un appel"
     },
     services: {
@@ -397,7 +397,7 @@ export const translations = {
         submitBtn: "Demander ma proposition gratuite",
         submitting: "Envoi en cours...",
         successTitle: "C'est tout bon ! 🎉",
-        successSubtitle: "Nous vous répondrons d'ici quelques heures avec votre proposition personnalisée.",
+        successSubtitle: "Nous vous répondrons rapidement avec votre proposition personnalisée.",
         yourRequest: "Votre demande",
         options: {
           webDev: "Développement Web",
