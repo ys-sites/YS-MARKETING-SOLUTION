@@ -356,16 +356,16 @@ export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll,
           <div className="mt-16 text-center">
             <Link
               to={language === 'fr' ? '/fr/portfolio' : '/portfolio'}
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-brand-red text-white hover:bg-brand-red-dark rounded-full font-bold text-lg hover:bg-brand-red-dark transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(225,29,46,0.2)] hover:shadow-[0_0_40px_-8px_rgba(225,29,46,0.5)] cursor-pointer"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] text-white rounded-full font-bold text-lg hover:shadow-[0_0_35px_rgba(225,29,46,0.65)] active:scale-95 active:translate-y-0.5 transition-all duration-200 cursor-pointer shadow-[0_4px_20px_rgba(225,29,46,0.3)] tap-target-min border border-white/20 cta-pulse"
             >
-              {language === 'en' ? 'View more of our work' : 'Voir plus de nos réalisations'}
-              <ArrowUpRight className="w-5 h-5 animate-pulse" />
+              {t.portfolio.viewMore}
+              <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           </div>
         ) : (
           /* Secondary CTA — only show when viewing all work */
           <div className="mt-20 text-center">
-            <h4 className="text-xl md:text-2xl font-bold text-ink mb-4">Want results like these?</h4>
+            <h4 className="text-xl md:text-2xl font-bold text-ink mb-4">{t.portfolio.wantResults}</h4>
             <a
               href="#contact"
               onClick={(e) => {
@@ -374,9 +374,9 @@ export default function Portfolio({ limit, isSubpage = false, onBack, onViewAll,
                   onStartProject();
                 }
               }}
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-brand-red text-white rounded-full font-bold text-lg hover:bg-brand-red-dark transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(225,29,46,0.2)] hover:shadow-[0_0_40px_-8px_rgba(225,29,46,0.5)] cursor-pointer"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] text-white rounded-full font-bold text-lg hover:shadow-[0_0_35px_rgba(225,29,46,0.65)] active:scale-95 active:translate-y-0.5 transition-all duration-200 cursor-pointer shadow-[0_4px_20px_rgba(225,29,46,0.3)] tap-target-min border border-white/20 cta-pulse"
             >
-              Start Your Project
+              {t.portfolio.startProject}
               <ArrowUpRight className="w-5 h-5" />
             </a>
           </div>

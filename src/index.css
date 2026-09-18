@@ -10,6 +10,11 @@
   --color-surface: #FFFFFF;
   --color-surface-alt: #FAFAFA;      /* alternating section background */
 
+  /* Power Design Tokens */
+  --radius-card: 24px;
+  --radius-pill: 9999px;
+  --ease-power: cubic-bezier(0.16, 1, 0.3, 1);
+
   --animate-marquee-vertical: marquee-vertical 30s linear infinite;
   --animate-marquee-vertical-slow: marquee-vertical 40s linear infinite;
   --animate-marquee-vertical-fast: marquee-vertical 25s linear infinite;
@@ -433,7 +438,33 @@ body {
 }
 
 /* =====================================================================
-   PROFESSIONAL BUTTON TEXTURE
+   SKIP TO CONTENT — WCAG 2.2 AA (Power Design Rule #18)
+   ===================================================================== */
+
+.skip-to-content {
+  position: absolute;
+  top: -120px;
+  left: 1.5rem;
+  background: #E11D2E;
+  color: #FFFFFF;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  z-index: 9999;
+  text-decoration: none;
+  transition: top 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.skip-to-content:focus {
+  top: 1.5rem;
+  outline: 3px solid #FFFFFF;
+  outline-offset: 3px;
+}
+
+/* =====================================================================
+   PROFESSIONAL BUTTON TEXTURE & 5-STATE CTA (Power Design Rule #5 & #13)
    ===================================================================== */
 
 .btn-primary {
@@ -443,7 +474,8 @@ body {
     0 1px 0 rgba(255, 255, 255, 0.15) inset,
     0 4px 12px rgba(225, 29, 46, 0.28),
     0 2px 4px rgba(0, 0, 0, 0.12);
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 44px;
 }
 
 .btn-primary:hover {
@@ -452,14 +484,49 @@ body {
     0 1px 0 rgba(255, 255, 255, 0.2) inset,
     0 8px 24px rgba(225, 29, 46, 0.38),
     0 2px 6px rgba(0, 0, 0, 0.16);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .btn-primary:active {
-  transform: translateY(0);
+  transform: translateY(1px) scale(0.985);
   box-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.1) inset,
-    0 2px 8px rgba(225, 29, 46, 0.2);
+    0 1px 0 rgba(0, 0, 0, 0.15) inset,
+    0 2px 8px rgba(225, 29, 46, 0.25);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Single visually dominant CTA with subtle pulse halo */
+@keyframes ctaPulse {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(225, 29, 46, 0.3), 0 0 0 0 rgba(225, 29, 46, 0.4);
+  }
+  50% {
+    box-shadow: 0 8px 30px rgba(225, 29, 46, 0.55), 0 0 0 8px rgba(225, 29, 46, 0);
+  }
+}
+
+.cta-pulse {
+  animation: ctaPulse 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* Touch Target Minimum (Power Design Rule #4 - Apple HIG / WCAG 2.5.8) */
+.tap-target-min {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Readability measure (Power Design Rule #8) */
+.measure-prose {
+  max-width: 65ch;
 }
 
 /* =====================================================================
@@ -478,7 +545,7 @@ body {
 }
 
 /* =====================================================================
-   FOCUS RING — accessibility
+   FOCUS RING — accessibility (Power Design Rule #11 & #13)
    ===================================================================== */
 
 :focus-visible {

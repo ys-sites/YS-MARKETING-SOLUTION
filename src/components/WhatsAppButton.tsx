@@ -11,6 +11,7 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 const WHATSAPP_LINK = 'https://wa.me/message/O4RDTWJDWFEDG1';
 
@@ -51,6 +52,7 @@ const T_ENTER  = `${T_SPRING}, ${T_FADE}`;
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function WhatsAppButton() {
+  const { t, language } = useLanguage();
   const [mounted,   setMounted]   = useState(false);
   const [entered,   setEntered]   = useState(false);  // entrance slide-up
   const [expanded,  setExpanded]  = useState(false);  // desktop hover
@@ -194,7 +196,7 @@ export default function WhatsAppButton() {
             Active (pointerEvents:auto) only when collapsed.                  */}
         <a
           {...linkProps}
-          aria-label="Chat with us on WhatsApp"
+          aria-label={language === 'fr' ? 'Discuter avec nous sur WhatsApp' : 'Chat with us on WhatsApp'}
           style={{
             position:      'absolute',
             inset:          0,
@@ -223,7 +225,7 @@ export default function WhatsAppButton() {
             Hidden when collapsed: opacity→0, scale→0.88 from right origin.  */}
         <a
           {...linkProps}
-          aria-label="Chat with us on WhatsApp — Message us"
+          aria-label={language === 'fr' ? 'Discuter avec nous sur WhatsApp — Écrivez-nous' : 'Chat with us on WhatsApp — Message us'}
           style={{
             position:      'absolute',
             top:            0,
@@ -273,7 +275,7 @@ export default function WhatsAppButton() {
               lineHeight:    1,
             }}
           >
-            Message us
+            {t.whatsapp.label}
           </span>
         </a>
       </div>

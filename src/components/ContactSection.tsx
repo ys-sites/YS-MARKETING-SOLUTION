@@ -42,14 +42,14 @@ export default function ContactSection() {
           {/* Heading */}
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink mb-4 leading-tight">
             <ScrollTextReveal delay={0.1} textColor="#0A0A0A" wrapperClassName="block">
-              Tell us what you need
+              {t.contact.title}
             </ScrollTextReveal>
           </h2>
 
           {/* Sub-heading */}
           <ScrollTextReveal delay={0.2} textColor="#52525B" wrapperClassName="block">
             <BlurText
-              text="30 seconds, no commitment — one question at a time."
+              text={t.contact.subtitle}
               delay={50}
               animateBy="words"
               direction="top"

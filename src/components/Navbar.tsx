@@ -111,7 +111,7 @@ export default function Navbar({ currentView, setView }: NavbarProps) {
                   }, 100);
                 }
               }}
-              className="bg-brand-red text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-brand-red-dark transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-md hover:shadow-lg transform hover:scale-102 whitespace-nowrap shrink-0"
+              className="bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] text-white px-5 py-2.5 rounded-full text-sm font-bold hover:shadow-[0_0_25px_rgba(225,29,46,0.65)] active:scale-95 active:translate-y-0.5 transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-md whitespace-nowrap shrink-0 border border-white/20 tap-target-min"
             >
               {t.nav.proposalBtn}
               <ArrowRight className="w-4 h-4" />
@@ -171,7 +171,7 @@ export default function Navbar({ currentView, setView }: NavbarProps) {
 
               <a
                 href={language === 'fr' ? '/fr#contact' : '#contact'}
-                className="bg-brand-red text-white px-5 py-3 rounded-2xl text-center font-bold hover:bg-brand-red-dark transition-colors duration-200 cursor-pointer mt-2 shadow-md"
+                className="bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] text-white px-5 py-3.5 rounded-2xl text-center font-bold active:scale-95 transition-all duration-200 cursor-pointer mt-2 shadow-md tap-target-min"
                 onClick={(e) => {
                   setIsMobileMenuOpen(false);
                   if (currentView !== 'home') {

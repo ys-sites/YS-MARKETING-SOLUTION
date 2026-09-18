@@ -53,12 +53,14 @@ export default function Services() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <motion.div
+            <motion.a
               key={service.title}
+              href="#contact"
               initial={{ opacity: 0, y: getDistance(40) }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={viewportConfig}
               whileHover={{ y: -6 }}
+              whileTap={{ scale: 0.985 }}
               transition={
                 isMobile
                   ? {
@@ -73,7 +75,7 @@ export default function Services() {
                       delay: index * getStagger(0.05, services.length),
                     }
               }
-              className="group relative bg-white border border-zinc-200/80 rounded-[32px] p-8 hover:bg-brand-red-light/5 hover:border-brand-red/40 transition-colors duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_48px_rgba(0,0,0,0.07)] cursor-pointer overflow-hidden flex flex-col justify-between min-h-[290px]"
+              className="group relative bg-white border border-zinc-200/80 rounded-[32px] p-8 hover:bg-brand-red-light/5 hover:border-brand-red/40 transition-colors duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_48px_rgba(0,0,0,0.07)] cursor-pointer overflow-hidden flex flex-col justify-between min-h-[290px] focus-visible:outline-2 focus-visible:outline-brand-red text-left block"
             >
               {/* Top Border Draws Left to Right on Hover */}
               <div className="absolute top-0 left-0 w-0 group-hover:w-full h-[4px] bg-brand-red transition-all duration-300 ease-out" />
@@ -95,10 +97,10 @@ export default function Services() {
               </div>
 
               <div className="flex items-center gap-2 text-brand-red font-semibold text-xs tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-[-10px] group-hover:translate-x-0 mt-4">
-                <span>Learn more</span>
+                <span>{t.services.learnMore}</span>
                 <ArrowRight className="w-4 h-4" />
               </div>
-            </motion.div>
+            </motion.a>
           ))}
 
         </div>

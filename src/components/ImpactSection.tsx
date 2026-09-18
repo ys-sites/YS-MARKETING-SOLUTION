@@ -20,6 +20,7 @@ import BlurText from './BlurText';
 import { useAnimationConfig } from '../hooks/useAnimationConfig';
 import ScrollTextReveal from './ui/ScrollTextReveal';
 import { useVideoAutoplay } from '../hooks/useVideoAutoplay';
+import { useLanguage } from '../context/LanguageContext';
 
 
 function useReducedMotionPref() {
@@ -605,6 +606,7 @@ function GoogleSearchMockup() {
 
 export default function ImpactSection() {
   const { getDistance, getDuration, getEase, viewportConfig } = useAnimationConfig();
+  const { t } = useLanguage();
   return (
     <section id="results" className="py-24 md:py-32 bg-white relative overflow-hidden gpu-accelerated">
       <div className="max-w-7xl mx-auto px-6">
@@ -752,6 +754,38 @@ export default function ImpactSection() {
             />
           </div>
         </div>
+
+        {/* Conversion Bridge Banner (Power Design Rule #5 - One Primary Action) */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewportConfig}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20 md:mt-28 p-8 md:p-12 rounded-[32px] bg-gradient-to-br from-zinc-950 via-zinc-900 to-black text-white border border-white/10 relative overflow-hidden shadow-2xl"
+        >
+          <div className="absolute -right-16 -bottom-16 w-72 h-72 bg-brand-red/20 rounded-full blur-[100px] pointer-events-none" />
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div className="max-w-xl">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-red-light text-xs font-bold uppercase tracking-wider mb-4 border border-white/10">
+                <GlowDot />
+                Montreal Growth System
+              </span>
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-3">
+                {t.impact.ctaTitle}
+              </h3>
+              <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
+                {t.impact.ctaSubtitle}
+              </p>
+            </div>
+            <a
+              href="#contact"
+              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] text-white rounded-full font-bold text-base hover:shadow-[0_0_35px_rgba(225,29,46,0.65)] active:scale-95 active:translate-y-0.5 transition-all duration-200 cursor-pointer shadow-[0_4px_20px_rgba(225,29,46,0.4)] whitespace-nowrap cta-pulse border border-white/20 tap-target-min"
+            >
+              <span>{t.impact.ctaButton}</span>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-200" />
+            </a>
+          </div>
+        </motion.div>
 
       </div>
     </section>

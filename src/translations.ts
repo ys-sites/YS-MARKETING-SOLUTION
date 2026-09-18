@@ -16,12 +16,19 @@ export const translations = {
       title3: "in Montreal",
       subtitle: "Most websites look fine and convert nothing. We build sites engineered to bring in calls and customers — not just compliments.",
       ctaPrimary: "Get Free Proposal",
-      ctaSecondary: "See Our Work"
+      ctaSecondary: "See Our Work",
+      trust: "No commitment • Response within 2h • 100% Free Audit"
+    },
+    stickyCta: {
+      button: "Get Free Proposal",
+      badge: "Instant 2-Min Audit",
+      callText: "Book Free Call"
     },
     services: {
       badge: "Services",
       title: "Pillars of Growth",
       subtitle: "Custom-engineered Montreal marketing and web design solutions that turn your local visitors into paying customers.",
+      learnMore: "Get Started",
       items: [
         {
           title: "Website Development",
@@ -63,7 +70,10 @@ export const translations = {
         sportsRecreation: "Sports & Recreation",
         automotive: "Automotive"
       },
-      visit: "Visit Site"
+      visit: "Visit Site",
+      viewMore: "View more of our work",
+      wantResults: "Want results like these?",
+      startProject: "Start Your Project"
     },
     testimonials: {
       badge: "Testimonials",
@@ -117,6 +127,11 @@ export const translations = {
         }
       ]
     },
+    impact: {
+      ctaTitle: "Want similar growth for your Montreal business?",
+      ctaSubtitle: "We engineer high-converting digital platforms that turn visitors into booked calls and paying customers.",
+      ctaButton: "Request Your Free Growth Plan"
+    },
     scanner: {
       titlePart1: "Stop Burning Cash on",
       titlePart2: "Bad",
@@ -125,8 +140,41 @@ export const translations = {
     },
     contact: {
       badge: "Get Proposal",
-      title: "Ready to Scale Your Conversions?",
-      subtitle: "Fill out the form for a free conversion-performance proposal. We'll find exactly where your website is leaking leads and deliver a custom blueprint to fix it.",
+      title: "Tell us what you need",
+      subtitle: "30 seconds, no commitment — one question at a time.",
+      leadFlow: {
+        step1Title: "What do you need?",
+        step1Subtitle: "Tap one — takes 2 seconds.",
+        step1OtherPlaceholder: "Tell us what you need…",
+        step2Title: "What's your business name?",
+        step2Subtitle: "We'll tailor your proposal to your business.",
+        step2Placeholder: "Acme Co.",
+        step3Title: "Where do we send your quote?",
+        step3Subtitle: "30 seconds — no commitment.",
+        continue: "Continue →",
+        stepCounter: "STEP",
+        stepOf: "OF",
+        oneQuestion: "ONE QUESTION AT A TIME",
+        nameLabel: "Full Name",
+        namePlaceholder: "John Doe",
+        contactPrefTitle: "Contact Details",
+        contactPrefSubtitle: "Provide at least one so we can reach you.",
+        emailLabel: "Email Address",
+        emailPlaceholder: "john@company.com",
+        phoneLabel: "Phone Number",
+        phonePlaceholder: "(555) 000-0000",
+        submitBtn: "Request Free Website Proposal",
+        submitting: "Sending Request...",
+        successTitle: "You're all set! 🎉",
+        successSubtitle: "We'll reach out within a few hours with your custom proposal.",
+        yourRequest: "Your request",
+        options: {
+          webDev: "Website Development",
+          googleBiz: "Google Business & SEO",
+          metaAds: "Meta Ads",
+          somethingElse: "Something Else"
+        }
+      },
       form: {
         nameLabel: "Full Name",
         namePlaceholder: "John Doe",
@@ -163,6 +211,9 @@ export const translations = {
         missedRevenueDesc: "Turn cold search queries and ads traffic into immediate booked calls."
       }
     },
+    whatsapp: {
+      label: "Message us"
+    },
     stats: {
       sites: "Montreal Sites Launched",
       views: "Social Views Generated",
@@ -196,12 +247,19 @@ export const translations = {
       title3: "à Montréal",
       subtitle: "Votre site web devrait vendre pendant que vous dormez. Nous créons des sites rapides, conçus pour la conversion—sans modèles, sans superflu—qui transforment vos visiteurs en appels réservés et en clients payants, dès la première semaine.",
       ctaPrimary: "Obtenir une proposition gratuite",
-      ctaSecondary: "Voir nos réalisations"
+      ctaSecondary: "Voir nos réalisations",
+      trust: "Sans engagement • Réponse en 2h • Audit 100% gratuit"
+    },
+    stickyCta: {
+      button: "Demander une proposition",
+      badge: "Audit gratuit en 2 min",
+      callText: "Réserver un appel"
     },
     services: {
       badge: "Services",
       title: "Piliers de Croissance",
       subtitle: "Solutions de marketing et conception web sur mesure à Montréal qui transforment vos visiteurs locaux en clients payants.",
+      learnMore: "Démarrer",
       items: [
         {
           title: "Développement de Sites Web",
@@ -243,7 +301,10 @@ export const translations = {
         sportsRecreation: "Sports & Loisirs",
         automotive: "Automobile"
       },
-      visit: "Visiter le site"
+      visit: "Visiter le site",
+      viewMore: "Voir plus de nos réalisations",
+      wantResults: "Vous voulez des résultats similaires ?",
+      startProject: "Démarrer votre projet"
     },
     testimonials: {
       badge: "Témoignages",
@@ -297,6 +358,11 @@ export const translations = {
         }
       ]
     },
+    impact: {
+      ctaTitle: "Vous voulez une croissance similaire pour votre entreprise ?",
+      ctaSubtitle: "Nous concevons des plateformes numériques à haute conversion qui transforment vos visiteurs en appels réservés et en clients payants.",
+      ctaButton: "Demander votre plan de croissance gratuit"
+    },
     scanner: {
       titlePart1: "Arrêtez de gaspiller de l'argent sur un",
       titlePart2: "Mauvais",
@@ -305,8 +371,41 @@ export const translations = {
     },
     contact: {
       badge: "Demander une proposition",
-      title: "Prêt à propulser vos conversions ?",
-      subtitle: "Remplissez le formulaire pour obtenir une proposition d'optimisation gratuite. Nous identifierons exactement où votre site perd des prospects et vous fournirons un plan d'action personnalisé.",
+      title: "Dites-nous ce dont vous avez besoin",
+      subtitle: "30 secondes, sans engagement — une question à la fois.",
+      leadFlow: {
+        step1Title: "De quoi avez-vous besoin ?",
+        step1Subtitle: "Touchez une option — prend 2 secondes.",
+        step1OtherPlaceholder: "Précisez votre besoin…",
+        step2Title: "Quel est le nom de votre entreprise ?",
+        step2Subtitle: "Nous adapterons votre proposition sur mesure.",
+        step2Placeholder: "Entreprise Inc.",
+        step3Title: "Où devons-nous envoyer votre soumission ?",
+        step3Subtitle: "30 secondes — sans aucun engagement.",
+        continue: "Continuer →",
+        stepCounter: "ÉTAPE",
+        stepOf: "SUR",
+        oneQuestion: "UNE QUESTION À LA FOIS",
+        nameLabel: "Nom complet",
+        namePlaceholder: "Jean Dupont",
+        contactPrefTitle: "Coordonnées de contact",
+        contactPrefSubtitle: "Indiquez au moins l'un des deux pour que nous puissions vous joindre.",
+        emailLabel: "Adresse courriel",
+        emailPlaceholder: "jean@entreprise.com",
+        phoneLabel: "Numéro de téléphone",
+        phonePlaceholder: "+1 (514) 000-0000",
+        submitBtn: "Demander ma proposition gratuite",
+        submitting: "Envoi en cours...",
+        successTitle: "C'est tout bon ! 🎉",
+        successSubtitle: "Nous vous répondrons d'ici quelques heures avec votre proposition personnalisée.",
+        yourRequest: "Votre demande",
+        options: {
+          webDev: "Développement Web",
+          googleBiz: "Fiche Google & SEO",
+          metaAds: "Publicités Meta",
+          somethingElse: "Autre chose"
+        }
+      },
       form: {
         nameLabel: "Nom complet",
         namePlaceholder: "Jean Dupont",
@@ -342,6 +441,9 @@ export const translations = {
         missedRevenueTitle: "Revenus manqués",
         missedRevenueDesc: "Transformez les recherches et le trafic publicitaire en appels réservés immédiats."
       }
+    },
+    whatsapp: {
+      label: "Écrivez-nous"
     },
     stats: {
       sites: "Sites Lancés à Montréal",

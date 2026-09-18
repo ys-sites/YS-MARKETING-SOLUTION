@@ -42,7 +42,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-start overflow-hidden bg-black">
+    <section className="relative min-h-[100dvh] flex items-center justify-start overflow-hidden bg-black pt-24 sm:pt-28 md:pt-32 pb-14 sm:pb-16">
       {/* Background Media */}
       <div className="absolute inset-0 w-full h-full object-cover z-0">
         {isMobile ? (
@@ -82,27 +82,27 @@ export default function Hero() {
       </div>
 
       {/* Dark Legibility Overlay — single gradient layer for fewer composited layers */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10 z-10 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/20 z-10 pointer-events-none" />
 
       {/* Hero Content Area */}
-      <div className="max-w-7xl w-full mx-auto px-6 pt-12 md:pt-12 text-left text-white relative z-20">
+      <div className="max-w-7xl w-full mx-auto px-5 sm:px-6 md:px-8 text-left text-white relative z-20">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col items-start max-w-2xl"
+          className="flex flex-col items-start max-w-3xl xl:max-w-4xl"
         >
           {/* Top Pill Accent */}
           <motion.div
             variants={itemVariants}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-zinc-300 uppercase tracking-widest backdrop-blur-sm mb-1.5 md:mb-3"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[11px] sm:text-xs font-semibold text-zinc-300 uppercase tracking-widest backdrop-blur-sm mb-2.5 sm:mb-4 shadow-sm"
           >
             <GlowDot />
             <span>{t.hero.badge}</span>
           </motion.div>
 
           {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] text-left">
+          <h1 className="text-3xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] text-left">
             <ScrollTextReveal delay={0} textColor="#ffffff" wrapperClassName="block">
               <motion.span variants={itemVariants} className="block text-white">
                 {t.hero.title1}
@@ -121,14 +121,14 @@ export default function Hero() {
           </h1>
 
           {/* Subheadline */}
-          <div className="mt-2 md:mt-3 mb-6 md:mb-8">
+          <div className="mt-2.5 sm:mt-3 mb-5 sm:mb-7">
             <ScrollTextReveal delay={0.3} textColor="#d1d5db" wrapperClassName="block">
               <BlurText
                 text={t.hero.subtitle}
-                delay={50}
+                delay={40}
                 animateBy="words"
                 direction="top"
-                className="text-lg md:text-xl text-zinc-300 max-w-xl text-left leading-relaxed font-light"
+                className="text-sm sm:text-base md:text-lg text-zinc-300 max-w-xl lg:max-w-2xl text-left leading-relaxed font-light"
               />
             </ScrollTextReveal>
           </div>
@@ -137,22 +137,22 @@ export default function Hero() {
           {/* Action CTAs */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col items-stretch sm:flex-row sm:items-center justify-start gap-4 sm:gap-5 w-full sm:w-auto"
+            className="flex flex-col sm:flex-row sm:items-center justify-start gap-3 sm:gap-4 w-full sm:w-auto"
           >
-            {/* Primary Action Button */}
+            {/* Primary Action Button — Power Design 5-state CTA */}
             <a
               href="#contact"
-              className="group relative flex items-center justify-center gap-3 px-8 py-4 bg-brand-red text-white rounded-full font-bold text-lg hover:bg-brand-red-dark transition-all duration-300 transform hover:scale-105 shadow-[0_4px_20px_rgba(225,29,46,0.3)] hover:shadow-[0_0_40px_-8px_rgba(225,29,46,0.7)] w-full sm:w-auto cursor-pointer"
+              className="group relative inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] text-white rounded-full font-bold text-sm sm:text-base md:text-lg whitespace-nowrap hover:shadow-[0_0_35px_rgba(225,29,46,0.65)] active:scale-95 active:translate-y-0.5 transition-all duration-200 w-full sm:w-auto cursor-pointer cta-pulse shadow-[0_4px_25px_rgba(225,29,46,0.4)] border border-white/20 tap-target-min shrink-0"
             >
-              {t.hero.ctaPrimary}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
+              <span className="tracking-tight">{t.hero.ctaPrimary}</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1.5 transition-transform duration-200 shrink-0" />
             </a>
 
-            {/* Secondary Link Button + Instagram — share a row on mobile */}
-            <div className="flex items-center gap-3 w-full sm:w-auto sm:contents">
+            {/* Secondary Link Button + Instagram — share a row on mobile, side-by-side on desktop */}
+            <div className="flex items-center gap-3 w-full sm:w-auto">
               <a
                 href="#portfolio"
-                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-8 py-4 border border-white/20 hover:border-white/40 bg-white/5 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300 sm:w-auto backdrop-blur-sm cursor-pointer"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 border border-white/20 hover:border-white/40 bg-white/5 rounded-full font-bold text-sm sm:text-base md:text-lg whitespace-nowrap hover:bg-white/10 active:scale-95 active:bg-white/15 transition-all duration-200 sm:w-auto backdrop-blur-sm cursor-pointer tap-target-min shrink-0"
               >
                 {t.hero.ctaSecondary}
               </a>
@@ -162,16 +162,16 @@ export default function Hero() {
                 href="https://www.instagram.com/ys.sites/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="shrink-0 relative w-14 h-14 rounded-full flex items-center justify-center text-white hover:scale-110 transition-all duration-300 cursor-pointer group"
+                className="shrink-0 relative w-12 h-12 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer group tap-target-min"
                 style={{
                   background: 'linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)',
-                  boxShadow: '0 0 20px rgba(253, 29, 29, 0.5), 0 0 40px rgba(131, 58, 180, 0.3)',
+                  boxShadow: '0 0 15px rgba(253, 29, 29, 0.4), 0 0 30px rgba(131, 58, 180, 0.25)',
                 }}
                 aria-label="Instagram Profile"
               >
                 {/* Pulsing glow ring */}
                 <span
-                  className="absolute inset-0 rounded-full animate-ping opacity-30"
+                  className="absolute inset-0 rounded-full animate-ping opacity-25"
                   style={{ background: 'linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)' }}
                   aria-hidden="true"
                 />
@@ -181,27 +181,36 @@ export default function Hero() {
                   style={{ background: 'radial-gradient(circle at 30% 30%, white, transparent)' }}
                   aria-hidden="true"
                 />
-                <Instagram className="w-6 h-6 relative z-10 drop-shadow-md" />
+                <Instagram className="w-5 h-5 sm:w-6 sm:h-6 relative z-10 drop-shadow-md" />
               </a>
             </div>
+          </motion.div>
+
+          {/* Trust Guarantee Microcopy (Power Design Rule #6) */}
+          <motion.div
+            variants={itemVariants}
+            className="mt-3.5 sm:mt-4 flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-300/90 tracking-wide"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] shrink-0" />
+            <span>{t.hero.trust}</span>
           </motion.div>
         </motion.div>
       </div>
 
-      {/* Floating Scroll Indicator */}
+      {/* Floating Scroll Indicator — hidden on compact viewports to prevent collision */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 10 }}
+        animate={{ opacity: 1, y: 8 }}
         transition={{
           repeat: Infinity,
           repeatType: 'reverse',
           duration: 1.2,
           ease: 'easeInOut'
         }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 flex flex-col items-center gap-1 cursor-pointer pointer-events-none"
+        className="hidden xl:flex [@media(max-height:800px)]:hidden absolute bottom-5 left-1/2 -translate-x-1/2 text-white/40 flex-col items-center gap-1 cursor-pointer pointer-events-none z-10"
       >
         <span className="text-[10px] font-bold tracking-widest uppercase text-zinc-400">Scroll</span>
-        <ArrowDown className="w-4 h-4 text-brand-red" />
+        <ArrowDown className="w-3.5 h-3.5 text-brand-red" />
       </motion.div>
     </section>
   );

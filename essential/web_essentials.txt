@@ -13,6 +13,7 @@ https://github.com/orgs/21st-dev/repositories
 https://github.com/Leonxlnx/taste-skill.git
 https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design
 https://github.com/kylezantos/design-motion-principles.git
+https://github.com/ItsssssJack/power-design.git
 
 ## Security
 https://github.com/wiz-sec-public/secure-rules-files
@@ -400,6 +401,40 @@ Every interactive element MUST have:
 - `lg` 1024px — laptop
 - `xl` 1280px — desktop
 - `2xl` 1536px — wide monitor
+
+### 3.9 — Power Design Protocol (@power-design)
+
+> **Source:** https://github.com/ItsssssJack/power-design.git (Stored at `./essential/power-design`)
+> **Core Idea:** Brand DNA × Codified Design Principles → Web & Presentation Systems that don't look like AI made them.
+
+Use `@power-design` in tandem with `@ui-ux-pro-max`, `@frontend-design`, and `@tailwind-patterns` to enforce 20 non-negotiable codified rules for web execution with strict numeric thresholds:
+
+#### The 20 Codified Web Rules (Non-Negotiable Thresholds):
+1. **Mobile-first, Capped Measure:** Max-width shell 1200–1440px. Prose measure ≤75ch (optimal 45–65ch). Never uncontained edge-to-edge text. Tested at 320, 390, 768, 1024, 1440px with zero horizontal scroll.
+2. **Content-Driven Breakpoints:** Breakpoints follow layout stress, not specific device models (640/768/1024/1280).
+3. **Fluid Type & Space via `clamp()`:** Never jump font sizes or padding abruptly. Use CSS `clamp(min, preferred, max)` with `rem` preserving accessibility zoom.
+4. **Body Size & Touch Targets:** Body text ≥16px. Touch/tap targets ≥44×44px with ≥8px physical separation (Apple HIG & WCAG 2.5.8).
+5. **Single Primary CTA per View:** Exactly one visually dominant primary action per viewport. Repeat it across sections, never compete with multiple rival primaries (Krug & Hick's Law).
+6. **5-Second Fold Test:** Above the fold answers *What is this? Who is it for? What do I do next?* within 5 seconds on both phone and laptop.
+7. **Scanning Patterns & Left-Alignment:** F-pattern for content, Z-pattern for hero banners. Body text always left-aligned, never justified or center-aligned for paragraphs.
+8. **Line Length (Measure):** 45–75 characters per line (`max-width: 65ch`) for optimal cognitive readability.
+9. **Vertical Rhythm on 8:** Body line-height ≥1.5 (WCAG 1.4.12); Display/headings tight 1.05–1.2.
+10. **8pt Grid & Modular Scale:** All margins, paddings, gaps snap to {4, 8, 16, 24, 32, 48, 64, 96, 128}px. One modular scale (1.25 Major Third or 1.333 Perfect Fourth).
+11. **WCAG 2.2 AA Contrast Floor:** Text ≥4.5:1 (aim 7:1 AAA for body). UI components & focus indicators ≥3:1. Never communicate state by color/hue alone.
+12. **Semantic Color Tokens (60-30-10 Split):** 60% dominant canvas (light surface or deep ink), 30% structural neutral (cards, borders, muted text), 10% high-energy brand accent. Defined via semantic CSS custom properties (`--color-bg`, `--color-fg`, `--color-primary`, `--color-accent`).
+13. **Five States per Interactive Element:** Every button, input, card must implement: (1) Default, (2) Hover, (3) Focus-visible (≥2px ring), (4) Active (press/scale feedback), (5) Disabled.
+14. **State Completeness:** Explicit design for empty states, loading skeletons, and error states — not just the happy path.
+15. **Purposeful Motion (150–300ms):** Smooth cubic-bezier ease-out. GPU-composited transforms (`translate3d`, `scale`, `opacity`) only. Strict `prefers-reduced-motion` compliance.
+16. **Space Reservation (CLS < 0.1):** Explicit `aspect-ratio` or `width`/`height` on all media, videos, and dynamic containers to eliminate Cumulative Layout Shift.
+17. **Performance Budget:** LCP < 2.5s, INP < 200ms. Hero media compressed and preloaded. Fonts swap+preload (≤2 families).
+18. **Semantic Landmarks & Accessibility:** Landmark navigation (`<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`), skip-to-content link, strictly one `<h1>` per page, focus order matches DOM order.
+19. **High-Conversion Forms:** Visible labels, inline validation on blur, appropriate input `type` and `autocomplete`, minimum required fields, single column layout.
+20. **Meta & SEO Layer:** `<title>` ≤60 chars, `<meta description>` ≤155 chars, Open Graph image 1200×630, JSON-LD Schema structured data.
+
+#### Brand DNA System:
+- Extract visual tokens: Background, Foreground, Primary Accent, Display Font, Corner Radius, Voice/Tone.
+- 72+ Pre-built brand profiles available in `./essential/power-design/brands/` (Stripe, Apple, Linear, Tesla, Vercel, Supabase, etc.).
+
 
 ---
 

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, CheckCircle2, Loader2 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -48,6 +49,7 @@ const slideVariants = {
 // ─── Step dot indicator ───────────────────────────────────────────────────────
 
 function StepDots({ step }: { step: number }) {
+  const { t } = useLanguage();
   // Dot colours inspired by the screenshot: brand-red for active, green for done
   const dotColor = (i: number) => {
     if (i + 1 < step)  return '#22c55e'; // completed → green
@@ -59,13 +61,12 @@ function StepDots({ step }: { step: number }) {
     <div className="flex flex-col items-center gap-2 mb-8">
       {/* Small eyebrow — exact text from screenshot */}
       <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400">
-        ONE QUESTION AT A{' '}
-        <span className="text-ink">TIME</span>
+        {t.contact.leadFlow.oneQuestion}
       </p>
 
       {/* Step counter */}
       <p className="text-[11px] font-semibold text-zinc-400">
-        STEP {step} OF {TOTAL_STEPS}
+        {t.contact.leadFlow.stepCounter} {step} {t.contact.leadFlow.stepOf} {TOTAL_STEPS}
       </p>
 
       {/* Dots */}
@@ -142,6 +143,7 @@ type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function LeadFlowForm() {
+  const { t, language } = useLanguage();
   const [step,      setStep]      = useState(1);
   const [direction, setDirection] = useState(1);  // 1 = forward, -1 = back
 
@@ -269,14 +271,26 @@ export default function LeadFlowForm() {
 
   const onStep1OtherNext = () => {
     const val = lead.serviceTypeOther.trim();
-    if (!val) { setErrors(e => ({ ...e, serviceTypeOther: 'Please tell us what you need.' })); return; }
+    if (!val) { 
+      setErrors(e => ({ 
+        ...e, 
+        serviceTypeOther: language === 'fr' ? 'Veuillez préciser votre besoin.' : 'Please tell us what you need.' 
+      })); 
+      return; 
+    }
     pushEvent('leadflow_step_1', { service_type: `Something Else: ${val}` });
     goForward(2);
   };
 
   const onStep2Next = () => {
     const val = lead.businessName.trim();
-    if (!val) { setErrors(e => ({ ...e, businessName: 'Please enter your business name.' })); return; }
+    if (!val) { 
+      setErrors(e => ({ 
+        ...e, 
+        businessName: language === 'fr' ? 'Veuillez entrer le nom de votre entreprise.' : 'Please enter your business name.' 
+      })); 
+      return; 
+    }
     pushEvent('leadflow_step_2', { business_name: val });
     goForward(3);
   };
@@ -285,10 +299,10 @@ export default function LeadFlowForm() {
 
   const validate = (): boolean => {
     const errs: Partial<Record<keyof LeadData, string>> = {};
-    if (!lead.name.trim()) errs.name = 'Please enter your name.';
+    if (!lead.name.trim()) errs.name = language === 'fr' ? 'Veuillez entrer votre nom.' : 'Please enter your name.';
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email.trim());
     const phoneOk = /^[\d\s\-()+]{7,}$/.test(lead.phone.trim());
-    if (!emailOk && !phoneOk) errs.email = 'Enter a valid email or phone number.';
+    if (!emailOk && !phoneOk) errs.email = language === 'fr' ? 'Entrez un courriel ou un numéro de téléphone valide.' : 'Enter a valid email or phone number.';
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -379,6 +393,13 @@ export default function LeadFlowForm() {
   // ── Step renderers ────────────────────────────────────────────────────────
 
   const renderStep = () => {
+    const step1Options = [
+      { value: 'Website Development', label: t.contact.leadFlow.options.webDev, icon: '🌐' },
+      { value: 'Google Business',     label: t.contact.leadFlow.options.googleBiz, icon: '🔍' },
+      { value: 'Meta Ads',            label: t.contact.leadFlow.options.metaAds, icon: '🎯' },
+      { value: 'Something Else',      label: t.contact.leadFlow.options.somethingElse, icon: '💬' },
+    ];
+
     switch (step) {
 
       // ── STEP 1 ────────────────────────────────────────────────────────────
@@ -386,12 +407,12 @@ export default function LeadFlowForm() {
         return (
           <div className="flex flex-col gap-2.5">
             <h3 className="text-2xl font-extrabold text-ink text-center mb-1 leading-snug">
-              What do you need?
+              {t.contact.leadFlow.step1Title}
             </h3>
             <p className="text-sm text-muted text-center mb-3">
-              Tap one — takes 2 seconds.
+              {t.contact.leadFlow.step1Subtitle}
             </p>
-            {STEP1_OPTIONS.map(o => (
+            {step1Options.map(o => (
               <OptionBtn
                 key={o.value}
                 icon={o.icon}
@@ -419,7 +440,7 @@ export default function LeadFlowForm() {
                       setErrors(er => ({ ...er, serviceTypeOther: undefined }));
                     }}
                     onKeyDown={e => e.key === 'Enter' && onStep1OtherNext()}
-                    placeholder="Tell us what you need…"
+                    placeholder={t.contact.leadFlow.step1OtherPlaceholder}
                     className="w-full bg-zinc-50 border border-zinc-200 text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:border-brand-red focus:bg-white focus:shadow-[0_0_20px_rgba(225,29,46,0.10)] transition-all duration-200 text-sm"
                   />
                   {errors.serviceTypeOther && (
@@ -428,9 +449,9 @@ export default function LeadFlowForm() {
                   <button
                     type="button"
                     onClick={onStep1OtherNext}
-                    className="w-full bg-brand-red hover:bg-brand-red-dark text-white font-bold py-3.5 rounded-full transition-all duration-200 text-sm cursor-pointer"
+                    className="w-full bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] hover:shadow-[0_0_25px_rgba(225,29,46,0.6)] active:scale-98 text-white font-bold py-3.5 rounded-full transition-all duration-200 text-sm cursor-pointer"
                   >
-                    Continue →
+                    {t.contact.leadFlow.continue}
                   </button>
                 </motion.div>
               )}
@@ -443,10 +464,10 @@ export default function LeadFlowForm() {
         return (
           <div className="flex flex-col gap-2.5">
             <h3 className="text-2xl font-extrabold text-ink text-center mb-1 leading-snug">
-              What's your business name?
+              {t.contact.leadFlow.step2Title}
             </h3>
             <p className="text-sm text-muted text-center mb-3">
-              We'll tailor your proposal to your business.
+              {t.contact.leadFlow.step2Subtitle}
             </p>
             <input
               autoFocus
@@ -459,7 +480,7 @@ export default function LeadFlowForm() {
                 setErrors(er => ({ ...er, businessName: undefined }));
               }}
               onKeyDown={e => e.key === 'Enter' && onStep2Next()}
-              placeholder="Acme Co."
+              placeholder={t.contact.leadFlow.step2Placeholder}
               className={[
                 'w-full bg-zinc-50 border text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:bg-white transition-all duration-200 text-sm',
                 errors.businessName
@@ -473,9 +494,9 @@ export default function LeadFlowForm() {
             <button
               type="button"
               onClick={onStep2Next}
-              className="w-full bg-brand-red hover:bg-brand-red-dark text-white font-bold py-3.5 rounded-full transition-all duration-200 text-sm cursor-pointer mt-1"
+              className="w-full bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] hover:shadow-[0_0_25px_rgba(225,29,46,0.6)] active:scale-98 text-white font-bold py-3.5 rounded-full transition-all duration-200 text-sm cursor-pointer mt-1"
             >
-              Continue →
+              {t.contact.leadFlow.continue}
             </button>
           </div>
         );
@@ -494,13 +515,13 @@ export default function LeadFlowForm() {
                 <CheckCircle2 className="w-10 h-10 text-green-500" />
               </div>
               <div>
-                <h3 className="text-2xl font-extrabold text-ink mb-2">You're all set! 🎉</h3>
+                <h3 className="text-2xl font-extrabold text-ink mb-2">{t.contact.leadFlow.successTitle}</h3>
                 <p className="text-muted text-sm leading-relaxed max-w-xs mx-auto">
-                  We'll text you within a few hours with your free quote.
+                  {t.contact.leadFlow.successSubtitle}
                 </p>
               </div>
               <div className="w-full bg-zinc-50 rounded-2xl border border-zinc-200 px-5 py-4 text-left">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-muted mb-1">Your request</p>
+                <p className="text-[11px] font-bold uppercase tracking-wider text-muted mb-1">{t.contact.leadFlow.yourRequest}</p>
                 <p className="text-sm font-semibold text-ink">
                   {lead.serviceType === 'Something Else' ? (lead.serviceTypeOther || 'Something Else') : lead.serviceType} · {lead.businessName}
                 </p>
@@ -524,15 +545,15 @@ export default function LeadFlowForm() {
 
             <div className="text-center mb-1">
               <h3 className="text-2xl font-extrabold text-ink leading-snug">
-                Where do we send your quote?
+                {t.contact.leadFlow.step3Title}
               </h3>
-              <p className="text-sm text-muted mt-1">30 seconds — no commitment.</p>
+              <p className="text-sm text-muted mt-1">{t.contact.leadFlow.step3Subtitle}</p>
             </div>
 
             {/* Name */}
             <div className="flex flex-col gap-1.5">
               <label htmlFor="lf-name" className="text-xs font-bold uppercase tracking-wider text-muted">
-                Full Name
+                {t.contact.leadFlow.nameLabel}
               </label>
               <input
                 id="lf-name"
@@ -543,7 +564,7 @@ export default function LeadFlowForm() {
                   setLead(l => ({ ...l, name: e.target.value }));
                   setErrors(er => ({ ...er, name: undefined }));
                 }}
-                placeholder="John Doe"
+                placeholder={t.contact.leadFlow.namePlaceholder}
                 className={[
                   'w-full bg-zinc-50 border text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:bg-white transition-all duration-200 text-sm',
                   errors.name
@@ -557,7 +578,7 @@ export default function LeadFlowForm() {
             {/* Phone */}
             <div className="flex flex-col gap-1.5">
               <label htmlFor="lf-phone" className="text-xs font-bold uppercase tracking-wider text-muted">
-                Phone Number
+                {t.contact.leadFlow.phoneLabel}
               </label>
               <input
                 id="lf-phone"
@@ -568,7 +589,7 @@ export default function LeadFlowForm() {
                   setLead(l => ({ ...l, phone: e.target.value }));
                   setErrors(er => ({ ...er, email: undefined }));
                 }}
-                placeholder="+1 (555) 000-0000"
+                placeholder={t.contact.leadFlow.phonePlaceholder}
                 className="w-full bg-zinc-50 border border-zinc-200 text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:border-brand-red focus:bg-white focus:shadow-[0_0_20px_rgba(225,29,46,0.10)] transition-all duration-200 text-sm"
               />
             </div>
@@ -576,8 +597,10 @@ export default function LeadFlowForm() {
             {/* Email */}
             <div className="flex flex-col gap-1.5">
               <label htmlFor="lf-email" className="text-xs font-bold uppercase tracking-wider text-muted">
-                Business Email{' '}
-                <span className="text-zinc-400 normal-case font-normal tracking-normal">(or phone above)</span>
+                {t.contact.leadFlow.emailLabel}{' '}
+                <span className="text-zinc-400 normal-case font-normal tracking-normal">
+                  {language === 'fr' ? '(ou téléphone ci-dessus)' : '(or phone above)'}
+                </span>
               </label>
               <input
                 id="lf-email"
@@ -591,7 +614,7 @@ export default function LeadFlowForm() {
                 onKeyDown={e => {
                   if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as unknown as React.FormEvent); }
                 }}
-                placeholder="john@company.com"
+                placeholder={t.contact.leadFlow.emailPlaceholder}
                 className={[
                   'w-full bg-zinc-50 border text-ink rounded-xl px-5 py-3.5 focus:outline-none focus:bg-white transition-all duration-200 text-sm',
                   errors.email
@@ -606,12 +629,12 @@ export default function LeadFlowForm() {
             <button
               type="submit"
               disabled={status === 'submitting'}
-              className="w-full font-bold py-4 rounded-full text-base flex items-center justify-center gap-2 cursor-pointer mt-1 bg-brand-red hover:bg-brand-red-dark text-white shadow-lg shadow-brand-red/15 hover:shadow-brand-red/30 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full font-bold py-4 rounded-full text-base flex items-center justify-center gap-2 cursor-pointer mt-1 bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] hover:shadow-[0_0_30px_rgba(225,29,46,0.6)] active:scale-98 text-white shadow-lg shadow-brand-red/20 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed cta-pulse border border-white/20 tap-target-min"
             >
               {status === 'submitting' ? (
-                <><Loader2 className="w-5 h-5 animate-spin" /> Sending…</>
+                <><Loader2 className="w-5 h-5 animate-spin" /> {t.contact.leadFlow.submitting}</>
               ) : (
-                'Get My Free Quote →'
+                <>{t.contact.leadFlow.submitBtn} →</>
               )}
             </button>
 
@@ -620,7 +643,7 @@ export default function LeadFlowForm() {
             )}
 
             <p className="text-[11px] text-center text-zinc-400 leading-relaxed">
-              🔒 No spam, ever. We'll only reach out about your project.
+              {language === 'fr' ? '🔒 Aucun pourriel. Nous ne vous contacterons que pour votre projet.' : "🔒 No spam, ever. We'll only reach out about your project."}
             </p>
           </form>
         );
@@ -665,7 +688,7 @@ export default function LeadFlowForm() {
             className="flex items-center gap-1 text-muted text-sm font-semibold mb-5 cursor-pointer hover:text-ink transition-colors duration-150"
           >
             <ChevronLeft className="w-4 h-4" />
-            Back
+            {language === 'fr' ? 'Retour' : 'Back'}
           </motion.button>
         )}
 

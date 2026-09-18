@@ -108,6 +108,9 @@ function AppContent() {
   
   return (
     <div className="min-h-screen selection:bg-brand-red-light selection:text-brand-red bg-surface text-ink antialiased">
+      <a href="#main-content" className="skip-to-content">
+        {language === 'fr' ? 'Aller au contenu principal' : 'Skip to main content'}
+      </a>
       <SEOMetaManager />
       <ScrollToTop />
       <Navbar 
@@ -118,7 +121,7 @@ function AppContent() {
           }
         }} 
       />
-      <main className="relative">
+      <main className="relative" id="main-content">
         <Routes>
           <Route path="/" element={<MainLayout />} />
           <Route path="/portfolio" element={<PortfolioLayout />} />
