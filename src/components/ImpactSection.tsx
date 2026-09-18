@@ -13,6 +13,8 @@ import {
   Search,
   ArrowRight,
   Play,
+  CheckCircle2,
+  Sparkles,
 } from 'lucide-react';
 import GlowDot from './GlowDot';
 import ShinyTitle from './ShinyTitle';
@@ -755,35 +757,95 @@ export default function ImpactSection() {
           </div>
         </div>
 
-        {/* Conversion Bridge Banner (Power Design Rule #5 - One Primary Action) */}
+        {/* Conversion Bridge Banner — Upgraded Luminous Architectural Design (Power Design & Essential System) */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={viewportConfig}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-20 md:mt-28 p-8 md:p-12 rounded-[32px] bg-gradient-to-br from-zinc-950 via-zinc-900 to-black text-white border border-white/10 relative overflow-hidden shadow-2xl"
+          className="mt-20 md:mt-28 p-7 sm:p-10 md:p-14 rounded-[32px] md:rounded-[40px] bg-gradient-to-br from-white via-zinc-50/90 to-red-50/25 border border-zinc-200/90 relative overflow-hidden shadow-[0_24px_70px_-15px_rgba(225,29,46,0.08),0_1px_3px_rgba(0,0,0,0.03)]"
         >
-          <div className="absolute -right-16 -bottom-16 w-72 h-72 bg-brand-red/20 rounded-full blur-[100px] pointer-events-none" />
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+          {/* Texture Layer 1: Geometric Micro-Dot Grid */}
+          <div className="absolute inset-0 bg-[radial-gradient(rgba(0,0,0,0.06)_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-80" />
+
+          {/* Texture Layer 2: Ambient Atmospheric Glows */}
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-red/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-brand-red/5 rounded-full blur-[90px] pointer-events-none" />
+
+          {/* Texture Layer 3: Architectural Corner Marks */}
+          <div className="absolute top-5 left-5 w-2.5 h-2.5 border-t-2 border-l-2 border-zinc-300 pointer-events-none" />
+          <div className="absolute top-5 right-5 w-2.5 h-2.5 border-t-2 border-r-2 border-zinc-300 pointer-events-none" />
+          <div className="absolute bottom-5 left-5 w-2.5 h-2.5 border-b-2 border-l-2 border-zinc-300 pointer-events-none" />
+          <div className="absolute bottom-5 right-5 w-2.5 h-2.5 border-b-2 border-r-2 border-zinc-300 pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10 lg:gap-14">
+            {/* Left Content Area */}
             <div className="max-w-xl">
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-red-light text-xs font-bold uppercase tracking-wider mb-4 border border-white/10">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-red-light border border-brand-red/20 text-brand-red text-xs font-bold uppercase tracking-wider mb-5 shadow-sm">
                 <GlowDot />
-                Montreal Growth System
+                {t.impact.badge}
               </span>
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-3">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] font-extrabold tracking-tight text-ink mb-4 leading-[1.15]">
                 {t.impact.ctaTitle}
               </h3>
-              <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
+              <p className="text-zinc-600 text-base sm:text-lg leading-relaxed mb-6">
                 {t.impact.ctaSubtitle}
               </p>
+
+              {/* Verified Feature Chips */}
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-3">
+                {t.impact.features.map((feature, idx) => (
+                  <div
+                    key={idx}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/90 border border-zinc-200/80 shadow-xs text-xs font-semibold text-zinc-700 backdrop-blur-xs"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <a
-              href="#contact"
-              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] text-white rounded-full font-bold text-base hover:shadow-[0_0_35px_rgba(225,29,46,0.65)] active:scale-95 active:translate-y-0.5 transition-all duration-200 cursor-pointer shadow-[0_4px_20px_rgba(225,29,46,0.4)] whitespace-nowrap cta-pulse border border-white/20 tap-target-min"
-            >
-              <span>{t.impact.ctaButton}</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-200" />
-            </a>
+
+            {/* Right Interactive Deliverables Card */}
+            <div className="relative p-6 sm:p-7 rounded-[26px] bg-white border border-zinc-200/90 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] flex flex-col justify-between gap-5 max-w-md w-full shrink-0">
+              {/* Header with live pulse */}
+              <div className="flex items-center justify-between gap-3 pb-3.5 border-b border-zinc-100">
+                <span className="text-xs font-extrabold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-brand-red" />
+                  {t.impact.blueprint.tag}
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-bold text-emerald-700 tracking-wide">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  {t.impact.blueprint.status}
+                </span>
+              </div>
+
+              {/* Checklist of deliverables */}
+              <div className="space-y-2.5">
+                {t.impact.blueprint.items.map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-zinc-700">
+                    <div className="w-4 h-4 rounded-full bg-brand-red-light flex items-center justify-center shrink-0 mt-0.5 text-brand-red">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                    </div>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Primary Action Button — Power Design 5-state CTA */}
+              <a
+                href="#contact"
+                className="group relative flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-[#E11D2E] via-[#D11220] to-[#B3121F] text-white rounded-full font-bold text-sm sm:text-base hover:shadow-[0_0_35px_rgba(225,29,46,0.65)] active:scale-95 active:translate-y-0.5 transition-all duration-200 cursor-pointer shadow-[0_6px_25px_rgba(225,29,46,0.35)] whitespace-nowrap cta-pulse border border-white/20 tap-target-min text-center"
+              >
+                <span>{t.impact.ctaButton}</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-200" />
+              </a>
+
+              {/* Micro-trust footer */}
+              <p className="text-center text-[11px] font-medium text-zinc-400">
+                {t.impact.blueprint.guarantee}
+              </p>
+            </div>
           </div>
         </motion.div>
 

@@ -128,9 +128,25 @@ export const translations = {
       ]
     },
     impact: {
+      badge: "Montreal Growth Architecture",
       ctaTitle: "Want similar growth for your Montreal business?",
       ctaSubtitle: "We engineer high-converting digital platforms that turn visitors into booked calls and paying customers.",
-      ctaButton: "Request Your Free Growth Plan"
+      ctaButton: "Request Your Free Growth Plan",
+      features: [
+        "100% Custom Code (Zero Templates)",
+        "Montreal SEO & Local Market Dominance",
+        "Direct Strategy with Lead Architect"
+      ],
+      blueprint: {
+        tag: "Growth Blueprint",
+        status: "Free Strategy Session",
+        items: [
+          "Full UX & Conversion Friction Audit",
+          "Montreal Competitor Gap Analysis",
+          "Custom 30-Day Acquisition Roadmap"
+        ],
+        guarantee: "No commitment • 100% Free Consultation"
+      }
     },
     scanner: {
       titlePart1: "Stop Burning Cash on",
@@ -359,9 +375,25 @@ export const translations = {
       ]
     },
     impact: {
+      badge: "Architecture de Croissance Montréal",
       ctaTitle: "Vous voulez une croissance similaire pour votre entreprise ?",
       ctaSubtitle: "Nous concevons des plateformes numériques à haute conversion qui transforment vos visiteurs en appels réservés et en clients payants.",
-      ctaButton: "Demander votre plan de croissance gratuit"
+      ctaButton: "Demander votre plan de croissance gratuit",
+      features: [
+        "Code 100% sur-mesure (Zéro Modèle)",
+        "SEO local et domination du marché montréalais",
+        "Stratégie directe avec notre concepteur principal"
+      ],
+      blueprint: {
+        tag: "Plan Stratégique",
+        status: "Session Gratuite",
+        items: [
+          "Audit complet de friction UX et conversion",
+          "Analyse comparative locale à Montréal",
+          "Feuille de route d'acquisition sur 30 jours"
+        ],
+        guarantee: "Sans engagement • Consultation 100% gratuite"
+      }
     },
     scanner: {
       titlePart1: "Arrêtez de gaspiller de l'argent sur un",
